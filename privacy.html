@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy Policy | APD Defense, LLC</title>
-<meta name="description" content="How PulseLink, CommandLink and TerraLink handle your data. APD Defense operates no server for these apps: your records stay on your phone.">
+<meta name="description" content="How PulseLink, CommandLink and TerraLink handle your data. Your records stay on your phone. The only thing that ever reaches APD Defense is a problem report you choose to send.">
 <meta name="theme-color" content="#0B0F14">
 <meta name="color-scheme" content="dark">
 <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -145,10 +145,14 @@
     to work with no cell service and no internet.</p>
   <div class="panel">
     <ul>
-      <li><strong>We do not collect your data.</strong> APD Defense operates no server for these
-        apps. Nothing you enter or record is sent to us. We cannot see it.</li>
-      <li><strong>There are no ads, no analytics, no trackers and no crash reporting
-        services.</strong> We checked the code, not just our intentions: there is no advertising
+      <li><strong>We do not collect your records.</strong> Nothing you record in the apps &mdash;
+        casualties, messages, positions, rosters, keys &mdash; is sent to us. We cannot see it.</li>
+      <li><strong>The one exception is a problem report you choose to send.</strong> If you tap
+        <strong>Report a Problem</strong>, you see the whole report first, and nothing is sent
+        unless you tap <strong>Send</strong>. It goes to APD Defense over the internet. See
+        <a href="#reports">Problem reports</a>.</li>
+      <li><strong>There are no ads, no analytics, no trackers and no automatic crash
+        reporting.</strong> We checked the code, not just our intentions: there is no advertising
         library, no analytics library, no crash reporting library and no Google Play Services
         dependency in any of the three apps.</li>
       <li><strong>You need no account.</strong> There is nothing to sign up for and no login.</li>
@@ -156,7 +160,7 @@
         other apps on the phone cannot read.</li>
       <li><strong>What leaves the phone goes over your radio</strong>, to the other radios on your
         own net, encrypted and authenticated by the radio hardware &mdash; and only when you send
-        it.</li>
+        it, or when you have left position sharing on (see <a href="#location">Location</a>).</li>
       <li><strong>These apps are prototypes.</strong> They are not medical devices, they are not FDA
         cleared, and they are not certified or approved for any purpose.</li>
     </ul>
@@ -172,6 +176,7 @@
     <li><a href="#location">Location</a></li>
     <li><a href="#permissions">Permissions, and why each one exists</a></li>
     <li><a href="#thirdparty">Analytics, advertising and third-party code</a></li>
+    <li><a href="#reports">Problem reports</a></li>
     <li><a href="#offline">Working offline</a></li>
     <li><a href="#security">Security</a></li>
     <li><a href="#retention">How long we keep things, and how you delete them</a></li>
@@ -211,7 +216,10 @@
   <h2 id="storage">What each app stores, and where</h2>
   <p>Everything listed here is stored in the app's own <strong>private storage on your phone</strong>
     &mdash; the area Android gives each app and keeps other apps out of. It is protected by your
-    phone's own encryption and your lock screen. None of it is uploaded anywhere.</p>
+    phone's own encryption and your lock screen. None of it is uploaded anywhere. The one thing an
+    app can send over the internet is a <a href="#reports">problem report</a> you choose to send,
+    and none of the records below go into one, apart from the technical part of the last crash
+    record, as its row says.</p>
 
   <h3>PulseLink</h3>
   <div class="tableWrap">
@@ -244,10 +252,16 @@
           <td>App-private preferences</td><td></td></tr>
         <tr><td>A record of the last app crash, if one ever happened: the time and the technical
           stack trace</td><td>One app-private file</td>
-          <td>Shown in Settings as a time. <strong>Never sent anywhere.</strong> Only the most recent
-            one is kept.</td></tr>
+          <td>Shown in Settings as a time. Only the most recent one is kept. <strong>Never sent
+            automatically.</strong> It leaves the phone only inside a problem report you send with
+            the diagnostic log switched on, and then with the error message text removed (see
+            <a href="#reports">Problem reports</a>).</td></tr>
+        <tr><td>Problem reports you sent that have not reached us yet</td>
+          <td>App-private files</td>
+          <td>Deleted from the phone as soon as our relay accepts them. A report the relay refuses
+            outright stays on the phone, marked NOT ACCEPTED.</td></tr>
         <tr><td>Offline map files you downloaded</td><td>App-private files</td>
-          <td>See <a href="#thirdparty">the one thing that reaches the internet</a></td></tr>
+          <td>See <a href="#thirdparty">map downloads</a></td></tr>
       </tbody>
     </table>
   </div>
@@ -301,7 +315,9 @@
         <tr><td>Map, alert-sound, ATAK bridge and USB settings</td><td>App-private preferences</td>
           <td></td></tr>
         <tr><td>A record of the last app crash</td><td>One app-private file</td>
-          <td>As PulseLink, above. Never sent.</td></tr>
+          <td>As PulseLink, above: never sent automatically.</td></tr>
+        <tr><td>Problem reports not yet sent</td><td>App-private files</td>
+          <td>As PulseLink, above</td></tr>
         <tr><td>Offline map files you downloaded</td><td>App-private files</td><td></td></tr>
       </tbody>
     </table>
@@ -333,7 +349,9 @@
         <tr><td>Messages received over the radio</td><td><strong>In memory only</strong>, for the
           session</td><td>Not written to disk</td></tr>
         <tr><td>A record of the last app crash</td><td>One app-private file</td>
-          <td>Never sent</td></tr>
+          <td>Never sent automatically; as PulseLink, above</td></tr>
+        <tr><td>Problem reports not yet sent</td><td>App-private files</td>
+          <td>As PulseLink, above</td></tr>
         <tr><td>Offline map files you downloaded</td><td>App-private files</td><td></td></tr>
       </tbody>
     </table>
@@ -479,26 +497,48 @@
             and camera frames are decoded in memory and discarded.</td>
           <td>Type the radio's 8-digit code instead</td></tr>
         <tr><td><strong>Internet / network state</strong></td><td>All three</td>
-          <td>Two things only: (1)&nbsp;downloading map tiles on <strong>Settings &rarr; Map
+          <td>Three things only: (1)&nbsp;downloading map tiles on <strong>Settings &rarr; Map
             Data</strong>, and only while <strong>Map Downloads</strong> is switched on &mdash; it is
-            <strong>off by default</strong>; (2)&nbsp;CommandLink and TerraLink talk to ATAK on the
+            <strong>off by default</strong>; (2)&nbsp;sending a <a href="#reports">problem
+            report</a> you chose to send; (3)&nbsp;CommandLink and TerraLink talk to ATAK on the
             <em>same phone</em> over loopback, and Android requires this permission even for
             127.0.0.1.</td>
-          <td>Map downloads and the ATAK bridge do not work. Everything else is unaffected.</td></tr>
-        <tr><td><strong>Notifications</strong></td><td>CommandLink, TerraLink</td>
-          <td>The persistent notification for the two background services below, each with a Stop
-            action</td>
-          <td>The service still works; Android may not show its notification</td></tr>
+          <td>Map downloads, problem reports and the ATAK bridge do not work (a report waits on the
+            phone). Everything else is unaffected.</td></tr>
+        <tr><td><strong>Notifications</strong></td><td>All three</td>
+          <td>Critical alarms (for example a received 9-line), message notifications, the
+            persistent notification of the background services below, and a quiet notice when a
+            problem report you sent has been delivered</td>
+          <td>Alarms and messages still arrive inside the app, but Android may not show them when
+            the app is not in front; the services still work</td></tr>
+        <tr><td><strong>Full-screen alerts</strong> and <strong>vibration</strong></td>
+          <td>All three</td>
+          <td>Showing a critical alarm over the lock screen and vibrating for it</td>
+          <td>The alarm arrives as an ordinary notification</td></tr>
+        <tr><td><strong>Do Not Disturb access</strong></td><td>All three</td>
+          <td>Letting a critical alarm sound while the phone is in Do Not Disturb. Granted by you on
+            Android's own settings screen, never automatically.</td>
+          <td>Alarms follow your Do Not Disturb settings</td></tr>
         <tr><td><strong>Foreground service (connected device)</strong></td>
-          <td>CommandLink, TerraLink</td>
-          <td>Holding the radio link alive while you use another app, and running the ATAK bridge
-            while ATAK is in front. Started only when you connect a radio or turn the bridge on;
-            stopped by Disconnect, by unplugging, or by the notification's Stop. <strong>Never starts
+          <td>All three</td>
+          <td>Holding the radio link alive while you use another app or the phone is locked, so an
+            alarm can still reach you; and, in CommandLink and TerraLink, running the ATAK bridge
+            while ATAK is in front. The radio link service starts only when a real radio is
+            connected (never in Training Mode), or the bridge when you turn it on. In CommandLink it
+            is stopped by Disconnect, by unplugging, or by the notification's Stop. In PulseLink it
+            stops when you close the app, and in TerraLink when you tap Disconnect; if the radio is
+            unplugged first, its notification says NO RADIO LINKED until then. <strong>Never starts
             at boot.</strong> The radio link service never restarts itself. The ATAK bridge can: if
             Android stops it while it is running, Android may start it again on its own. It then shows
             its notification again and waits for ATAK on this phone, but it does <strong>not</strong>
             reconnect the radio, so nothing passes between ATAK and the radio until you connect one.
             Stop in its notification ends it.</td>
+          <td>n/a (not a runtime prompt)</td></tr>
+        <tr><td><strong>Run at startup</strong> and <strong>keep the phone awake</strong></td>
+          <td>All three</td>
+          <td>Used only by Android's standard background-job library (WorkManager) to send a problem
+            report you already chose to send, if the phone restarted before it got out. Nothing else
+            runs at startup.</td>
           <td>n/a (not a runtime prompt)</td></tr>
         <tr><td><strong>Change Wi-Fi multicast state</strong></td><td>CommandLink, TerraLink</td>
           <td>Only if you switch on the optional situational-awareness multicast output to the local
@@ -531,18 +571,19 @@
   <h2 id="thirdparty">Analytics, advertising and third-party code</h2>
   <p><strong>There are none.</strong> No advertising SDK, no analytics SDK, no crash-reporting
     service, no attribution or marketing SDK, no Google Play Services, no Firebase, no push service,
-    no A/B testing service, no remote configuration and no license check. Nothing in these apps
-    contacts an APD Defense server, because there is no APD Defense server for them to contact.</p>
+    no A/B testing service, no remote configuration and no license check. The only APD Defense
+    service the apps ever contact is the problem-report relay, and only to deliver a report you chose
+    to send (see <a href="#reports">Problem reports</a>).</p>
   <p>The third-party code the apps do include is open-source library code that runs entirely on your
     phone and sends nothing anywhere:</p>
   <ul>
-    <li><strong>AndroidX and Jetpack Compose</strong> (Google) &mdash; the user interface and camera
-      plumbing.</li>
+    <li><strong>AndroidX and Jetpack Compose</strong> (Google) &mdash; the user interface, camera
+      plumbing, and WorkManager, which schedules the sending of a problem report you queued.</li>
     <li><strong>Kotlin coroutines</strong> (JetBrains) &mdash; background work.</li>
     <li><strong>ZXing core</strong> &mdash; decoding and drawing QR codes, on the device.</li>
     <li><strong>usb-serial-for-android</strong> &mdash; talking to the radio over the USB cable.</li>
   </ul>
-  <h3>The one thing that reaches the internet</h3>
+  <h3>Map downloads</h3>
   <p>If, and only if, you switch on <strong>Map Downloads</strong> and choose an area, the app
     fetches map tiles from <strong>the United States Geological Survey's The National Map</strong>
     service (<code>basemap.nationalmap.gov</code>). What it sends is the coordinates of the tiles you
@@ -553,11 +594,108 @@
     is public domain, and the license and credit line are written into each map file.</p>
   <p>No map host is contacted while you are on a mission. Maps are downloaded before you go.</p>
 
+  <h2 id="reports">Problem reports</h2>
+  <p>Each app has a <strong>Report a Problem</strong> screen. It is the only way anything from the
+    apps reaches APD Defense, and it only happens when you choose to send a report.</p>
+
+  <h3>What is sent, and only when you choose</h3>
+  <p>The screen shows you the whole report before anything leaves the phone. <strong>Nothing is sent
+    unless you tap Send.</strong> A report contains only what the preview shows:</p>
+  <ul>
+    <li>a report ID (8 random characters, new for each report, not linked to you, your phone or any
+      record) and the time the report was written;</li>
+    <li>the description you type (up to 4,000 characters);</li>
+    <li>the app's name, version and build;</li>
+    <li>your phone's maker and model, and its Android version;</li>
+    <li>only if <strong>Include Diagnostic Log</strong> is on (<strong>it is on by default</strong>,
+      and you can switch it off before sending): more build details (the app's source version, build
+      date, package name, install and update dates, and a short fingerprint of its signing
+      certificate), your phone's time zone and language/region setting, free storage, whether the
+      app is exempt from battery optimization, whether Training Mode is on (PulseLink), how the radio
+      is linked (USB, Bluetooth, simulated or none), whether saved data is newer than the app
+      (PulseLink and CommandLink), the connected radio's firmware version and build, its status
+      counters, its emission-control setting, and whether a network key is loaded in it (never the
+      key itself or its fingerprint), and the most recent app crash (the technical stack only, with
+      the error message text removed, because an error message can quote something you
+      typed).</li>
+  </ul>
+  <p><strong>A report never includes</strong> your location, any casualty or medical information,
+    messages, rosters, names, call signs, mission details, network keys, the radio's label code, or
+    your email address or phone number. This is built in, not a filter: the report is assembled from
+    a fixed list of facts about the app, the phone and the radio, and there is no place in it to put
+    anything else. <strong>The one exception is the description you type</strong>, which is sent
+    exactly as you wrote it, so please don't type casualty or personal details into it.</p>
+  <p>Because a report carries no contact details, we cannot reply to it. If you want an answer,
+    email <a href="mailto:support@apddefense.com">support@apddefense.com</a> and quote the report
+    ID.</p>
+
+  <h3>How it travels, and where it goes</h3>
+  <ol>
+    <li><strong>On your phone first.</strong> Tapping Send saves the report in the app's private
+      storage. If you are offline, it waits there and goes out the next time the phone has an
+      internet connection, even after a restart. The Report a Problem screen lists any report still
+      waiting. It is deleted from the phone as soon as our relay accepts it. A report the relay
+      refuses outright stays on the phone, marked NOT ACCEPTED.</li>
+    <li><strong>To APD Defense's relay</strong>, a small program APD Defense runs on
+      <strong>Cloudflare</strong>, sent encrypted in transit (HTTPS). The relay checks the report's
+      format and passes it on. It does not store the report.</li>
+    <li><strong>Into APD Defense's issue tracker on GitHub</strong> (GitHub is owned by Microsoft).
+      Each report becomes an issue in a <strong>private repository</strong> that only APD Defense can
+      open. APD Defense is one person, so in practice that is the company's owner.</li>
+    <li><strong>By email, only as a fallback.</strong> If the relay cannot file the report on
+      GitHub, it emails the report instead, from <code>reports@apddefense.com</code> to
+      <code>support@apddefense.com</code>, which are APD Defense mailboxes hosted by
+      <strong>Microsoft&nbsp;365</strong>.</li>
+  </ol>
+
+  <h3>Who can see it</h3>
+  <ul>
+    <li><strong>APD Defense</strong>, to find and fix the problem.</li>
+    <li><strong>An automated sorting job.</strong> APD Defense uses an AI assistant,
+      <strong>Claude</strong> from <strong>Anthropic</strong>, which reads new reports in the issue
+      tracker to label and sort them, and may draft a fix that APD Defense has approved, for APD
+      Defense to review. It is instructed to treat a report's text as data, not as
+      instructions.</li>
+    <li><strong>The service providers that carry or hold it</strong> (Cloudflare, GitHub, Anthropic
+      and, for the email fallback, Microsoft&nbsp;365), under their own terms, as for any data kept
+      with them.</li>
+  </ul>
+  <p>No one else. We do not sell reports, share them with anyone else, or use them for advertising,
+    analytics or anything other than fixing problems in the apps and the radio.</p>
+
+  <h3>What the relay keeps</h3>
+  <p>The relay keeps no copy of the report. To stop duplicate and spam submissions it keeps three
+    small records, and deletes each one automatically:</p>
+  <ul>
+    <li>the <strong>report ID</strong>, marked sent or pending, for <strong>24 hours</strong>, so a
+      retried report is not filed twice;</li>
+    <li>a <strong>one-way hash of your internet (IP) address</strong> with the times of your recent
+      reports, until <strong>about 2 hours</strong> after your last report, to limit how many reports
+      one address can send in an hour. A hash is not strong anonymization: there are few enough IP
+      addresses that one could be recovered from its hash by trying them all;</li>
+    <li>the times of all reports in the last day, with nothing attached to them, until about 2 days
+      after the most recent report, to cap the total.</li>
+  </ul>
+  <p>The relay's stored logging is switched off. The only lines it writes are event names and error
+    codes, which never include the report, its ID or your IP address. Cloudflare, which hosts the
+    relay, handles your phone's connection to it, including your IP address, and may process that
+    connection data under its own terms.</p>
+
+  <h3>How long we keep a report</h3>
+  <p>We keep a report while the problem it describes is open, and <strong>delete it 12 months after
+    the issue is closed</strong>. An emailed copy is deleted on the same schedule.</p>
+
+  <h3>Asking for deletion</h3>
+  <p>Email <a href="mailto:support@apddefense.com">support@apddefense.com</a> with the report ID
+    (it is at the top of the report, and on the Report a Problem screen while the report is waiting
+    on your phone). We will delete the issue, and any emailed copy, and confirm by reply.</p>
+
   <h2 id="offline">Working offline</h2>
   <p>These apps are <strong>offline-capable by design, not offline-restricted</strong>. Everything
     they do works with no cell service, no Wi-Fi and no internet at all, because the radio net is the
-    point. Downloading a map is the one networked feature, and with it off or unreachable every app
-    is fully functional.</p>
+    point. The apps reach the internet for only two optional things, downloading maps and sending a
+    problem report you chose to send; with no connection, every app is fully functional, and a report
+    simply waits on the phone.</p>
 
   <h2 id="security">Security</h2>
   <ul>
@@ -568,6 +706,9 @@
     <li><strong>On the phone:</strong> app-private storage, under the phone's own encryption. Keys
       and the admin PIN get the extra hardware-backed layer described above. Use a lock screen
       &mdash; key material is bound to it.</li>
+    <li><strong>Problem reports</strong> travel to our relay encrypted in transit (HTTPS). Once
+      there, they are held by the service providers named under <a href="#reports">Problem
+      reports</a>, under those providers' own security.</li>
     <li><strong>Backups:</strong> all three apps are excluded from Android cloud backup. CommandLink
       and TerraLink additionally exclude themselves from device-to-device transfer. <em>Being
       precise, because this policy should not overclaim: PulseLink currently disables cloud backup
@@ -591,8 +732,9 @@
   </ul>
 
   <h2 id="retention">How long we keep things, and how you delete them</h2>
-  <p>We keep nothing, because we receive nothing. Everything below is on your phone and under your
-    control.</p>
+  <p>The only thing we ever receive is a problem report you chose to send; how long we keep it, and
+    how to ask us to delete it, is under <a href="#reports">Problem reports</a>. Everything below is
+    on your phone and under your control.</p>
   <div class="tableWrap">
     <table>
       <thead><tr><th>What</th><th>How long</th><th>How to delete it</th></tr></thead>
@@ -616,23 +758,29 @@
         <tr><td>Crash record</td><td>Only the most recent one</td><td>Removed with the app</td></tr>
         <tr><td>Offline maps</td><td>Until you delete them</td>
           <td><strong>Settings &rarr; Map Data</strong></td></tr>
+        <tr><td>Problem reports not yet sent</td>
+          <td>Until our relay accepts them</td>
+          <td>Clear the app's storage in Android's settings, or remove the app</td></tr>
       </tbody>
     </table>
   </div>
-  <p><strong>To delete everything, uninstall the app.</strong> Android removes its private storage
-    with it, which is every record, every setting, every key blob and every map pack that app
-    downloaded. There is nothing left behind on a server, because there is no server.</p>
-  <p>Because there is no account and we hold no copy of your data, a &ldquo;please delete my
-    data&rdquo; request is not something we can act on &mdash; there is nothing on our side to
-    delete. If you would like us to confirm that in writing, email
+  <p><strong>To delete everything on the phone, uninstall the app.</strong> Android removes its
+    private storage with it, which is every record, every setting, every key blob, every queued
+    problem report and every map pack that app downloaded. Uninstalling does not remove a problem
+    report we have already received; to have that deleted, email us as described under
+    <a href="#reports">Problem reports</a>.</p>
+  <p>Because there is no account, the only data of yours we can ever hold is a problem report you
+    sent. If you have never sent one, a &ldquo;please delete my data&rdquo; request has nothing on
+    our side to act on. If you would like us to confirm that in writing, email
     <a href="mailto:support@apddefense.com">support@apddefense.com</a> and we will.</p>
 
   <h2 id="children">Children</h2>
   <p>These apps are not directed at children and are not designed or marketed for anyone under 13.
     They are professional tools for radio operators, team leaders and medics, and they need APD
-    Defense radio hardware to do anything real. We do not knowingly collect information from children
-    &mdash; we do not collect information from anyone. If you believe a child has used one of these
-    apps in a way you are concerned about, email us and we will help you clear the phone.</p>
+    Defense radio hardware to do anything real. We do not knowingly collect information from
+    children; the only thing we ever receive from anyone is a problem report they chose to send. If
+    you believe a child has used one of these apps in a way you are concerned about, email us and we
+    will help you clear the phone, and delete any report they sent.</p>
 
   <h2 id="changes">Changes to this policy</h2>
   <p>If we change what an app stores or what can leave your phone, we will update this policy, change
@@ -640,11 +788,28 @@
     announced in the app's release notes on Google Play and on
     <a href="https://apddefense.com/">apddefense.com</a>. Because we hold no contact details for you,
     we cannot email you &mdash; the date at the top of this page is the thing to check.</p>
-  <p><strong>Version 1.1.1 (October 2, 2026):</strong> corrected the section on where PulseLink's
-    health information can go. Version 1.1 said there were exactly two routes and that PulseLink has no
-    network code; the app also lets you hand a casualty card over by QR code and share, copy or print
-    reports, and it contains network code for map downloads and problem reports. No health information
-    is sent over the internet.</p>
+  <p><strong>Version 1.1.1 (October 2, 2026)</strong> corrects statements in version 1.1 that were
+    not true of the released apps:</p>
+  <ul>
+    <li><strong>Problem reports.</strong> Version 1.1 said APD Defense runs no server for these apps
+      and receives nothing from them. In fact all three apps have a <strong>Report a Problem</strong>
+      screen that sends a report you choose to send to APD Defense over the internet. We added
+      <a href="#reports">Problem reports</a>, which says what a report contains, that it is sent only
+      when you tap Send, where it goes (APD Defense's relay on Cloudflare, then a private GitHub issue
+      tracker, with Microsoft&nbsp;365 email as a fallback), who can see it (including Claude, an AI
+      assistant from Anthropic, which sorts reports), how long it is kept and how to ask for
+      deletion. The summary, the page description, the storage tables, the crash-record rows, the
+      internet permission, third-party code, working offline, security, retention and children
+      sections now say the same thing.</li>
+    <li><strong>Permissions.</strong> The table now lists permissions the released apps hold that
+      version 1.1 left out or assigned to the wrong apps: notifications and the radio link service
+      in all three apps, full-screen alerts, vibration and Do Not Disturb access for critical alarms,
+      and the startup and wake permissions used only to send a queued problem report.</li>
+    <li><strong>PulseLink health information.</strong> Version 1.1 said there were exactly two
+      routes and that PulseLink has no network code; the app also lets you hand a casualty card over
+      by QR code and share, copy or print reports, and it contains network code for map downloads and
+      problem reports. No health information is sent over the internet.</li>
+  </ul>
 
   <h2 id="contact">Contact</h2>
   <p><strong>APD Defense, LLC</strong><br>
@@ -656,7 +821,8 @@
   <h3>A note on what this policy is derived from</h3>
   <p>Every factual claim above was taken from the apps' source code as it stands on the effective
     date &mdash; the manifests, the storage classes, the dependency lists and the network code
-    &mdash; rather than from intent or from marketing material. If you find a place where the apps
+    &mdash; and, for problem reports, from the relay's own source code, rather than from intent or
+    from marketing material. If you find a place where the apps
     behave differently from what this page says, tell us: the code is the thing that is meant to be
     true, and the page is what we will fix.</p>
 
