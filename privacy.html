@@ -138,7 +138,7 @@
   <h1>Privacy Policy</h1>
   <p class="lede">One policy, covering three Android apps: <strong>PulseLink</strong>,
     <strong>CommandLink</strong> and <strong>TerraLink</strong>.</p>
-  <p class="stamp">Effective date: September&nbsp;24,&nbsp;2026 &nbsp;·&nbsp; Version 1.1</p>
+  <p class="stamp">Effective date: October&nbsp;2,&nbsp;2026 &nbsp;·&nbsp; Version 1.1.1</p>
 
   <h2 id="short">In short</h2>
   <p>These three Android apps are companions to an APD Defense encrypted mesh radio. They are built
@@ -352,7 +352,7 @@
   <p><strong>Where it lives.</strong> On your phone, in PulseLink's private storage. One file per
     mission. Capped at 10 missions and 30 days and pruned automatically. No other app on the phone
     can read it. PulseLink's records are excluded from Android cloud backup.</p>
-  <p><strong>Where it can go &mdash; exactly two routes, both of them yours.</strong></p>
+  <p><strong>Where it can go. Every route is started by you.</strong></p>
   <ol>
     <li><strong>A 9-line MEDEVAC request you write and send.</strong> You fill it in, you review it
       against what the app read back to you, and you press send. It goes out over the radio as a
@@ -362,15 +362,28 @@
       which radio. <strong>This sends call signs only unless you explicitly ask for names each
       time</strong> &mdash; the app defaults to call signs and requires you to opt in to names on
       every push.</li>
+    <li><strong>A casualty card handed to another medic by QR code</strong>, from your screen to
+      their camera. It does not use the radio or the internet, and it is <strong>not
+      encrypted</strong>: anyone who can see or photograph your screen while it is showing can read
+      it. It carries the casualty ID; the name is included only if you switch on
+      <strong>Include Name</strong> for that handoff.</li>
+    <li><strong>Android's share sheet or print service, when you choose them.</strong> PulseLink can
+      hand a 9-line, a MIST report or a finished mission's text to another app you pick (a messaging
+      app, email, notes), copy a 9-line to the clipboard, or send a casualty card to the phone's print
+      service (including &ldquo;Save as PDF&rdquo;). Once it is in the other app, printer or file, it
+      is under that app's or that service's rules, not ours, and it may leave the phone through them.
+      Other apps on some Android versions can read the clipboard.</li>
   </ol>
-  <p><strong>There is no third route, and this is structural rather than a promise.</strong>
-    PulseLink contains no network code at all: no socket, no web client, no connection of any kind is
-    created anywhere in it. The part of the shared code that could relay a casualty over a network is
-    wired, in PulseLink, to an implementation that does nothing. The only thing in PulseLink's whole
-    dependency chain that can open a network connection is the map tile downloader, which only
-    fetches map images and has no access to the casualty board, the roster or a 9-line.</p>
-  <p><strong>Nothing goes to APD Defense.</strong> We have no server for these apps and no way to
-    receive a casualty record.</p>
+  <p><strong>No route sends health information over the internet.</strong> PulseLink does contain
+    network code, for two things only: downloading map images (see <a href="#thirdparty">map
+    downloads</a>) and sending a <a href="#reports">problem report</a> you chose to send. The map
+    downloader has no access to the casualty board, the roster or a 9-line. A problem report is built
+    from a fixed list of facts about the app, the phone and the radio, and it has no field that can
+    hold a casualty, a card, a name, a call sign or a position; the only free text in it is what you
+    type in the description. The part of the shared code that could relay a casualty over a network
+    is wired, in PulseLink, to an implementation that does nothing.</p>
+  <p><strong>No casualty record goes to APD Defense.</strong> Please don't type casualty details into
+    a problem report's description: that text is sent as you typed it.</p>
 
   <h3 id="vitals">Vital signs &mdash; read this before you expect any</h3>
   <div class="callout">
@@ -627,6 +640,11 @@
     announced in the app's release notes on Google Play and on
     <a href="https://apddefense.com/">apddefense.com</a>. Because we hold no contact details for you,
     we cannot email you &mdash; the date at the top of this page is the thing to check.</p>
+  <p><strong>Version 1.1.1 (October 2, 2026):</strong> corrected the section on where PulseLink's
+    health information can go. Version 1.1 said there were exactly two routes and that PulseLink has no
+    network code; the app also lets you hand a casualty card over by QR code and share, copy or print
+    reports, and it contains network code for map downloads and problem reports. No health information
+    is sent over the internet.</p>
 
   <h2 id="contact">Contact</h2>
   <p><strong>APD Defense, LLC</strong><br>
