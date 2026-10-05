@@ -346,14 +346,14 @@
           <p class="mt-3 text-sm" style="color:var(--muted);margin-bottom:0">Triage, MARCH and the 9-line are built here.</p>
           <div class="mt-auto" style="padding-top:1rem;margin-top:auto">
             <p class="mono text-xs" style="margin:0 0 .45rem;color:var(--dim)">&rarr; USB to the radio</p>
-            <span class="tag tag-partial"><svg width="12" height="12" aria-hidden="true"><use href="#i-partial"/></svg>Hardware test next</span>
+            <span class="tag tag-verified"><svg width="12" height="12" aria-hidden="true"><use href="#i-verified"/></svg>Demonstrated</span>
           </div>
         </li>
         <li class="panel brk brk-slate card reveal p-6 flex flex-col" style="padding:1.4rem;--d:90ms">
           <span class="mono text-xs" style="color:var(--dim)">HOP&nbsp;2</span>
           <h4 class="mt-3 text-lg font-semibold" style="margin-bottom:0">Medic&rsquo;s radio</h4>
           <p class="mono text-sm" style="margin:.25rem 0 0;color:var(--accent)">APD Defense radio</p>
-          <p class="mt-3 text-sm" style="color:var(--muted);margin-bottom:0">Encrypts and authenticates every packet. The phone never handles the key.</p>
+          <p class="mt-3 text-sm" style="color:var(--muted);margin-bottom:0">Encrypts and authenticates every packet. The key lives on the radio.</p>
           <div class="mt-auto" style="padding-top:1rem;margin-top:auto">
             <p class="mono text-xs" style="margin:0 0 .45rem;color:var(--dim)">&rarr; AES-256 &middot; 915&nbsp;MHz</p>
             <span class="tag tag-verified"><svg width="12" height="12" aria-hidden="true"><use href="#i-verified"/></svg>Demonstrated</span>
@@ -363,7 +363,7 @@
           <span class="mono text-xs" style="color:var(--dim)">HOP&nbsp;3</span>
           <h4 class="mt-3 text-lg font-semibold" style="margin-bottom:0">Team radios</h4>
           <p class="mono text-sm" style="margin:.25rem 0 0;color:var(--accent)">Encrypted mesh</p>
-          <p class="mt-3 text-sm" style="color:var(--muted);margin-bottom:0">Built to relay traffic across the team. Multi-hop testing is next.</p>
+          <p class="mt-3 text-sm" style="color:var(--muted);margin-bottom:0">Relays traffic across the team, verified at 2 and 3 hops on a four-radio bench.</p>
           <div class="mt-auto" style="padding-top:1rem;margin-top:auto">
             <p class="mono text-xs" style="margin:0 0 .45rem;color:var(--dim)">&rarr; Cursor-on-Target</p>
             <span class="tag tag-verified"><svg width="12" height="12" aria-hidden="true"><use href="#i-verified"/></svg>Demonstrated &middot; via PC bridge</span>
@@ -373,7 +373,7 @@
           <span class="mono text-xs" style="color:var(--dim)">HOP&nbsp;4</span>
           <h4 class="mt-3 text-lg font-semibold" style="margin-bottom:0">Leader&rsquo;s ATAK</h4>
           <p class="mono text-sm" style="margin:.25rem 0 0;color:var(--accent)">ATAK-CIV</p>
-          <p class="mt-3 text-sm" style="color:var(--muted);margin-bottom:0">Cursor-on-Target events land on the leader&rsquo;s map.</p>
+          <p class="mt-3 text-sm" style="color:var(--muted);margin-bottom:0">Team positions carried by the radios show on the leader&rsquo;s ATAK map. Sending the 9-line into ATAK is built; its test is next.</p>
         </li>
       </ol>
       <p class="reveal mt-5 mono text-xs" style="color:var(--dim);font-size:.74rem;letter-spacing:.06em;line-height:1.6">
@@ -437,7 +437,7 @@
       <article class="panel brk brk-slate card reveal p-7" style="padding:1.75rem;--d:180ms" aria-labelledby="f6-title">
         <p class="mono text-sm" style="margin:0;color:var(--accent)">Cursor-on-Target</p>
         <h3 id="f6-title" class="mt-3 text-xl font-semibold">ATAK interoperability</h3>
-        <p class="mt-3" style="color:var(--muted)">The radio carries Cursor-on-Target, the format ATAK speaks. Demonstrated end to end into ATAK-CIV, with a PC bridging handset and radio.</p>
+        <p class="mt-3" style="color:var(--muted)">The radio carries Cursor-on-Target, the format ATAK speaks. On the bench, two phones running ATAK-CIV showed each other&rsquo;s positions across two APD radios, with a PC bridging each phone to its radio.</p>
       </article>
 
       <article class="panel brk brk-slate card reveal p-7" style="padding:1.75rem" aria-labelledby="f8-title">
@@ -591,7 +591,7 @@
           <div class="status-row"><dt class="status-name">Largest message</dt><dd class="mono text-sm" style="margin:0;color:var(--muted);text-align:right">1,024 bytes, fragmented and reassembled</dd></div>
           <div class="status-row"><dt class="status-name">Infrastructure</dt><dd class="mono text-sm" style="margin:0;color:var(--muted);text-align:right">None: no towers, internet or cloud</dd></div>
           <div class="status-row"><dt class="status-name">Interoperability</dt><dd class="mono text-sm" style="margin:0;color:var(--muted);text-align:right">Cursor-on-Target &middot; ATAK-CIV via PC bridge</dd></div>
-          <div class="status-row"><dt class="status-name">Mesh relay</dt><dd style="margin:0;text-align:right"><span class="tag tag-partial"><svg width="12" height="12" aria-hidden="true"><use href="#i-partial"/></svg>Built &middot; multi-hop test next</span></dd></div>
+          <div class="status-row"><dt class="status-name">Mesh relay</dt><dd style="margin:0;text-align:right"><span class="tag tag-verified"><svg width="12" height="12" aria-hidden="true"><use href="#i-verified"/></svg>Bench-verified &middot; 2 and 3 hops</span></dd></div>
           <div class="status-row"><dt class="status-name">Vital-sign sensors</dt><dd style="margin:0;text-align:right"><span class="tag tag-roadmap"><svg width="12" height="12" aria-hidden="true"><use href="#i-roadmap"/></svg>Roadmap &middot; format ready</span></dd></div>
         </dl>
       </article>
@@ -615,7 +615,7 @@
           <div class="status-row"><dt class="status-name">Training</dt><dd class="mono text-sm" style="margin:0;color:var(--muted);text-align:right">13 built-in scenarios, clearly marked</dd></div>
           <div class="status-row"><dt class="status-name">Display</dt><dd class="mono text-sm" style="margin:0;color:var(--muted);text-align:right">True black, for OLED screens</dd></div>
           <div class="status-row"><dt class="status-name">Send 9-line as CoT</dt><dd style="margin:0;text-align:right"><span class="tag tag-partial"><svg width="12" height="12" aria-hidden="true"><use href="#i-partial"/></svg>Built &middot; end-to-end test next</span></dd></div>
-          <div class="status-row"><dt class="status-name">Key management app</dt><dd style="margin:0;text-align:right"><span class="tag tag-roadmap"><svg width="12" height="12" aria-hidden="true"><use href="#i-roadmap"/></svg>Coming</span></dd></div>
+          <div class="status-row"><dt class="status-name">Key loading</dt><dd style="margin:0;text-align:right"><span class="tag tag-verified"><svg width="12" height="12" aria-hidden="true"><use href="#i-verified"/></svg>In CommandLink &middot; USB cable</span></dd></div>
         </dl>
       </article>
     </div>
@@ -773,6 +773,7 @@
     <div class="mt-10 text-sm" style="margin-top:2.5rem;color:var(--dim);font-size:.85rem;max-width:60rem">
       <p style="margin:0">
         PulseLink and the APD Defense radio are in active development; features and specifications may change.
+        PulseLink is not a medical device. The medic makes every care decision.
         No endorsement by the U.S. Department of Defense or any government agency is implied. ATAK is a product of the TAK Product Center; its mention does not imply affiliation.
       </p>
       <p style="margin:1rem 0 0"><strong style="color:var(--amber)">FCC notice:</strong> This device has not been authorized as required by the rules of the Federal Communications Commission. This device is not, and may not be, offered for sale or lease, or sold or leased, until authorization is obtained.</p>
