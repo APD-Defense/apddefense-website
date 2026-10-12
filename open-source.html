@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open-Source Notices | APD Defense, LLC</title>
+<meta name="description" content="Open-source notices for APD Defense's Android apps: Codec2 1.2.0 (LGPL-2.1), its source code download and the written offer for source.">
+<meta name="theme-color" content="#0B0F14">
+<meta name="color-scheme" content="dark">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="index,follow">
+
+<style>
+  :root {
+    --ink:#0B0F14; --panel:#10161D; --line:#1F2A36; --linestrong:#2E3D4D;
+    --fg:#E6EBF0; --muted:#A3AFBB; --dim:#8392A1; --accent:#5FD4A0; --amber:#E3B25A;
+    --sans: "Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Roboto,Arial,sans-serif;
+    --mono: ui-monospace,"Cascadia Mono","SF Mono","JetBrains Mono",Consolas,"Liberation Mono",Menlo,monospace;
+  }
+  *,*::before,*::after { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body {
+    margin:0; background:var(--ink); color:var(--fg);
+    font-family:var(--sans); line-height:1.65; font-size:1rem;
+  }
+  a { color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(95,212,160,.35); }
+  a:hover, a:focus { border-bottom-color:var(--accent); }
+  .skip-link {
+    position:absolute; left:-9999px; top:0; background:var(--panel); color:var(--fg);
+    padding:.75rem 1rem; border:1px solid var(--linestrong); z-index:50;
+  }
+  .skip-link:focus { left:.5rem; top:.5rem; }
+  .wrap { width:100%; max-width:52rem; margin:0 auto; padding:0 16px; }
+
+  header.site-header {
+    border-bottom:1px solid var(--line); background:rgba(11,15,20,.92);
+    position:sticky; top:0; backdrop-filter:blur(6px); z-index:20;
+  }
+  .headrow { display:flex; align-items:center; justify-content:space-between; gap:1rem; height:4rem; }
+  .brand { display:flex; align-items:center; gap:.6rem; color:var(--fg); border:0; }
+  .brand-name { font-weight:700; letter-spacing:.04em; font-size:1rem; }
+  .brand-mark {
+    width:30px; height:30px; flex:0 0 auto; border:2px solid var(--accent);
+    border-radius:4px 4px 12px 12px;
+  }
+  .nav-link { color:var(--muted); border:0; font-size:.9rem; letter-spacing:.02em; }
+  .nav-link:hover { color:var(--fg); }
+
+  main { padding:3rem 0 4rem; }
+  .eyebrow {
+    font-family:var(--mono); font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 .75rem;
+  }
+  h1 { font-size:clamp(1.8rem,5vw,2.6rem); line-height:1.15; margin:0 0 1rem; letter-spacing:-.01em; }
+  h2 {
+    font-size:clamp(1.25rem,3.4vw,1.6rem); line-height:1.25; margin:3rem 0 .85rem;
+    padding-top:1.75rem; border-top:1px solid var(--line); letter-spacing:-.005em;
+  }
+  p, ul, ol { margin:0 0 1rem; }
+  ul, ol { padding-left:1.25rem; }
+  li { margin:.4rem 0; }
+  li::marker { color:var(--dim); }
+  strong { color:#F2F6FA; font-weight:650; }
+  .lede { color:var(--muted); font-size:1.075rem; }
+  .panel {
+    background:var(--panel); border:1px solid var(--line); border-radius:8px;
+    padding:1.25rem 1.25rem .5rem; margin:0 0 1.5rem;
+  }
+  .panel > :last-child { margin-bottom:1rem; }
+  .callout {
+    background:var(--panel); border:1px solid var(--linestrong); border-left:3px solid var(--amber);
+    border-radius:6px; padding:1.1rem 1.25rem .35rem; margin:1.5rem 0;
+  }
+  .callout > :last-child { margin-bottom:1.1rem; }
+  .callout .label {
+    font-family:var(--mono); font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--amber); display:block; margin-bottom:.5rem;
+  }
+  dl.facts { display:grid; grid-template-columns:max-content 1fr; gap:.45rem 1.25rem; margin:0 0 1rem; }
+  dl.facts dt { color:var(--dim); font-family:var(--mono); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; padding-top:.15rem; }
+  dl.facts dd { margin:0; min-width:0; }
+  @media (max-width:36rem) { dl.facts { grid-template-columns:1fr; gap:.1rem; } dl.facts dd { margin-bottom:.6rem; } }
+  code, .mono { font-family:var(--mono); font-size:.88em; }
+  code { color:var(--accent); background:rgba(95,212,160,.08); padding:.1em .35em; border-radius:3px; }
+  .hash { word-break:break-all; }
+
+  footer.site-footer { border-top:1px solid var(--line); background:#090C11; padding:3rem 0; }
+  footer .small { color:var(--dim); font-size:.85rem; max-width:52rem; }
+  footer .copy { font-family:var(--mono); letter-spacing:.06em; margin:1.5rem 0 0; }
+
+  @media print {
+    body { background:#fff; color:#111; }
+    header.site-header, .skip-link { display:none; }
+    a { color:#111; border:0; }
+    .panel, .callout { border-color:#bbb; background:#fff; }
+    code { color:#111; background:#eee; }
+  }
+</style>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="wrap headrow">
+    <a class="brand" href="/" aria-label="APD Defense, LLC - home">
+      <span class="brand-mark"></span>
+      <span class="brand-name">APD&nbsp;Defense, LLC</span>
+    </a>
+    <nav aria-label="Primary">
+      <a class="nav-link" href="mailto:support@apddefense.com">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap">
+
+  <p class="eyebrow">APD Defense, LLC</p>
+  <h1>Open-Source Notices</h1>
+  <p class="lede">Open-source software used in APD Defense's Android apps, with its licence and
+    its source code.</p>
+
+  <h2 id="codec2">Codec2 1.2.0 (LGPL-2.1)</h2>
+  <p><strong>Codec2 1.2.0 (LGPL-2.1), used unmodified in APD's Android apps.</strong></p>
+  <div class="panel">
+    <dl class="facts">
+      <dt>Source download</dt>
+      <dd><a href="/downloads/codec2-1.2.0.tar.gz" download>codec2-1.2.0.tar.gz</a></dd>
+      <dt>Size</dt>
+      <dd>7,688,549 bytes (7.3&nbsp;MiB)</dd>
+      <dt>SHA-256</dt>
+      <dd><code class="hash">cbccae52b2c2ecc5d2757e407da567eb681241ff8dadce39d779a7219dbcf449</code></dd>
+      <dt>Upstream</dt>
+      <dd><a href="https://github.com/drowe67/codec2/tree/1.2.0">github.com/drowe67/codec2</a>,
+        tag <a href="https://github.com/drowe67/codec2/releases/tag/1.2.0"><code>1.2.0</code></a>
+        (commit <code class="hash">06d4c11e699b0351765f10398abb4f663a984f36</code>)</dd>
+      <dt>Licence</dt>
+      <dd>GNU Lesser General Public License, version 2.1:
+        <a href="/downloads/LGPL-2.1.txt">full text</a>
+        (also at <a href="https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">gnu.org</a>)</dd>
+    </dl>
+  </div>
+  <p>The download is the upstream source archive for tag <code>1.2.0</code>, byte for byte as
+    published by the Codec2 project. The licence text is the <code>COPYING</code> file from that
+    archive.</p>
+
+  <h2 id="offer">Written offer for source code</h2>
+  <div class="callout">
+    <span class="label">Written offer</span>
+    <p>For at least three years from distribution, APD Defense, LLC will provide the complete corresponding source code of the Codec2 library used in this app, for no more than the cost of physically performing the distribution. Write to: APD Defense, LLC, 784 S Clearwater Loop, PMB R, Post Falls, ID 83854-9599, or email <a href="mailto:support@apddefense.com">support@apddefense.com</a>.</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="small copy">&copy; 2026 APD Defense, LLC. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
