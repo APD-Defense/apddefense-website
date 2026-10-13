@@ -209,7 +209,7 @@
       </tbody>
     </table>
   </div>
-  <p>All three connect to an APD Defense radio over a USB cable. CommandLink can also connect over
+  <p>All three connect to an APD Defense radio over a USB cable. All three can also connect over
     Bluetooth Low Energy. All three also run without any radio attached, in <strong>Training
     Mode</strong>, where everything on screen is made up.</p>
 
@@ -219,7 +219,9 @@
     phone's own encryption and your lock screen. None of it is uploaded anywhere. The one thing an
     app can send over the internet is a <a href="#reports">problem report</a> you choose to send,
     and none of the records below go into one, apart from the technical part of the last crash
-    record, as its row says.</p>
+    record, as its row says. Where a file is encrypted and the app can no longer read it (for
+    example after the phone's key store was reset), the app keeps the unreadable file until you
+    clear the app's storage or remove the app.</p>
 
   <h3>PulseLink</h3>
   <div class="tableWrap">
@@ -236,27 +238,31 @@
         <tr><td>Messages sent and received over the radio, with each one's sender, sending radio, time and delivery status; each conversation's members and name, including up to 3 earlier names; mute settings; and the last call sign each radio used</td>
           <td>One app-private file. It is protected by your phone's own encryption; the app does not add its own encryption to it.</td>
           <td>The most recent 500 messages in each of up to 50 conversations. Kept when the app closes or the phone restarts. Deleted when you end a mission.</td></tr>
-        <tr><td>Casualty cards on the live board: name and call sign, triage category, sex, allergies, vital signs you typed (pulse, blood pressure, breathing rate), the MARCH checklist, tourniquet times, medications, fluids and blood given, wound locations and how the injury happened, disposition and last reported position</td>
+        <tr><td>Casualty cards on the live board: name and call sign, service, unit, sex, allergies, time of injury, vital signs you typed (pulse, blood pressure, breathing rate), the MARCH checklist, tourniquet times, medications, fluids and blood given, wound locations and how the injury happened, the casualty's ID (for example a battle roster number, whose last four characters the card shows), the first responder's name and the last four digits of an ID number the medic enters, free-text notes, handoffs and ID checks</td>
           <td>One app-private file, encrypted with AES-256-GCM under a key held in the Android hardware key store</td>
-          <td>Kept until you end the mission, when the cards move into the mission archive.</td></tr>
-        <tr><td>Go To points you saved and your current Go To target: their names and positions</td>
+          <td>Kept until you end the mission. The cards then move into that mission's archive. If the archive can't be written, the mission doesn't end and nothing is deleted. Training missions are never archived.</td></tr>
+        <tr><td>Go To points you saved: their names and positions</td>
           <td>App-private storage, encrypted with AES-256-GCM under a key held in the Android hardware key store</td>
-          <td>Deleted when you end a mission.</td></tr>
-        <tr><td>Orders received from your leader: the sender's call sign, the order and its times</td>
+          <td>Deleted when you end a mission, or one at a time on the Go To screen.</td></tr>
+        <tr><td>Orders from your leader: the order in force (the order, its sender's call sign and its times), the sender and time of the last lift, and the IDs of recent orders</td>
           <td>App-private preferences</td>
-          <td>LEGAL-CONFIRM: retention</td></tr>
+          <td>Kept when the app or phone restarts. The order in force is removed when it is lifted or replaced. Not deleted when you end a mission.</td></tr>
         <tr><td>A key scanned for <strong>Fill Radio</strong>, and the hardware IDs of radios seen with an owner lock</td>
           <td>As CommandLink, below</td>
           <td>As CommandLink, below</td></tr>
-        <tr><td>Technical records about your radios: the Bluetooth address of the last radio you connected, a log of key fills (key fingerprints and radio hardware IDs, never the keys themselves) and the cable-seal state</td>
+        <tr><td>Technical records about your radios: the Bluetooth address of the last radio you connected, and the cable-seal state</td>
           <td>App-private files and preferences</td>
           <td>Used to reconnect and to warn you about a radio that has changed. Not secret, and no key material.</td></tr>
-        <tr><td><strong>Mission archive</strong>: one file per finished mission, with the casualty
-          cards listed above and the positions that were reported</td>
-          <td>App-private files</td>
+        <tr><td><strong>Mission archive</strong>: two files per finished mission. A mission file:
+          casualty names and call signs, triage category, the MARCH checklist, tourniquet times, what
+          treatment you recorded, dispositions, the positions that were reported and the readings
+          that arrived from radios. And a casualty-card file: the cards listed above.</td>
+          <td>App-private files. The casualty-card file is encrypted with AES-256-GCM under a key held
+            in the Android hardware key store. The mission file is protected by your phone's own
+            encryption; the app does not add its own encryption to it.</td>
           <td><strong>Capped at 10 missions and 30 days.</strong> Older or surplus missions are
-            deleted automatically, both at app start and after every write. Records are never
-            edited, only added or deleted.</td></tr>
+            deleted automatically when the archive is opened, after a mission ends and after you
+            delete one. Records are never edited, only added or deleted.</td></tr>
         <tr><td>Readings received from radios</td>
           <td>In memory while the app runs; written into the archive when a mission ends</td>
           <td>See <a href="#vitals">Vital signs</a></td></tr>
@@ -330,12 +336,12 @@
         <tr><td>Messages sent and received over the radio, as PulseLink, above</td>
           <td>One app-private file, as PulseLink, above</td>
           <td>The most recent 500 messages in each of up to 50 conversations. Kept when the app closes or the phone restarts. Deleted when you end a mission. On a leader's phone, messages are also kept in the leader mission archive above.</td></tr>
-        <tr><td>Orders received from your leader: the sender's call sign, the order and its times</td>
+        <tr><td>Orders from your leader: the order in force (the order, its sender's call sign and its times), the sender and time of the last lift, and the IDs of recent orders</td>
           <td>App-private preferences</td>
-          <td>LEGAL-CONFIRM: retention</td></tr>
-        <tr><td>Go To points you saved and your current Go To target: their names and positions</td>
+          <td>Kept when the app or phone restarts. The order in force is removed when it is lifted or replaced. Not deleted when you end a mission.</td></tr>
+        <tr><td>Go To points you saved: their names and positions</td>
           <td>App-private storage, encrypted with AES-256-GCM under a key held in the Android hardware key store</td>
-          <td>Deleted when you end a mission.</td></tr>
+          <td>Deleted when you end a mission, or one at a time on the Go To screen.</td></tr>
         <tr><td>Technical records about your radios: the Bluetooth address of the last radio you connected, a log of key fills (key fingerprints and radio hardware IDs, never the keys themselves) and the cable-seal state</td>
           <td>App-private files and preferences</td>
           <td>Used to reconnect and to warn you about a radio that has changed. Not secret, and no key material.</td></tr>
@@ -376,9 +382,9 @@
         <tr><td>Messages sent and received over the radio, as PulseLink, above</td>
           <td>One app-private file, as PulseLink, above</td>
           <td>The most recent 500 messages in each of up to 50 conversations. Kept when the app closes or the phone restarts, until you choose CLEAR MESSAGES. TerraLink has no End Mission.</td></tr>
-        <tr><td>Go To points you saved and your current Go To target: their names and positions</td>
+        <tr><td>Go To points you saved: their names and positions</td>
           <td>App-private storage, encrypted with AES-256-GCM under a key held in the Android hardware key store</td>
-          <td>Kept until you delete them.</td></tr>
+          <td>Kept until you delete them on the Go To screen.</td></tr>
         <tr><td>Technical records about your radios: the Bluetooth address of the last radio you connected, a log of key fills (key fingerprints and radio hardware IDs, never the keys themselves) and the cable-seal state</td>
           <td>App-private files and preferences</td>
           <td>Used to reconnect and to warn you about a radio that has changed. Not secret, and no key material.</td></tr>
@@ -398,13 +404,18 @@
   <p>This is the most sensitive information any of the three apps handles, so it gets its own
     section.</p>
   <p><strong>What PulseLink holds.</strong> Casualty records you create: a name and call sign from
-    the roster you typed, the triage category, sex, allergies, vital signs you typed, the MARCH
-    checklist and tourniquet times, medications, fluids and blood given, wound locations and how
-    the injury happened, the disposition you set, the last position reported for them, and any
-    readings that arrived from their radio.</p>
-  <p><strong>Where it lives.</strong> On your phone, in PulseLink's private storage. One file per
-    mission. Capped at 10 missions and 30 days and pruned automatically. No other app on the phone
-    can read it. PulseLink's records are excluded from Android cloud backup.</p>
+    the roster you typed, service, unit, sex, allergies, time of injury, the triage category, vital
+    signs you typed, the MARCH checklist and tourniquet times, medications, fluids and blood given,
+    wound locations and how the injury happened, the casualty's ID (for example a battle roster number, whose last four characters the card shows), the first responder's name and the last four digits of an ID number the medic enters, free-text notes, handoffs and ID
+    checks, the disposition you set, the last position reported for them, and any readings that
+    arrived from their radio.</p>
+  <p><strong>Where it lives.</strong> On your phone, in PulseLink's private storage. During a
+    mission, casualty cards are kept on a live board encrypted under a key in the Android hardware
+    key store. When the mission ends, they move into that mission's archive: a casualty-card file
+    encrypted the same way, and a mission file protected by your phone's own encryption but not
+    separately encrypted by the app. Archives are capped at 10 missions and 30 days and pruned
+    automatically. No other app on the phone can read them. PulseLink's records are excluded from
+    Android cloud backup.</p>
   <p><strong>Where it can go. Every route is started by you.</strong></p>
   <ol>
     <li><strong>A 9-line MEDEVAC request you write and send.</strong> You fill it in, you review it
@@ -575,7 +586,7 @@
           <td>Only if you switch on the optional situational-awareness multicast output to the local
             network; the lock is taken then and released when the bridge stops</td>
           <td>The optional multicast output does not work</td></tr>
-        <tr><td><strong>Bluetooth scan / connect</strong></td><td>CommandLink only</td>
+        <tr><td><strong>Bluetooth scan / connect</strong></td><td>All three</td>
           <td>Connecting to a radio over Bluetooth Low Energy. Declared as <strong>never used for
             location</strong> &mdash; we do not derive your position from Bluetooth.</td>
           <td>Use the USB cable instead</td></tr>
@@ -583,7 +594,7 @@
           <td>Reaching the radio over the cable. <strong>This needs no manifest permission at
             all</strong>: Android asks you per device with its own dialog, and plugging a known radio
             in can launch the app.</td>
-          <td>Use Training Mode, or Bluetooth on CommandLink</td></tr>
+          <td>Use Training Mode, or Bluetooth</td></tr>
         <tr><td><strong>Map pack sharing</strong>
           (<code>com.apddefense.permission.MAP_PACKS</code>)</td><td>All three</td>
           <td>Lets the three APD apps read each other's downloaded maps, <strong>read-only</strong>,
@@ -773,7 +784,7 @@
       <thead><tr><th>What</th><th>How long</th><th>How to delete it</th></tr></thead>
       <tbody>
         <tr><td>PulseLink mission archive</td>
-          <td>Automatically: newest 10 missions, nothing older than 30 days</td>
+          <td>Automatically: newest 10 missions, older missions are deleted the next time the archive is opened or a mission ends</td>
           <td><strong>Settings &rarr; Mission Archive</strong> deletes one mission, or <strong>DELETE
             ALL ARCHIVES</strong></td></tr>
         <tr><td>CommandLink mission archive</td><td>Same: 10 missions, 30 days</td>
@@ -794,10 +805,10 @@
           <td>End Mission</td></tr>
         <tr><td>Go To points</td>
           <td>CommandLink, PulseLink: until you end a mission. TerraLink: until you delete them</td>
-          <td>End Mission, or delete them on the Go To screen</td></tr>
-        <tr><td>Orders received</td>
-          <td>LEGAL-CONFIRM</td>
-          <td>LEGAL-CONFIRM</td></tr>
+          <td>End Mission, or delete each point on the Go To screen</td></tr>
+        <tr><td>Orders received (CommandLink, PulseLink)</td>
+          <td>The order in force until it is lifted or replaced; recent order IDs until you clear the app's storage</td>
+          <td>Clear the app's storage in Android's settings, or remove the app</td></tr>
         <tr><td>Crash record</td><td>Only the most recent one</td><td>Removed with the app</td></tr>
         <tr><td>Offline maps</td><td>Until you delete them</td>
           <td><strong>Settings &rarr; Map Data</strong></td></tr>
@@ -837,7 +848,8 @@
     mission archive also holds received messages, SOS alerts with their positions, and each radio's
     assigned person. PulseLink's casualty cards hold more detail than we listed, and they are kept,
     encrypted, on the phone during a mission. Saved Go To points, orders received and some
-    technical radio records were not listed before. Nothing new leaves your phone, and nothing is
+    technical radio records were not listed before. All three apps, not only CommandLink, can
+    connect to a radio over Bluetooth. Nothing new leaves your phone, and nothing is
     sent to APD Defense.</p>
   <p><strong>Version 1.1.2 (October 5, 2026)</strong> describes PulseLink accurately: it may suggest a
     triage category, which counts nowhere until the medic confirms it, and the medic makes every care
