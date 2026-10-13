@@ -399,8 +399,8 @@
     </table>
   </div>
   <p>TerraLink holds no casualty records, no triage and no 9-line. Those belong to PulseLink and
-    CommandLink. TerraLink excludes all of its data from Android cloud backup <strong>and</strong>
-    from device-to-device transfer, as CommandLink does.</p>
+    CommandLink. TerraLink excludes all of its data from Android cloud backup <strong>and</strong>,
+    from version 0.9.0, from device-to-device transfer, as CommandLink does.</p>
 
   <h2 id="health">Health information in PulseLink</h2>
   <p>This is the most sensitive information any of the three apps handles, so it gets its own
@@ -756,11 +756,13 @@
     <li><strong>Problem reports</strong> travel to our relay encrypted in transit (HTTPS). Once
       there, they are held by the service providers named under <a href="#reports">Problem
       reports</a>, under those providers' own security.</li>
-    <li><strong>Backups:</strong> all three apps are excluded from Android cloud backup. CommandLink
-      and TerraLink additionally exclude themselves from device-to-device transfer. <em>Being
-      precise, because this policy should not overclaim: PulseLink currently disables cloud backup
-      but does not carry the separate device-transfer exclusion rules that the other two do. We are
-      reviewing that.</em></li>
+    <li><strong>Backups:</strong> all three apps are excluded from Android cloud backup. They are
+      also excluded from device-to-device transfer, for example when you move to a new phone:
+      CommandLink in every release, TerraLink from version 0.9.0 (September 23, 2026), and PulseLink
+      in builds from October 3, 2026. Earlier TerraLink builds (before 0.9.0) and earlier PulseLink
+      builds (up to version 0.24.0) could have their records copied to a new phone during a
+      phone-to-phone transfer. If you used one of those builds and then moved to a new phone, the
+      new phone may hold a copy; clearing that app's storage on the new phone removes it.</li>
     <li><strong>The cable is not encrypted.</strong> The USB link between phone and radio carries
       plain data. Keep the radio with you. When CommandLink or TerraLink loads a key into a radio that
       already has an owner, the key crosses the cable wrapped under that radio's owner secret; the
@@ -852,7 +854,10 @@
     assigned person. PulseLink's casualty cards hold more detail than we listed, and they are kept,
     encrypted, on the phone during a mission. Saved Go To points, orders received and some
     technical radio records were not listed before. All three apps, not only CommandLink, can
-    connect to a radio over Bluetooth. Nothing new leaves your phone, and nothing is
+    connect to a radio over Bluetooth. Earlier versions said TerraLink was excluded from
+    device-to-device transfer and PulseLink was not. TerraLink builds from version 0.9.0 and
+    PulseLink builds from October 3, 2026 are excluded; earlier builds of either could be copied to
+    a new phone in a phone-to-phone transfer. Nothing new leaves your phone, and nothing is
     sent to APD Defense.</p>
   <p><strong>Version 1.1.2 (October 5, 2026)</strong> describes PulseLink accurately: it may suggest a
     triage category, which counts nowhere until the medic confirms it, and the medic makes every care
