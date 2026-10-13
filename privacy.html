@@ -219,9 +219,9 @@
     phone's own encryption and your lock screen. None of it is uploaded anywhere. The one thing an
     app can send over the internet is a <a href="#reports">problem report</a> you choose to send,
     and none of the records below go into one, apart from the technical part of the last crash
-    record, as its row says. Where a file is encrypted and the app can no longer read it (for
-    example after the phone's key store was reset), the app keeps the unreadable file until you
-    clear the app's storage or remove the app.</p>
+    record, as its row says. If the app finds a file it can no longer read (for example after the
+    phone's key store was reset), it keeps the unreadable file until you clear the app's storage or
+    remove the app.</p>
 
   <h3>PulseLink</h3>
   <div class="tableWrap">
@@ -330,9 +330,11 @@
           sent and received (text, sender and members), SOS alerts with their times and positions,
           and the radio list, including each radio's assigned person and the radio's
           identifiers.</td><td>App-private files</td>
-          <td><strong>Capped at 10 missions and 30 days</strong>, pruned automatically. The
-            in-progress mission is also written so a phone restart does not lose it. Received
-            9-lines can contain casualty information sent by a medic.</td></tr>
+          <td><strong>Capped at 10 missions and 30 days.</strong> Older or surplus missions are
+            deleted automatically when you open the Mission Archive, End Mission or Archived Mission
+            screen, after a mission ends and after you delete one. The in-progress mission is also
+            written so a phone restart does not lose it. Received 9-lines can contain casualty
+            information sent by a medic.</td></tr>
         <tr><td>Messages sent and received over the radio, as PulseLink, above</td>
           <td>One app-private file, as PulseLink, above</td>
           <td>The most recent 500 messages in each of up to 50 conversations. Kept when the app closes or the phone restarts. Deleted when you end a mission. On a leader's phone, messages are also kept in the leader mission archive above.</td></tr>
@@ -413,9 +415,10 @@
     mission, casualty cards are kept on a live board encrypted under a key in the Android hardware
     key store. When the mission ends, they move into that mission's archive: a casualty-card file
     encrypted the same way, and a mission file protected by your phone's own encryption but not
-    separately encrypted by the app. Archives are capped at 10 missions and 30 days and pruned
-    automatically. No other app on the phone can read them. PulseLink's records are excluded from
-    Android cloud backup.</p>
+    separately encrypted by the app. Archives are capped at 10 missions and 30 days; older
+    missions are deleted when the archive is opened, after a mission ends and after you delete one.
+    No other app on the phone can read them. PulseLink's records are excluded from Android cloud
+    backup.</p>
   <p><strong>Where it can go. Every route is started by you.</strong></p>
   <ol>
     <li><strong>A 9-line MEDEVAC request you write and send.</strong> You fill it in, you review it
@@ -784,10 +787,10 @@
       <thead><tr><th>What</th><th>How long</th><th>How to delete it</th></tr></thead>
       <tbody>
         <tr><td>PulseLink mission archive</td>
-          <td>Automatically: newest 10 missions, older missions are deleted the next time the archive is opened or a mission ends</td>
+          <td>Newest 10 missions, nothing older than 30 days; older missions are deleted the next time the archive is opened or a mission ends</td>
           <td><strong>Settings &rarr; Mission Archive</strong> deletes one mission, or <strong>DELETE
             ALL ARCHIVES</strong></td></tr>
-        <tr><td>CommandLink mission archive</td><td>Same: 10 missions, 30 days</td>
+        <tr><td>CommandLink mission archive</td><td>Same: 10 missions, 30 days; older missions are deleted the next time you open the mission archive or end a mission</td>
           <td>The Missions screen deletes one, or <strong>DELETE ALL ARCHIVES</strong></td></tr>
         <tr><td>Network keys (CommandLink, TerraLink)</td><td>Until you delete them</td>
           <td><strong>Delete All Keys On This Phone</strong>, which also destroys the hardware key
