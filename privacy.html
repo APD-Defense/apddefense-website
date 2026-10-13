@@ -138,7 +138,7 @@
   <h1>Privacy Policy</h1>
   <p class="lede">One policy, covering three Android apps: <strong>PulseLink</strong>,
     <strong>CommandLink</strong> and <strong>TerraLink</strong>.</p>
-  <p class="stamp">Effective date: October&nbsp;5,&nbsp;2026 &nbsp;·&nbsp; Version 1.1.2</p>
+  <p class="stamp">Effective date: PUBLISH-DATE &nbsp;·&nbsp; Version 1.1.2</p>
 
   <h2 id="short">In short</h2>
   <p>These three Android apps are companions to an APD Defense encrypted mesh radio. They are built
@@ -302,14 +302,17 @@
             under a hardware key store key</td>
           <td>The digits are never stored. Wrong entries are counted and lock the screen for a
             while.</td></tr>
-        <tr><td><strong>Leader mission archive</strong>: one file per finished mission &mdash; the
-          9-line MEDEVAC requests received (kept exactly as they arrived), roster pushes received,
-          messages you sent, and the radio list</td><td>App-private files</td>
+        <tr><td><strong>Leader mission archive</strong>: one file per finished mission: the 9-line
+          MEDEVAC requests received (kept exactly as they arrived), roster pushes received, messages
+          sent and received (text, sender and members), SOS alerts with their times and positions,
+          and the radio list, including each radio's assigned person and the radio's
+          identifiers.</td><td>App-private files</td>
           <td><strong>Capped at 10 missions and 30 days</strong>, pruned automatically. The
             in-progress mission is also written so a phone restart does not lose it. Received
             9-lines can contain casualty information sent by a medic.</td></tr>
         <tr><td>Messages received over the radio</td>
-          <td><strong>In memory only</strong>, most recent 500, for the session</td>
+          <td>In memory, most recent 500, for the session. On a leader's phone (CommandLink), they
+            are also kept in the leader mission archive above.</td>
           <td>Not written to disk. Messages <em>you send</em> are recorded in the mission file
             above.</td></tr>
         <tr><td>Map, alert-sound, ATAK bridge and USB settings</td><td>App-private preferences</td>
