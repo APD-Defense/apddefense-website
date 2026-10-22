@@ -216,8 +216,8 @@
   <h2 id="storage">What each app stores, and where</h2>
   <p>Everything listed here is stored in the app's own <strong>private storage on your phone</strong>
     &mdash; the area Android gives each app and keeps other apps out of. It is protected by your
-    phone's own encryption and your lock screen. None of it is uploaded anywhere. The one thing an
-    app can send over the internet is a <a href="#reports">problem report</a> you choose to send,
+    phone's own encryption and your lock screen. None of it is uploaded anywhere. Over the internet, an
+    app sends only a <a href="#reports">problem report</a> you choose to send and, while Online imagery is on, map-tile requests to USGS The National Map,
     and none of the records below go into one, apart from the technical part of the last crash
     record, as its row says. If the app finds an encrypted file it can no longer read (for example after the phone's key store was reset), it sets the unreadable copy aside and deletes it 7 days later, the next time the app starts.</p>
   <p>When you share a mission record from the archive, the text you share includes that mission's pin names and positions; it goes only where you send it.</p>
@@ -550,13 +550,13 @@
           <td>The compass on the map and the Go To arrow, which turn to the way you're facing. The phone reads the sensors only while the map or Go To is on screen, uses the readings on the phone only to draw them, and does not store them, send them over the radio or put them in a problem report.</td>
           <td>The map says NO COMPASS and stays north-up, and the Go To arrow doesn't turn with you. Everything else works.</td></tr>
         <tr><td><strong>Internet / network state</strong></td><td>All three</td>
-          <td>Three things only: (1)&nbsp;downloading map tiles on <strong>Settings &rarr; Map
+          <td>Four things only: (1)&nbsp;downloading map tiles on <strong>Settings &rarr; Map
             Data</strong>, and only while <strong>Map Downloads</strong> is switched on &mdash; it is
-            <strong>off by default</strong>; (2)&nbsp;sending a <a href="#reports">problem
-            report</a> you chose to send; (3)&nbsp;CommandLink and TerraLink talk to ATAK on the
+            <strong>off by default</strong>; (2)&nbsp;loading online map imagery from USGS while <strong>Online imagery</strong> is on &mdash; it is <strong>on by default</strong> and you can turn it off in Map Data; (3)&nbsp;sending a <a href="#reports">problem
+            report</a> you chose to send; (4)&nbsp;CommandLink and TerraLink talk to ATAK on the
             <em>same phone</em> over loopback, and Android requires this permission even for
             127.0.0.1.</td>
-          <td>Map downloads, problem reports and the ATAK bridge do not work (a report waits on the
+          <td>Map downloads, online imagery, problem reports and the ATAK bridge do not work (a report waits on the
             phone). Everything else is unaffected.</td></tr>
         <tr><td><strong>Notifications</strong></td><td>All three</td>
           <td>Critical alarms (for example a received 9-line), message notifications, the
@@ -645,7 +645,8 @@
     nothing, and the downloader has no access to your records, your roster or your messages. A short
     list of map hosts is hard-coded; the app cannot be pointed at an arbitrary server. USGS map data
     is public domain, and the license and credit line are written into each map file.</p>
-  <p>No map host is contacted while you are on a mission. Maps are downloaded before you go.</p>
+  <h3>Map imagery (online)</h3>
+  <p>Online imagery is on unless you turn it off in Map Data. While it's on and your phone is online, the app requests map tiles from USGS The National Map, a US government service. USGS receives your phone's IP address and the map areas you request, which can show where you are. The app sends nothing else to USGS: no name, account, position report or messages. Tiles are kept on this phone until you delete them in Map Data. USGS's own privacy policy applies to its servers.</p>
 
   <h2 id="reports">Problem reports</h2>
   <p>Each app has a <strong>Report a Problem</strong> screen. It is the only way anything from the
@@ -748,8 +749,7 @@
   <h2 id="offline">Working offline</h2>
   <p>These apps are <strong>offline-capable by design, not offline-restricted</strong>. Everything
     they do works with no cell service, no Wi-Fi and no internet at all, because the radio net is the
-    point. The apps reach the internet for only two optional things, downloading maps and sending a
-    problem report you chose to send; with no connection, every app is fully functional, and a report
+    point. The app uses the internet only for problem reports you choose to send and, when Online imagery is on, map imagery from USGS. (Map downloads you switch on in Map Data, described above, also come from USGS.) With no connection, every app is fully functional, and a report
     simply waits on the phone.</p>
 
   <h2 id="security">Security</h2>
@@ -856,7 +856,7 @@
     announced in the app's release notes on Google Play and on
     <a href="https://apddefense.com/">apddefense.com</a>. Because we hold no contact details for you,
     we cannot email you &mdash; the date at the top of this page is the thing to check.</p>
-  <p><strong>Version 1.2.1 (October 19, 2026)</strong> describes newer app versions. From CommandLink 0.24.0, PulseLink 0.26.0 and TerraLink 0.14.0, stored messages and PulseLink's mission archive are encrypted on the phone under a key in the Android hardware key store. An encrypted file the app can no longer read is deleted after 7 days. TerraLink deletes messages and saved Go To points after 30 days. Delete All Keys also deletes stored messages and conversations. Map pins, and people chosen with Point to, are listed. The permissions table lists the motion-sensor permission used by the compass. The Messages screen can archive a conversation, which keeps it on this phone, or permanently delete archived conversations from this app. Nothing new leaves your phone, and nothing is sent to APD Defense.</p>
+  <p><strong>Version 1.2.1 (October 19, 2026)</strong> describes newer app versions. From CommandLink 0.24.0, PulseLink 0.26.0 and TerraLink 0.14.0, stored messages and PulseLink's mission archive are encrypted on the phone under a key in the Android hardware key store. An encrypted file the app can no longer read is deleted after 7 days. TerraLink deletes messages and saved Go To points after 30 days. Delete All Keys also deletes stored messages and conversations. Map pins, and people chosen with Point to, are listed. The permissions table lists the motion-sensor permission used by the compass. The Messages screen can archive a conversation, which keeps it on this phone, or permanently delete archived conversations from this app. Online imagery requests go to USGS, as described above; nothing is sent to APD Defense.</p>
   <p><strong>Version 1.2 (October 17, 2026)</strong> corrects statements in version 1.1.2 that were
     not true of the released apps. All three apps keep your messages on the phone when the app
     closes; earlier versions said received messages were held in memory only. CommandLink's leader
