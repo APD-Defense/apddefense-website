@@ -138,7 +138,7 @@
   <h1>Privacy Policy</h1>
   <p class="lede">One policy, covering three Android apps: <strong>PulseLink</strong>,
     <strong>CommandLink</strong> and <strong>TerraLink</strong>.</p>
-  <p class="stamp">Effective date: October 19, 2026 &nbsp;·&nbsp; Version 1.2.1</p>
+  <p class="stamp">Effective date: October 26, 2026 &nbsp;·&nbsp; Version 1.2.2</p>
 
   <h2 id="short">In short</h2>
   <p>These three Android apps are companions to an APD Defense encrypted mesh radio. They are built
@@ -309,8 +309,7 @@
             in the Android hardware key store</strong></td>
           <td>Shown only after your phone's own unlock. Never logged, never copyable to the
             clipboard. A key leaves the phone only when you choose <strong>Load To
-            Radio</strong>, and then only to the radio on the <strong>USB cable</strong> (never over
-            Bluetooth, never to us). <strong>Delete All Keys</strong> destroys the hardware
+            Radio</strong>, and then only to that radio, over the <strong>USB cable</strong> or, on a radio set up to accept it, over Bluetooth after you press and hold the radio's button (never to us). <strong>Delete All Keys</strong> destroys the hardware
             key store key as well, so any remaining bytes are unreadable. From version 0.24.0 it also deletes the stored messages and conversations on this phone. It does not delete the leader mission archive; use DELETE ALL ARCHIVES for that.</td></tr>
         <tr><td>A key scanned for <strong>Fill Radio</strong></td>
           <td><strong>In memory only</strong>, for at most 5 minutes</td>
@@ -757,7 +756,7 @@
     <li><strong>Over the air:</strong> the radio, not the phone, is the encryption endpoint. Traffic
       on the mesh is encrypted and authenticated by the radio hardware with a network key. PulseLink
       stores no network keys; a key scanned for Fill Radio is held in memory for at most 5 minutes. CommandLink and TerraLink can hold keys, under the phone's hardware key
-      store, as described above.</li>
+      store, as described above. APD's radio and app encryption is not FIPS-validated.</li>
     <li><strong>On the phone:</strong> app-private storage, under the phone's own encryption. Keys, the admin PIN, messages, casualty cards, PulseLink's mission archive, saved Go To points and map pins also get the extra hardware-backed layer described above (messages and PulseLink's mission archive from the versions named above). CommandLink's leader mission archive doesn't yet. Use a lock screen: key material is bound to it.</li>
     <li><strong>Problem reports</strong> travel to our relay encrypted in transit (HTTPS). Once
       there, they are held by the service providers named under <a href="#reports">Problem
@@ -773,6 +772,7 @@
       plain data. Keep the radio with you. When CommandLink or TerraLink loads a key into a radio that
       already has an owner, the key crosses the cable wrapped under that radio's owner secret; the
       first key loaded into a radio with no owner crosses it unwrapped.</li>
+  <li><strong>Loading a key over Bluetooth</strong> (only on a radio set up to accept it): someone must first press and hold the radio's button. The key crosses an encrypted Bluetooth link that the phone and radio set up when they pair. Bluetooth key loading is not FIPS-validated.</li>
     <li><strong>The radio's debug port is open</strong> on current prototype hardware, so someone
       with physical possession of a radio and the right tools can read its network key. Treat a lost
       radio as a lost key: the fleet should be re-keyed. Treat this hardware as unclassified.</li>
@@ -856,6 +856,7 @@
     announced in the app's release notes on Google Play and on
     <a href="https://apddefense.com/">apddefense.com</a>. Because we hold no contact details for you,
     we cannot email you &mdash; the date at the top of this page is the thing to check.</p>
+  <p><strong>Version 1.2.2 (October 26, 2026)</strong> explains that a key can go to a radio over Bluetooth on a radio set up to accept it, and says that APD's encryption is not FIPS-validated. Nothing is sent to APD Defense.</p>
   <p><strong>Version 1.2.1 (October 19, 2026)</strong> describes newer app versions. From CommandLink 0.24.0, PulseLink 0.26.0 and TerraLink 0.14.0, stored messages and PulseLink's mission archive are encrypted on the phone under a key in the Android hardware key store. An encrypted file the app can no longer read is deleted after 7 days. TerraLink deletes messages and saved Go To points after 30 days. Delete All Keys also deletes stored messages and conversations. Map pins, and people chosen with Point to, are listed. The permissions table lists the motion-sensor permission used by the compass. The Messages screen can archive a conversation, which keeps it on this phone, or permanently delete archived conversations from this app. Nothing new leaves your phone, and nothing is sent to APD Defense.</p>
   <p><strong>Version 1.2 (October 17, 2026)</strong> corrects statements in version 1.1.2 that were
     not true of the released apps. All three apps keep your messages on the phone when the app
