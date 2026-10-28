@@ -138,7 +138,7 @@
   <h1>Privacy Policy</h1>
   <p class="lede">One policy, covering three Android apps: <strong>PulseLink</strong>,
     <strong>CommandLink</strong> and <strong>TerraLink</strong>.</p>
-  <p class="stamp">Effective date: October 26, 2026 &nbsp;·&nbsp; Version 1.2.2</p>
+  <p class="stamp">Effective date: October 26, 2026 &nbsp;·&nbsp; Version 1.2.3</p>
 
   <h2 id="short">In short</h2>
   <p>These three Android apps are companions to an APD Defense encrypted mesh radio. They are built
@@ -158,9 +158,8 @@
       <li><strong>You need no account.</strong> There is nothing to sign up for and no login.</li>
       <li><strong>Your records stay on your phone</strong>, in each app's private storage, which
         other apps on the phone cannot read.</li>
-      <li><strong>What leaves the phone goes over your radio</strong>, to the other radios on your
-        own net, encrypted and authenticated by the radio hardware &mdash; and only when you send
-        it, or when you have left position sharing on (see <a href="#location">Location</a>).</li>
+      <li><strong>Your records leave the phone over your radio</strong>, to the other radios on your own net, encrypted and authenticated by the radio hardware &mdash; and only when you send them, or when you have left position sharing on (see <a href="#location">Location</a>).</li>
+      <li><strong>Maps come from USGS.</strong> While Online imagery or Keep a coarse map around me is on (both are on by default), the app loads map images from the U.S. Geological Survey, which sees your IP address and the map areas you view, so it can tell roughly where you are. Nothing about them is sent to us. See <a href="#imagery">Online map imagery</a>.</li>
       <li><strong>These apps are prototypes.</strong> They are not FDA cleared, and they are not
         certified or approved for any purpose.</li>
     </ul>
@@ -216,10 +215,7 @@
   <h2 id="storage">What each app stores, and where</h2>
   <p>Everything listed here is stored in the app's own <strong>private storage on your phone</strong>
     &mdash; the area Android gives each app and keeps other apps out of. It is protected by your
-    phone's own encryption and your lock screen. None of it is uploaded anywhere. The one thing an
-    app can send over the internet is a <a href="#reports">problem report</a> you choose to send,
-    and none of the records below go into one, apart from the technical part of the last crash
-    record, as its row says. If the app finds an encrypted file it can no longer read (for example after the phone's key store was reset), it sets the unreadable copy aside and deletes it 7 days later, the next time the app starts.</p>
+    phone's own encryption and your lock screen. None of it is uploaded anywhere. Over the internet, an app can send a <a href="#reports">problem report</a> you choose to send, and none of the records below go into one, apart from the technical part of the last crash record, as its row says. While a map feature is on, the app also requests map images from USGS; see <a href="#imagery">Online map imagery</a>. If the app finds an encrypted file it can no longer read (for example after the phone's key store was reset), it sets the unreadable copy aside and deletes it 7 days later, the next time the app starts.</p>
   <p>When you share a mission record from the archive, the text you share includes that mission's pin names and positions; it goes only where you send it.</p>
 
   <h3>PulseLink</h3>
@@ -227,6 +223,9 @@
     <table>
       <thead><tr><th>What</th><th>Where it is kept</th><th>Notes</th></tr></thead>
       <tbody>
+        <tr><td>You: your first name, last name, and, if you add them, rank and call sign</td>
+          <td>App-private preferences</td>
+          <td>Typed by you. If you leave Call sign empty, the app makes one from your rank and name, shortened if needed. That call sign is how other radios on your net see you: the app announces it to your net and sends it with what you send, including an SOS. In medic mode, messages and an SOS carry the call sign in the mission brief instead.</td></tr>
         <tr><td>Mission setup: your call sign, mission name, MEDEVAC frequency, receiving station
           call sign, map sheet, grid zone, magnetic declination, free-text notes</td>
           <td>App-private preferences</td><td>Typed by you</td></tr>
@@ -285,6 +284,7 @@
             outright stays on the phone, marked NOT ACCEPTED.</td></tr>
         <tr><td>Offline map files you downloaded</td><td>App-private files</td>
           <td>See <a href="#thirdparty">map downloads</a></td></tr>
+        <tr><td>Map images you viewed</td><td>App-private files, up to 1 GB by default</td><td>See <a href="#imagery">Online map imagery</a></td></tr>
       </tbody>
     </table>
   </div>
@@ -296,6 +296,9 @@
     <table>
       <thead><tr><th>What</th><th>Where it is kept</th><th>Notes</th></tr></thead>
       <tbody>
+        <tr><td>You: your first name, last name, and, if you add them, rank and call sign</td>
+          <td>App-private preferences</td>
+          <td>Typed by you. If you leave Call sign empty, the app makes one from your rank and name, shortened if needed. That call sign is how other radios on your net see you: the app announces it to your net and sends it with what you send, including an SOS.</td></tr>
         <tr><td>Your call sign, and a random app-generated identifier (<code>APD-</code> plus 8
           characters)</td><td>App-private preferences</td>
           <td>The identifier goes over the radio inside your position and message reports so
@@ -356,6 +359,7 @@
         <tr><td>Problem reports not yet sent</td><td>App-private files</td>
           <td>As PulseLink, above</td></tr>
         <tr><td>Offline map files you downloaded</td><td>App-private files</td><td></td></tr>
+        <tr><td>Map images you viewed</td><td>App-private files, up to 1 GB by default</td><td>See <a href="#imagery">Online map imagery</a></td></tr>
       </tbody>
     </table>
   </div>
@@ -368,7 +372,10 @@
     <table>
       <thead><tr><th>What</th><th>Where it is kept</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>Your name on the net, and a random app-generated identifier (<code>CIV-</code> plus 8
+        <tr><td>You: your first name, last name, and, if you add them, rank and call sign</td>
+          <td>App-private preferences</td>
+          <td>Typed by you. If you leave Call sign empty, the app makes one from your rank and name, shortened if needed. That call sign is how other radios on your net see you: the app announces it to your net and sends it with what you send, including an SOS.</td></tr>
+        <tr><td>A random app-generated identifier (<code>CIV-</code> plus 8
           characters)</td><td>App-private preferences</td>
           <td>Same kind of identifier as CommandLink's, above</td></tr>
         <tr><td>Your radio list</td><td>App-private preferences</td><td></td></tr>
@@ -400,6 +407,7 @@
         <tr><td>Problem reports not yet sent</td><td>App-private files</td>
           <td>As PulseLink, above</td></tr>
         <tr><td>Offline map files you downloaded</td><td>App-private files</td><td></td></tr>
+        <tr><td>Map images you viewed</td><td>App-private files, up to 1 GB by default</td><td>See <a href="#imagery">Online map imagery</a></td></tr>
       </tbody>
     </table>
   </div>
@@ -549,13 +557,13 @@
           <td>The compass on the map and the Go To arrow, which turn to the way you're facing. The phone reads the sensors only while the map or Go To is on screen, uses the readings on the phone only to draw them, and does not store them, send them over the radio or put them in a problem report.</td>
           <td>The map says NO COMPASS and stays north-up, and the Go To arrow doesn't turn with you. Everything else works.</td></tr>
         <tr><td><strong>Internet / network state</strong></td><td>All three</td>
-          <td>Three things only: (1)&nbsp;downloading map tiles on <strong>Settings &rarr; Map
+          <td>Four things only: (1)&nbsp;downloading map tiles on <strong>Settings &rarr; Map
             Data</strong>, and only while <strong>Map Downloads</strong> is switched on &mdash; it is
-            <strong>off by default</strong>; (2)&nbsp;sending a <a href="#reports">problem
-            report</a> you chose to send; (3)&nbsp;CommandLink and TerraLink talk to ATAK on the
+            <strong>off by default</strong>; (2)&nbsp;loading map images from USGS while <strong>Online imagery</strong> or <strong>Keep a coarse map around me</strong> is on &mdash; both are <strong>on by default</strong> and you can turn them off in Map Data; (3)&nbsp;sending a <a href="#reports">problem
+            report</a> you chose to send; (4)&nbsp;CommandLink and TerraLink talk to ATAK on the
             <em>same phone</em> over loopback, and Android requires this permission even for
             127.0.0.1.</td>
-          <td>Map downloads, problem reports and the ATAK bridge do not work (a report waits on the
+          <td>Map downloads, online imagery, problem reports and the ATAK bridge do not work (a report waits on the
             phone). Everything else is unaffected.</td></tr>
         <tr><td><strong>Notifications</strong></td><td>All three</td>
           <td>Critical alarms (for example a received 9-line), message notifications, the
@@ -644,7 +652,8 @@
     nothing, and the downloader has no access to your records, your roster or your messages. A short
     list of map hosts is hard-coded; the app cannot be pointed at an arbitrary server. USGS map data
     is public domain, and the license and credit line are written into each map file.</p>
-  <p>No map host is contacted while you are on a mission. Maps are downloaded before you go.</p>
+  <h3 id="imagery">Online map imagery</h3>
+  <p><strong>Maps from USGS.</strong> When "Online imagery" or "Keep a coarse map around me" is on, the app loads map images directly from the U.S. Geological Survey (USGS) The National Map. Both are on by default, and a notice explains them the first time. USGS sees your phone's IP address and the map areas you view and, if "Keep a coarse map around me" is on, a wider area around your phone's position, so it can tell roughly where you are. USGS handles that information under its own terms. Nothing about the maps you view is sent to APD Defense. Map images you have viewed are saved on your phone, up to 1 GB by default (you can change this in Map Data). Deleting keys or ending a mission does not clear them; you can clear them in Map Data. You can turn either feature off in Map Data at any time.</p>
 
   <h2 id="reports">Problem reports</h2>
   <p>Each app has a <strong>Report a Problem</strong> screen. It is the only way anything from the
@@ -747,8 +756,7 @@
   <h2 id="offline">Working offline</h2>
   <p>These apps are <strong>offline-capable by design, not offline-restricted</strong>. Everything
     they do works with no cell service, no Wi-Fi and no internet at all, because the radio net is the
-    point. The apps reach the internet for only two optional things, downloading maps and sending a
-    problem report you chose to send; with no connection, every app is fully functional, and a report
+    point. The apps reach the internet for three things: sending a problem report you chose to send, downloading maps you switch on in Map Data, and loading map images from USGS while Online imagery or Keep a coarse map around me is on (both on by default). With no connection, every app is fully functional, and a report
     simply waits on the phone.</p>
 
   <h2 id="security">Security</h2>
@@ -826,6 +834,7 @@
         <tr><td>Crash record</td><td>Only the most recent one</td><td>Removed with the app</td></tr>
         <tr><td>Offline maps</td><td>Until you delete them</td>
           <td><strong>Settings &rarr; Map Data</strong></td></tr>
+        <tr><td>Map images you viewed</td><td>Up to 1 GB by default, until you clear them</td><td><strong>Settings &rarr; Map Data</strong></td></tr>
         <tr><td>Problem reports not yet sent</td>
           <td>Until our relay accepts them</td>
           <td>Clear the app's storage in Android's settings, or remove the app</td></tr>
@@ -856,6 +865,7 @@
     announced in the app's release notes on Google Play and on
     <a href="https://apddefense.com/">apddefense.com</a>. Because we hold no contact details for you,
     we cannot email you &mdash; the date at the top of this page is the thing to check.</p>
+  <p><strong>Version 1.2.3 (October 26, 2026)</strong> added online map imagery and map loading from USGS. It also lists the name, rank and call sign you enter, which the apps keep on your phone, and says that an empty call sign is made from your rank and name. Nothing about the maps you view is sent to APD Defense.</p>
   <p><strong>Version 1.2.2 (October 26, 2026)</strong> explains that a key can go to a radio over Bluetooth on a radio set up to accept it, and says that APD's encryption is not FIPS-validated. Nothing is sent to APD Defense.</p>
   <p><strong>Version 1.2.1 (October 19, 2026)</strong> describes newer app versions. From CommandLink 0.24.0, PulseLink 0.26.0 and TerraLink 0.14.0, stored messages and PulseLink's mission archive are encrypted on the phone under a key in the Android hardware key store. An encrypted file the app can no longer read is deleted after 7 days. TerraLink deletes messages and saved Go To points after 30 days. Delete All Keys also deletes stored messages and conversations. Map pins, and people chosen with Point to, are listed. The permissions table lists the motion-sensor permission used by the compass. The Messages screen can archive a conversation, which keeps it on this phone, or permanently delete archived conversations from this app. Nothing new leaves your phone, and nothing is sent to APD Defense.</p>
   <p><strong>Version 1.2 (October 17, 2026)</strong> corrects statements in version 1.1.2 that were
