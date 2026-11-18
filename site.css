@@ -1,6 +1,6 @@
 /* APD Defense website v3. Tokens: design-tokens-v3.md. Components use var() only. */
 @font-face{font-family:"Space Grotesk";src:url("assets/fonts/space-grotesk-700.woff") format("woff");font-weight:700;font-style:normal;font-display:swap}
-@font-face{font-family:"IBM Plex Sans";src:url("assets/fonts/plex-sans-400.woff") format("woff");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"APD Sans";src:url("assets/fonts/apd-sans-400.woff") format("woff");font-weight:400;font-style:normal;font-display:swap}
 
 :root{
  --color-bg:#0B1119;--color-card:#121B26;--color-line:#243244;--color-line-strong:#33465C;
@@ -8,7 +8,7 @@
  --scene-1:#121B26;--scene-2:#16222F;--scene-3:#1B2A3A;--scene-sky:#172131;--color-figure:#05080C;
  --hw-shell:#1C2633;--hw-shell-back:#161E29;--hw-board:#22313F;--hw-battery:#2A3644;--hw-button:#3A4A5C;--hw-glass:#05080C;
  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-6:24px;--space-8:32px;--space-12:48px;--space-16:64px;--space-24:96px;--space-32:128px;
- --font-display:"Space Grotesk","Segoe UI",system-ui,sans-serif;--font-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+ --font-display:"Space Grotesk","Segoe UI",system-ui,sans-serif;--font-body:"APD Sans","Segoe UI",system-ui,sans-serif;
  --text-sm:14px;--text-md:16px;--text-display:clamp(40px,7vw,112px);--text-hero:clamp(40px,9vw,144px);
  --leading-tight:.92;--leading-body:1.5;--tracking-display:-.02em;--tracking-label:.12em;
  --radius-sm:4px;--radius-md:8px;--radius-lg:16px;--radius-device:32px;--radius-pill:999px;
