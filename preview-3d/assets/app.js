@@ -28,7 +28,7 @@ var reel=(function(){
  var BEATS=D.beats,NB=BEATS.length,segs=$$(".seg",track),cards=[],subs=[],subOn=[],rate=D.rate||{move:0.025,dwell:0.05};
  if(segs.length!==NB)return none;
  var svg=$("#leader"),line=$("#leader-line"),ring=$("#leader-ring");
- var byName={},cum=[],segTop=[],segH=[],vh=root.clientHeight||innerHeight,cardBox=[],stageAt={x:0,y:0},wide=false,curBeat=-1,lastOn=-2;
+ var byName={},cum=[],segTop=[],segH=[],vh=root.clientHeight||innerHeight,cardBox=[],stageAt={x:0,y:0},wide=false,curBeat=-1,lastOn=-2,measuredOn=false;
  BEATS.forEach(function(b,i){
   byName[b.name]=i;
   cards[i]=$('.beat-card[data-beat="'+b.name+'"]',pinEl);
@@ -58,7 +58,8 @@ var reel=(function(){
  function measure(){
   vh=root.clientHeight||innerHeight;                 /* the small viewport height: steady when a phone hides its address bar */
   wide=!!(window.matchMedia&&matchMedia(FRM.WIDE).matches);
-  if(!framesOn())return;
+  measuredOn=framesOn();
+  if(!measuredOn)return;
   var sy=scrollY,pr=pinEl.getBoundingClientRect(),st=$("#stage"),i,r;
   for(i=0;i<NB;i++){r=segs[i].getBoundingClientRect();segTop[i]=r.top+sy;segH[i]=r.height;}
   if(st){r=st.getBoundingClientRect();stageAt={x:r.left-pr.left,y:r.top-pr.top};}
@@ -67,6 +68,22 @@ var reel=(function(){
    r=cards[i].getBoundingClientRect();
    cardBox[i]={l:r.left-pr.left,r:r.right-pr.left,t:r.top-pr.top,b:r.bottom-pr.top};
   }
+ }
+ /* A change of size changes the reel's length, so the same scroll position would mean another frame. keep() notes the frame on
+    show before anything is measured again; restore() puts the scroll back on it afterwards. It only acts when the reel's own
+    length changed (a real change of size, not a phone hiding its address bar) and the reel was on, with the scroll inside it.
+    The resize event and the scrubber's size observer can arrive in either order; both go through here, and the first one in
+    still finds the old frame. */
+ function keep(){return {f:S.target,i:S.beat,h0:segH[0],held:measuredOn&&segH.length===NB&&scrollY<=segTop[NB-1]+segH[NB-1]-vh};}
+ function restore(k){
+  if(!k.held||!framesOn()||!(Math.abs(segH[0]-k.h0)>1))return false;
+  scrollTo(0,Math.max(0,Math.round(segTop[k.i]+posOf(k.i,k.f)*segH[k.i]-vh)));
+  return true;
+ }
+ function relay(){
+  var k=keep(),moved;
+  measure();moved=restore(k);update();
+  if(moved&&window.APDScrub)window.APDScrub.jump();
  }
  function leader(name,f,i){
   if(!svg)return;
@@ -112,27 +129,38 @@ var reel=(function(){
   return true;
  }
  /* The pinned layout gives each card a fixed area. If a card does not fit it (very large text, unusual text spacing), nothing may
-    be cut off: the page falls back to the plain layout instead. */
+    be cut off: the page falls back to the plain layout instead. A card's height is final only once the web fonts are in (a
+    fallback font wraps differently), so while they are still loading the answer is yes and the question is asked again when
+    they land (settle, below). */
  function fits(){
   if(!framesOn())return true;
-  var box=$(".cards-in",pinEl),rem=parseFloat(getComputedStyle(root).fontSize)||16,i,c,room;
+  var box=$(".cards-in",pinEl),rem=parseFloat(getComputedStyle(root).fontSize)||16,i,c,room,ok=true;
   if(!box)return true;
   for(i=0;i<NB;i++){
    c=cards[i];if(!c)continue;
    room=wide||i===0?box.clientHeight-(wide?0:16):12.5*rem-16;      /* 12.5rem = --card-area-compact in site.css */
-   if(c.offsetHeight>room+1)return false;
+   if(c.offsetHeight>room+1){ok=false;break;}
   }
-  return true;
+  return ok||fontsPending();      /* asked after the measuring above: that layout is what makes the browser fetch a font it still needs */
+ }
+ function fontsPending(){
+  var fs=document.fonts,p=false;
+  if(!fs)return false;
+  if(fs.status==="loading")return true;
+  try{fs.forEach(function(face){if(face.status==="loading")p=true;});}catch(e){}
+  return p;
  }
  /* decided = the mode was already switched by someone else (scrub.js giving up); otherwise ask boot.js again */
  function sync(decided){
-  var was=framesOn();
+  var k=keep(),moved;
   if(!decided)FRM.mode();
   wide=!!(window.matchMedia&&matchMedia(FRM.WIDE).matches);
+  /* the scrubber lays the picture out for this window and hands the cards their widths; only then can the cards be measured */
+  if(framesOn()&&window.APDScrub)window.APDScrub.mode();
   if(!fits())root.classList.remove("frames-on");
-  if(!framesOn()){pinEl.classList.remove("is-compact");cards.forEach(function(c,k){if(c)c.classList.toggle("is-on",k===0);});lastOn=-2;curBeat=-1;}
-  measure();update();
-  if(framesOn()&&!was&&window.APDScrub)window.APDScrub.mode();
+  if(!framesOn()){pinEl.classList.remove("is-compact");cards.forEach(function(c,j){if(c)c.classList.toggle("is-on",j===0);});lastOn=-2;curBeat=-1;}
+  measure();moved=restore(k);update();
+  if(moved&&window.APDScrub)window.APDScrub.jump();
  }
  $$("[data-go]").forEach(function(a){a.addEventListener("click",function(e){
   var i=byName[a.getAttribute("data-go")];
@@ -144,19 +172,19 @@ var reel=(function(){
   if(k!==undefined)goTo(k,BEATS[k].dwell[0]);
  }
  addEventListener("scroll",update,{passive:true});
- addEventListener("resize",function(){
-  /* a real change of size (not a phone hiding its address bar) keeps the frame that was on screen */
-  var was=framesOn(),f=S.target,i=S.beat,h0=segH[0],inReel=was&&scrollY<=segTop[NB-1]+segH[NB-1]-vh;
-  sync(false);
-  if(inReel&&framesOn()&&Math.abs(segH[0]-h0)>1){scrollTo(0,Math.max(0,Math.round(segTop[i]+posOf(i,f)*segH[i]-vh)));update();if(window.APDScrub)window.APDScrub.jump();}
- });
- addEventListener("load",function(){measure();update();fromHash();});
- if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){if(!fits())sync(false);});
+ addEventListener("resize",function(){sync(false);});
+ /* page loaded, or fonts in (or failed): decide the layout again from scratch, whichever way an earlier answer went */
+ function settle(){sync(false);}
+ addEventListener("load",function(){settle();fromHash();});
+ if(document.fonts){
+  if(document.fonts.ready)document.fonts.ready.then(settle);
+  if(document.fonts.addEventListener)document.fonts.addEventListener("loadingdone",settle);
+ }
  addEventListener("hashchange",fromHash);
  wide=!!(window.matchMedia&&matchMedia(FRM.WIDE).matches);
  if(!fits())root.classList.remove("frames-on");
  measure();update();
- window.APDReel={sync:sync,measure:function(){measure();update();},frameOf:frameOf,posOf:posOf,
+ window.APDReel={sync:sync,measure:relay,frameOf:frameOf,posOf:posOf,
   end:function(){return framesOn()&&segTop.length?segTop[NB-1]+segH[NB-1]-vh:0;},
   top:function(i,f){return segTop[i]+posOf(i,f)*segH[i]-vh;}};
  return window.APDReel;
