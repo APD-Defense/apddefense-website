@@ -134,11 +134,11 @@ var reel=(function(){
     they land (settle, below). */
  function fits(){
   if(!framesOn())return true;
-  var box=$(".cards-in",pinEl),rem=parseFloat(getComputedStyle(root).fontSize)||16,i,c,room,ok=true;
+  var cs=getComputedStyle(root),box=$(".cards-in",pinEl),rem=parseFloat(cs.fontSize)||16,i,c,room,ok=true,compact=parseFloat(cs.getPropertyValue("--card-area-compact"))||13.5;
   if(!box)return true;
   for(i=0;i<NB;i++){
    c=cards[i];if(!c)continue;
-   room=wide||i===0?box.clientHeight-(wide?0:16):12.5*rem-16;      /* 12.5rem = --card-area-compact in site.css */
+   room=wide||i===0?box.clientHeight-(wide?0:16):compact*rem-16;      /* compact = --card-area-compact in site.css, in rem */
    if(c.offsetHeight>room+1){ok=false;break;}
   }
   return ok||fontsPending();      /* asked after the measuring above: that layout is what makes the browser fetch a font it still needs */

@@ -24,11 +24,11 @@
  --radius-sm:4px;--radius-md:8px;--radius-lg:16px;--radius-device:32px;--radius-pill:999px;
  --dur-quick:150ms;--dur-fade:400ms;--dur-move:700ms;--ease-out:cubic-bezier(.2,.7,.2,1);
  --content-max:80rem;--gutter:1rem;--target:44px;--phone-w:280px;--phone-h:520px;--hairline:1px;
- --hdr:3.5rem;--card-area:22.5rem;--card-area-compact:12.5rem;--chamfer:1.25rem;
+ --hdr:3.5rem;--card-area:22.5rem;--card-area-compact:13.5rem;--chamfer:1.25rem;
  --z-canvas:0;--z-content:1;--z-labels:2;--z-header:10;
 }
 @media (min-width:48em){:root{--gutter:2rem;--hdr:4rem;--card-area:27.5rem}}
-@media (max-width:22.49em){:root{--card-area:26.5rem}}        /* very narrow: the hero's second link drops to its own row */
+@media (max-width:22.49em){:root{--card-area:26.5rem;--card-area-compact:15rem}}        /* very narrow: the hero's second link drops to its own row; the last card's text takes a line more */
 }
 
 @layer reset{
@@ -141,9 +141,9 @@ main{padding-top:0}
 .frames-on .seg[data-beat="sos"]{block-size:212.5svh}
 .frames-on .seg[data-beat="usb"]{block-size:127.5svh}
 .frames-on .seg[data-beat="exploded"]{block-size:222.5svh}
-.frames-on .seg[data-beat="mesh"]{block-size:212.5svh}
-.frames-on .seg[data-beat="forest"]{block-size:242.5svh}
-.frames-on .seg[data-beat="final"]{block-size:197.5svh}
+.frames-on .seg[data-beat="mesh"]{block-size:172.5svh}
+.frames-on .seg[data-beat="forest"]{block-size:212.5svh}
+.frames-on .seg[data-beat="final"]{block-size:140svh}
 
 .frames-on .stage{display:block;position:absolute;inset-inline:0;inset-block-start:var(--hdr);block-size:calc(100svh - var(--hdr) - var(--card-area))}
 .frames-on .reel-pin.is-compact .stage{block-size:calc(100svh - var(--hdr) - var(--card-area-compact))}
@@ -425,9 +425,9 @@ footer.site{border-top:var(--hairline) solid var(--color-line);padding:var(--spa
   .frames-on .beat-card[data-beat="usb"]{animation-timeline:--b-usb,--b-usb}
   .frames-on .beat-card[data-beat="exploded"]{animation-timeline:--b-exploded,--b-exploded}
   .frames-on .beat-card[data-beat="mesh"]{animation-timeline:--b-mesh,--b-mesh}
-  .frames-on .beat-card[data-beat="forest"]{animation-timeline:--b-forest,--b-forest}
+  .frames-on .beat-card[data-beat="final"]{animation-timeline:--b-final,--b-final}
   .frames-on .beat-card[data-beat="hero"]{animation:card-out linear forwards;animation-timeline:--b-hero;animation-range:entry-crossing var(--out0,92%) entry-crossing var(--out1,100%)}
-  .frames-on .beat-card[data-beat="final"]{animation:card-in linear both;animation-timeline:--b-final;animation-range:entry-crossing var(--in0,0%) entry-crossing var(--in1,5%)}
+  .frames-on .beat-card[data-beat="forest"]{animation:card-in linear both;animation-timeline:--b-forest;animation-range:entry-crossing var(--in0,0%) entry-crossing var(--in1,5%)}
   .frames-on .reel-progress i{animation:reel-grow linear both;animation-timeline:--reel;animation-range:contain 0% contain 100%}
  }
  @media (min-width:56.25em) and (min-aspect-ratio:5/4){

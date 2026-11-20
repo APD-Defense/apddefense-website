@@ -9,6 +9,8 @@
      never enters the copy column, on any window shape. Where the picture stops short of the stage its edge fades (CSS mask).
    - Small screens scrub the 640 px set. Whenever the picture rests on one frame it is swapped for a sharper file of that frame:
      the full-size one on small screens, the double-size one (where it exists, see frames-manifest.js) on large or dense screens.
+   - A canvas that changes size is wiped by the browser. resize() therefore draws the picture again at once, before the next paint,
+     so the picture area is never shown empty (on narrow screens it changes size, over a few frames, when the hero text leaves).
    Reduced motion or no canvas: this file does nothing and the page shows stills. No network APIs, no storage.
    Public: window.APDScrub = {kick(), jump(), mode(), rect(frame), info()}. */
 (function(){
@@ -166,6 +168,7 @@ function resize(entry){
  FR.vars(L,pin,rect(cur===null?(S.target||1):cur));
  maskKey="";dirty=true;
  if(window.APDReel)window.APDReel.measure();
+ if(live&&cur!==null&&draw(cur)){drawn=cur;dirty=false;}      /* now, not on the next animation frame: that paint would show the wiped canvas */
  kick();
 }
 
