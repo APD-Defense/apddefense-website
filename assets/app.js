@@ -1,5 +1,7 @@
-/* APD website v3 page behaviour. No network calls, no storage, no tracking.
-   Every control gives visible feedback and announces its result. Reduced motion = same results, no movement. */
+/* APD website v10 page behaviour. No network calls, no storage, no tracking.
+   Every control gives visible feedback and announces its result. Reduced motion = same results, no movement.
+   New in v10: the reel (scroll position -> frame number for assets/scrub.js, beat cards, callout lines, jumps), the header menu
+   and the current-section mark. The tap-through demo, the relay map and the audience tabs are unchanged from v3. */
 (function(){
 "use strict";
 var root=document.documentElement;
@@ -14,18 +16,257 @@ var hdr=$("header.site");
 function hdrPaint(){if(hdr)hdr.classList.toggle("solid",scrollY>8);}
 addEventListener("scroll",hdrPaint,{passive:true});hdrPaint();
 
-/* ---------- 3D loader: only with motion allowed and WebGL available ---------- */
-var glLoaded=false;
-function loadScript(src,ok){var s=document.createElement("script");s.src=src;s.onload=ok;
- s.onerror=function(){root.classList.remove("gl-on");};document.body.appendChild(s);}
-function loadGL(){if(glLoaded){if(window.APDRadio3D)window.APDRadio3D.kick();return;}glLoaded=true;
- loadScript("assets/vendor/three.min.js",function(){loadScript("assets/radio3d.js",function(){});});}
-if(root.classList.contains("gl-on"))loadGL();
-function onMotionChange(e){reduce=e.matches;
- if(reduce)root.classList.remove("gl-on");
- else if(root.classList.contains("gl-ok")){root.classList.add("gl-on");loadGL();}
- dots.redraw();}
+/* ---------- reel: scroll position -> frame, beat cards, callout lines, jumps ----------
+   One tall track; each beat owns a segment of it (heights in site.css). The frame number comes from how far the bottom edge of
+   the (small) viewport is into the current segment, with dwell frames taking twice the distance of moving frames. The scroll handler only
+   does this arithmetic from cached sizes and hands the number to scrub.js; nothing is drawn or measured here while scrolling. */
+var reel=(function(){
+ var D=window.APD_BEATS,FRM=window.APDFrame,track=$("#track"),pinEl=$("#pin");
+ var S=window.APDScroll={target:1,b:0,beat:0,frame:1};
+ var none={sync:function(){},measure:function(){},end:function(){return 0;}};
+ if(!D||!FRM||!track||!pinEl)return none;
+ var BEATS=D.beats,NB=BEATS.length,segs=$$(".seg",track),cards=[],subs=[],subOn=[],rate=D.rate||{move:0.025,dwell:0.05};
+ if(segs.length!==NB)return none;
+ var svg=$("#leader"),line=$("#leader-line"),ring=$("#leader-ring");
+ var byName={},cum=[],segTop=[],segH=[],vh=root.clientHeight||innerHeight,cardBox=[],stageAt={x:0,y:0},wide=false,curBeat=-1,lastOn=-2,measuredOn=false;
+ BEATS.forEach(function(b,i){
+  byName[b.name]=i;
+  cards[i]=$('.beat-card[data-beat="'+b.name+'"]',pinEl);
+  subs[i]=cards[i]?$$(".sub",cards[i]):[];subOn[i]=-2;
+  var a=[0],f;
+  for(f=b.first;f<=b.last;f++)a.push(a[a.length-1]+(f>=b.dwell[0]&&f<=b.dwell[1]?rate.dwell:rate.move));
+  cum[i]=a;
+ });
+ function framesOn(){return root.classList.contains("frames-on");}
+ /* how far (0..1) into beat i's segment frame f sits, and the reverse */
+ function posOf(i,f){
+  var c=cum[i],n=c.length-1,k=Math.max(0,Math.min(n,f-BEATS[i].first)),k0=Math.min(n-1,Math.floor(k));
+  return (c[k0]+(c[k0+1]-c[k0])*(k-k0))/c[n];
+ }
+ function frameOf(i,t){
+  var c=cum[i],n=c.length-1,w=Math.max(0,Math.min(1,t))*c[n],lo=0,up=n,m;
+  while(up-lo>1){m=(lo+up)>>1;if(c[m]<=w)lo=m;else up=m;}
+  return BEATS[i].first+lo+(w-c[lo])/(c[lo+1]-c[lo]);
+ }
+ /* where each card fades in and out, as a share of its segment, for the scroll-driven CSS in site.css */
+ BEATS.forEach(function(b,i){
+  var c=cards[i],w=b.card;if(!c)return;
+  c.style.setProperty("--in0",(posOf(i,w[0])*100).toFixed(2)+"%");c.style.setProperty("--in1",(posOf(i,w[1]+1)*100).toFixed(2)+"%");
+  c.style.setProperty("--out0",(posOf(i,w[2])*100).toFixed(2)+"%");c.style.setProperty("--out1",(posOf(i,w[3]+1)*100).toFixed(2)+"%");
+ });
+
+ function measure(){
+  vh=root.clientHeight||innerHeight;                 /* the small viewport height: steady when a phone hides its address bar */
+  wide=!!(window.matchMedia&&matchMedia(FRM.WIDE).matches);
+  measuredOn=framesOn();
+  if(!measuredOn)return;
+  var sy=scrollY,pr=pinEl.getBoundingClientRect(),st=$("#stage"),i,r;
+  for(i=0;i<NB;i++){r=segs[i].getBoundingClientRect();segTop[i]=r.top+sy;segH[i]=r.height;}
+  if(st){r=st.getBoundingClientRect();stageAt={x:r.left-pr.left,y:r.top-pr.top};}
+  for(i=0;i<NB;i++){
+   if(!cards[i])continue;
+   r=cards[i].getBoundingClientRect();
+   cardBox[i]={l:r.left-pr.left,r:r.right-pr.left,t:r.top-pr.top,b:r.bottom-pr.top};
+  }
+ }
+ /* A change of size changes the reel's length, so the same scroll position would mean another frame. keep() notes the frame on
+    show before anything is measured again; restore() puts the scroll back on it afterwards. It only acts when the reel's own
+    length changed (a real change of size, not a phone hiding its address bar) and the reel was on, with the scroll inside it.
+    The resize event and the scrubber's size observer can arrive in either order; both go through here, and the first one in
+    still finds the old frame. */
+ function keep(){return {f:S.target,i:S.beat,h0:segH[0],held:measuredOn&&segH.length===NB&&scrollY<=segTop[NB-1]+segH[NB-1]-vh};}
+ function restore(k){
+  if(!k.held||!framesOn()||!(Math.abs(segH[0]-k.h0)>1))return false;
+  scrollTo(0,Math.max(0,Math.round(segTop[k.i]+posOf(k.i,k.f)*segH[k.i]-vh)));
+  return true;
+ }
+ function relay(){
+  var k=keep(),moved;
+  measure();moved=restore(k);update();
+  if(moved&&window.APDScrub)window.APDScrub.jump();
+ }
+ function leader(name,f,i){
+  if(!svg)return;
+  var a=name&&wide?D.anchors[name]:null,R=a&&window.APDScrub?window.APDScrub.rect(f):null,box=cardBox[i],pt=null;
+  if(a&&R&&box&&f>=a[0][0]&&f<a[a.length-1][0]+1){
+   var k=Math.min(a.length-1,Math.max(0,Math.floor(f-a[0][0]))),p=a[k],q=a[Math.min(a.length-1,k+1)],t=Math.max(0,Math.min(1,f-p[0]));
+   pt=[stageAt.x+R.x+(p[1]+(q[1]-p[1])*t)*R.w,stageAt.y+R.y+(1-(p[2]+(q[2]-p[2])*t))*R.h];
+  }
+  if(!pt){svg.classList.remove("is-on");return;}
+  var rad=10,sx=box.r,sy=(box.t+box.b)/2,dx=pt[0]-sx,dy=pt[1]-sy,len=Math.sqrt(dx*dx+dy*dy)||1;
+  line.setAttribute("x1",sx.toFixed(1));line.setAttribute("y1",sy.toFixed(1));
+  line.setAttribute("x2",(pt[0]-dx/len*rad).toFixed(1));line.setAttribute("y2",(pt[1]-dy/len*rad).toFixed(1));
+  ring.setAttribute("cx",pt[0].toFixed(1));ring.setAttribute("cy",pt[1].toFixed(1));ring.setAttribute("r",rad);
+  svg.classList.add("is-on");
+ }
+ function show(i,f){
+  var w=BEATS[i].card,onNow=(f>=w[0]&&f<w[3]+1)?i:-1,k,s=-1,el;
+  if(onNow!==lastOn){for(k=0;k<NB;k++)if(cards[k])cards[k].classList.toggle("is-on",k===onNow);lastOn=onNow;}
+  if(i!==curBeat){curBeat=i;pinEl.classList.toggle("is-compact",i>0);}          /* after the hero the text area is smaller (narrow screens) */
+  if(subs[i].length){
+   subs[i].forEach(function(sb,j){if(f>=+sb.getAttribute("data-a")&&f<+sb.getAttribute("data-b")+1)s=j;});
+   if(s!==subOn[i]){subs[i].forEach(function(sb,j){sb.classList.toggle("is-on",j===s);});subOn[i]=s;}
+  }
+  el=s>=0?subs[i][s]:cards[i];
+  leader(onNow>=0&&el?el.getAttribute("data-anchor"):null,f,i);
+ }
+ function update(){
+  if(!framesOn()){S.target=1;S.frame=1;S.beat=0;S.b=0;return;}
+  var p=scrollY+vh,i,t,f;
+  for(i=NB-1;i>0;i--)if(p>=segTop[i])break;
+  t=segH[i]?(p-segTop[i])/segH[i]:0;
+  f=Math.max(1,Math.min(D.frames,frameOf(i,t)));
+  S.b=i+Math.max(0,Math.min(1,t));S.target=f;S.frame=f;S.beat=i;
+  show(i,f);
+  if(window.APDScrub)window.APDScrub.kick(true);
+ }
+ function goTo(i,f){
+  if(!framesOn())return false;
+  measure();
+  scrollTo(0,Math.max(0,Math.round(segTop[i]+posOf(i,f)*segH[i]-vh+1)));
+  update();
+  if(window.APDScrub)window.APDScrub.jump();
+  return true;
+ }
+ /* The pinned layout gives each card a fixed area. If a card does not fit it (very large text, unusual text spacing), nothing may
+    be cut off: the page falls back to the plain layout instead. A card's height is final only once the web fonts are in (a
+    fallback font wraps differently), so while they are still loading the answer is yes and the question is asked again when
+    they land (settle, below). */
+ function fits(){
+  if(!framesOn())return true;
+  var cs=getComputedStyle(root),box=$(".cards-in",pinEl),rem=parseFloat(cs.fontSize)||16,i,c,room,ok=true,compact=parseFloat(cs.getPropertyValue("--card-area-compact"))||13.5;
+  if(!box)return true;
+  for(i=0;i<NB;i++){
+   c=cards[i];if(!c)continue;
+   room=wide||i===0?box.clientHeight-(wide?0:16):compact*rem-16;      /* compact = --card-area-compact in site.css, in rem */
+   if(c.offsetHeight>room+1){ok=false;break;}
+  }
+  return ok||fontsPending();      /* asked after the measuring above: that layout is what makes the browser fetch a font it still needs */
+ }
+ function fontsPending(){
+  var fs=document.fonts,p=false;
+  if(!fs)return false;
+  if(fs.status==="loading")return true;
+  try{fs.forEach(function(face){if(face.status==="loading")p=true;});}catch(e){}
+  return p;
+ }
+ /* decided = the mode was already switched by someone else (scrub.js giving up); otherwise ask boot.js again */
+ function sync(decided){
+  var k=keep(),moved;
+  if(!decided)FRM.mode();
+  wide=!!(window.matchMedia&&matchMedia(FRM.WIDE).matches);
+  /* the scrubber lays the picture out for this window and hands the cards their widths; only then can the cards be measured */
+  if(framesOn()&&window.APDScrub)window.APDScrub.mode();
+  if(!fits())root.classList.remove("frames-on");
+  if(!framesOn()){pinEl.classList.remove("is-compact");cards.forEach(function(c,j){if(c)c.classList.toggle("is-on",j===0);});lastOn=-2;curBeat=-1;}
+  measure();moved=restore(k);update();
+  if(moved&&window.APDScrub)window.APDScrub.jump();
+ }
+ $$("[data-go]").forEach(function(a){a.addEventListener("click",function(e){
+  var i=byName[a.getAttribute("data-go")];
+  if(i!==undefined&&goTo(i,BEATS[i].dwell[0]))e.preventDefault();
+ });});
+ /* a link that names something inside a beat card (#parts) goes to that beat */
+ function fromHash(){
+  var id=location.hash.slice(1),el=id&&document.getElementById(id),card=el&&el.closest?el.closest(".beat-card"):null,k=card?byName[card.getAttribute("data-beat")]:undefined;
+  if(k!==undefined)goTo(k,BEATS[k].dwell[0]);
+ }
+ addEventListener("scroll",update,{passive:true});
+ addEventListener("resize",function(){sync(false);});
+ /* page loaded, or fonts in (or failed): decide the layout again from scratch, whichever way an earlier answer went */
+ function settle(){sync(false);}
+ addEventListener("load",function(){settle();fromHash();});
+ if(document.fonts){
+  if(document.fonts.ready)document.fonts.ready.then(settle);
+  if(document.fonts.addEventListener)document.fonts.addEventListener("loadingdone",settle);
+ }
+ addEventListener("hashchange",fromHash);
+ wide=!!(window.matchMedia&&matchMedia(FRM.WIDE).matches);
+ if(!fits())root.classList.remove("frames-on");
+ measure();update();
+ window.APDReel={sync:sync,measure:relay,frameOf:frameOf,posOf:posOf,
+  end:function(){return framesOn()&&segTop.length?segTop[NB-1]+segH[NB-1]-vh:0;},
+  top:function(i,f){return segTop[i]+posOf(i,f)*segH[i]-vh;}};
+ return window.APDReel;
+})();
+function onMotionChange(e){reduce=e.matches;reel.sync(false);dots.redraw();}
 if(mq.addEventListener)mq.addEventListener("change",onMotionChange);else if(mq.addListener)mq.addListener(onMotionChange);
+
+/* ---------- header menu: one list of links; a pop-up when the row does not fit, inline when it does ---------- */
+(function(){
+ var inner=hdr&&$(".bar",hdr),menu=$("#site-menu"),btn=hdr&&$(".menu-btn",hdr);
+ if(!inner||!menu||!btn){root.classList.remove("nav-wide");return;}
+ var hasPop="popover" in HTMLElement.prototype,lastW=0;
+ function isOpen(){try{return hasPop&&menu.hasAttribute("popover")&&menu.matches(":popover-open");}catch(e){return false;}}
+ function apply(wideNow){
+  hdr.classList.toggle("is-wide",wideNow);
+  if(hasPop){if(wideNow)menu.removeAttribute("popover");else if(!menu.hasAttribute("popover"))menu.setAttribute("popover","auto");}
+  else{menu.removeAttribute("popover");menu.hidden=!wideNow;btn.setAttribute("aria-expanded","false");}
+ }
+ /* collapsed and still too wide (large text, tiny screens): the button moves into the menu */
+ function tight(){
+  hdr.classList.remove("is-tight");
+  if(!hdr.classList.contains("is-wide")&&inner.scrollWidth>inner.clientWidth)hdr.classList.add("is-tight");
+ }
+ function fit(force){
+  var w=hdr.clientWidth,wideNow=hdr.classList.contains("is-wide");
+  if(!force&&!wideNow&&w<=lastW){tight();return;}       /* collapsed: look again only when the header has grown */
+  var open=isOpen();
+  hdr.classList.add("is-measuring","is-wide");
+  if(hasPop)menu.removeAttribute("popover");else menu.hidden=false;
+  var fits=inner.scrollWidth<=inner.clientWidth;
+  apply(fits);
+  tight();
+  if(!fits&&open){try{menu.showPopover();}catch(e){}}
+  lastW=w;root.classList.remove("nav-wide");
+  requestAnimationFrame(function(){hdr.classList.remove("is-measuring");});
+ }
+ if(!hasPop){btn.addEventListener("click",function(){var show=menu.hidden;menu.hidden=!show;btn.setAttribute("aria-expanded",show?"true":"false");});}
+ menu.addEventListener("click",function(e){
+  if(!e.target.closest||!e.target.closest("a"))return;
+  if(isOpen())menu.hidePopover();
+  else if(!hasPop&&!hdr.classList.contains("is-wide")){menu.hidden=true;btn.setAttribute("aria-expanded","false");}
+ });
+ if(window.ResizeObserver){var ro=new ResizeObserver(function(){fit(false);});ro.observe(hdr);ro.observe(menu);}
+ else addEventListener("resize",function(){fit(true);});
+ fit(true);
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){fit(true);});
+})();
+
+/* ---------- in-page links: a short hop scrolls smoothly; a jump that would run through the reel is instant ---------- */
+document.addEventListener("click",function(e){
+ var a=e.target.closest?e.target.closest('a[href^="#"]'):null;
+ if(!a||a.hasAttribute("data-go")||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+ var id=a.getAttribute("href").slice(1),el=id&&document.getElementById(id);
+ if(!el||reduce||!("scrollBehavior" in root.style))return;
+ var end=reel.end(),y=el.getBoundingClientRect().top+scrollY;
+ if(scrollY<end-1||y<end-1)return;
+ e.preventDefault();
+ el.scrollIntoView({behavior:"smooth",block:"start"});
+ if(history.pushState)history.pushState(null,"","#"+id);
+ if(el.hasAttribute("tabindex"))el.focus({preventScroll:true});
+});
+
+/* ---------- current section in the header (native scroll-target-group where the browser has it) ---------- */
+(function(){
+ var menu=$("#site-menu");if(!menu)return;
+ var links=$$('a[href^="#"]',menu);
+ if(window.CSS&&CSS.supports&&CSS.supports("scroll-target-group: auto")){
+  var mirror=function(){
+   var now=null;try{now=menu.querySelector("a:target-current");}catch(e){}
+   links.forEach(function(l){l.setAttribute("aria-current",l===now?"true":"false");});
+  };
+  mirror();document.addEventListener("scrollend",mirror);
+  return;
+ }
+ if(!window.IntersectionObserver)return;
+ var io=new IntersectionObserver(function(es){es.forEach(function(en){
+  if(!en.isIntersecting)return;
+  var id=en.target.getAttribute("id");
+  links.forEach(function(l){var onNow=l.getAttribute("href")==="#"+id;l.classList.toggle("target-current",onNow);l.setAttribute("aria-current",onNow?"true":"false");});
+ });},{rootMargin:"-50% 0px -50% 0px",threshold:0});
+ links.forEach(function(l){var t=document.getElementById(l.getAttribute("href").slice(1));if(t)io.observe(t);});
+})();
 
 /* ---------- tap-through demo ---------- */
 var demo=$(".try");

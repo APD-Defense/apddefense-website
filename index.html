@@ -7,49 +7,126 @@
 <meta name="referrer" content="no-referrer">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="preload" href="assets/fonts/space-grotesk-700.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="assets/fonts/apd-sans-400.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="site.css">
+<script src="assets/beats.js"></script>
 <script src="assets/boot.js"></script></head><body>
 <a class="skip" href="#main">Skip to main content</a>
 <header class="site"><div class="bar">
 <a class="brand" href="index.html">APD Defense, LLC</a>
-<nav class="nav" aria-label="On this page"><a href="#radio">Radio</a><a href="#try">Try it</a><a href="#relay">Relay</a><a href="#who">Who it is for</a></nav>
+<nav class="nav" aria-label="On this page">
+<button class="menu-btn" type="button" popovertarget="site-menu" popovertargetaction="toggle" aria-controls="site-menu"><span>Menu</span></button>
+<ul id="site-menu" class="site-menu" popover="auto">
+<li><a href="#radio">Radio</a></li>
+<li><a href="#try">Try it</a></li>
+<li><a href="#relay">Relay</a></li>
+<li><a href="#who">Who it is for</a></li>
+<li><a href="#specs">Specs</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li class="menu-cta"><a class="btn" href="civilian-radio-interest.html">Join the interest list</a></li>
+</ul>
+</nav>
+<a class="btn btn-sm" href="civilian-radio-interest.html">Join the interest list</a>
 </div></header>
 
 <main id="main">
 
-<section class="stage" id="radio" aria-label="The radio">
-<div class="stage-pin" aria-hidden="true"><canvas class="gl" id="gl"></canvas><svg class="leaders" focusable="false"></svg><ul class="tags"></ul><div class="stage-progress"><i></i></div></div>
+<section class="reel" id="radio" aria-label="The radio" tabindex="-1">
+<div class="track" id="track">
+<div class="reel-pin" id="pin">
 
-<div class="hero"><div class="wrap hero-in">
+<div class="stage" id="stage">
+<div class="stage-view" role="img" aria-label="The APD Defense radio, shown from each side as the page scrolls"><img class="stage-poster" id="stage-poster" src="frames/0001.webp" srcset="frames-640/0001.webp 640w, frames/0001.webp 1280w, frames-2x/0001.webp 2560w" sizes="100vw" width="1280" height="720" alt="" fetchpriority="high"><canvas class="stage-canvas" id="frames-canvas"></canvas></div>
+<div class="load" id="boot-overlay"><progress id="boot-fill" max="100" value="0" aria-label="Loading the pictures of the radio"><span id="boot-pct">0%</span></progress></div>
+</div>
+
+<div class="cards"><div class="cards-in">
+
+<article class="beat-card card-hero is-on" id="card-hero" data-beat="hero">
+<img class="beat-still" src="frames/0001.webp" srcset="frames-640/0001.webp 640w, frames/0001.webp 1280w, frames-2x/0001.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the APD Defense radio in olive green: display, six keys, antenna and knob on top, red SOS button on the right side" fetchpriority="high">
+<div class="card-body">
 <h1 class="hero-h"><span>Team messaging</span> <span>and casualty</span> <span>records,</span> <span>off the grid.</span></h1>
-<div class="hero-foot">
 <p class="lede">A wearable data radio for places the phone network doesn&rsquo;t reach. No towers, accounts or internet to set up.</p>
 <p class="muted small">Prototype, not for sale.</p>
-<div class="actions"><a class="btn" href="civilian-radio-interest.html">Join the interest list</a><a class="btn-outline" href="#parts">See the radio</a></div>
+<div class="actions"><a class="btn" href="civilian-radio-interest.html">Join the interest list</a><a class="link link-go" href="#parts" data-go="exploded">See the radio</a></div>
 </div>
-<img class="still still-hero" loading="lazy" src="assets/img/radio-assembled.webp" width="720" height="720" alt="Rendered drawing of the APD Defense radio with an antenna and three buttons">
+</article>
+
+<article class="beat-card" id="card-sos" data-beat="sos" data-anchor="sos">
+<img class="beat-still" loading="lazy" decoding="async" src="frames/0080.webp" srcset="frames-640/0080.webp 640w, frames/0080.webp 1280w, frames-2x/0080.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the right side of the radio with the red SOS button">
+<div class="card-body">
+<span class="card-n" aria-hidden="true">02</span>
+<h2 class="card-h">Guarded SOS</h2>
+<p>Gated, recessed SOS button on the right side.</p>
+</div>
+</article>
+
+<article class="beat-card" id="card-usb" data-beat="usb" data-anchor="usb">
+<img class="beat-still" loading="lazy" decoding="async" src="frames/0124.webp" srcset="frames-640/0124.webp 640w, frames/0124.webp 1280w, frames-2x/0124.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the radio tipped back to show the USB-C port underneath, with a battery symbol on its display">
+<div class="card-body">
+<span class="card-n" aria-hidden="true">03</span>
+<h2 class="card-h">Battery life</h2>
+<p>USB-C rechargeable.</p>
+</div>
+</article>
+
+<article class="beat-card" id="card-exploded" data-beat="exploded">
+<img class="beat-still" loading="lazy" decoding="async" src="frames/0180.webp" srcset="frames-640/0180.webp 640w, frames/0180.webp 1280w, frames-2x/0180.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the radio drawn apart: shell, display, keys, board, battery, antenna and belt clip">
+<div class="card-body">
+<span class="card-n" aria-hidden="true">04</span>
+<div class="subs">
+<div class="sub is-on" id="parts" data-a="139" data-b="171"><h2 class="card-h">Every part, laid out.</h2><p>One radio, drawn apart and put back together.</p></div>
+<div class="sub" data-a="172" data-b="180" data-anchor="pcb"><h3 class="card-h">Encryption</h3><p>Chip supports Arm TrustZone for hardware-isolated key storage, on the roadmap, not yet used.</p></div>
+<div class="sub" data-a="181" data-b="204" data-anchor="antenna"><h3 class="card-h">Frequency hopping</h3><p>The radio hops across channels.</p></div>
+</div>
+</div>
+</article>
+
+<article class="beat-card" id="card-mesh" data-beat="mesh">
+<img class="beat-still" loading="lazy" decoding="async" src="frames/0250.webp" srcset="frames-640/0250.webp 640w, frames/0250.webp 1280w, frames-2x/0250.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of three radios standing in a line">
+<div class="card-body">
+<span class="card-n" aria-hidden="true">05</span>
+<h2 class="card-h">Relay.</h2>
+<p>Messages that pass from radio to radio. It is designed to relay traffic across a team mesh.</p>
+</div>
+</article>
+
+<article class="beat-card" id="card-final" data-beat="final">
+<img class="beat-still" loading="lazy" decoding="async" src="frames/0288.webp" srcset="frames-640/0288.webp 640w, frames/0288.webp 1280w, frames-2x/0288.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of three radios side by side in tan, green and black">
+<div class="card-body">
+<span class="card-n" aria-hidden="true">06</span>
+<h2 class="card-h">3 color options available</h2>
+<p>OD Green &middot; Coyote Tan &middot; Black</p>
+</div>
+</article>
+
+<article class="beat-card" id="card-forest" data-beat="forest">
+<img class="beat-still" loading="lazy" decoding="async" src="frames/0356.webp" srcset="frames-640/0356.webp 640w, frames/0356.webp 1280w, frames-2x/0356.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the radio lying wet against a rock on a forest floor">
+<div class="card-body">
+<span class="card-n" aria-hidden="true">07</span>
+<h2 class="card-h">Weatherproof</h2>
+<p>Left in the rain on the forest floor. Weatherproof: water beads up and runs off.</p>
+<div class="actions"><a class="btn" href="civilian-radio-interest.html">Join the interest list</a></div>
+</div>
+</article>
+
 </div></div>
 
-<div class="reel" id="parts"><div class="wrap reel-in">
-<div class="reel-copy">
-<h2 class="display">Every part, laid out.</h2>
-<p>One radio, drawn apart and put back together.</p>
+<svg class="leader" id="leader" aria-hidden="true" focusable="false"><line id="leader-line" x1="0" y1="0" x2="0" y2="0"/><circle id="leader-ring" cx="0" cy="0" r="0"/></svg>
+<div class="reel-progress" aria-hidden="true"><i></i></div>
 </div>
-<img class="still still-reel" loading="lazy" src="assets/img/radio-exploded.webp" width="1200" height="760" alt="Exploded technical drawing of the radio: shell, board, battery, antenna, three buttons and belt clip">
-<ul class="parts-list" aria-label="Parts shown in the drawing"><li data-part="antenna">Antenna</li><li data-part="front">Front shell</li><li data-part="buttons">Three buttons</li><li data-part="board">Board</li><li data-part="battery">Battery</li><li data-part="back">Back shell</li><li data-part="clip">Belt clip</li></ul>
-<p class="muted small caption">Generic technical drawing: shell, board, battery, antenna, three buttons and belt clip.</p>
-</div></div>
+<div class="segs" aria-hidden="true"><div class="seg" data-beat="hero"></div><div class="seg" data-beat="sos"></div><div class="seg" data-beat="usb"></div><div class="seg" data-beat="exploded"></div><div class="seg" data-beat="mesh"></div><div class="seg" data-beat="final"></div><div class="seg" data-beat="forest"></div></div>
+</div>
 </section>
 
 <section class="statement" aria-labelledby="statement-h"><div class="wrap">
 <h2 class="statement-h" id="statement-h"><span>Built for teams</span> <span>that work beyond</span> <span>the network.</span></h2>
 </div></section>
 
-<section class="try" id="try" aria-labelledby="try-h"><div class="wrap try-in">
+<section class="try" id="try" aria-labelledby="try-h" tabindex="-1"><div class="wrap try-in">
 <div class="try-copy">
 <h2 class="display" id="try-h">One app. One radio.</h2>
 <p>Two parts, designed to work as one.</p>
-<p class="muted small">Prototype concept. Simplified drawings, not the finished app. Names and messages are examples.</p>
 <ol class="steps">
 <li><button type="button" class="step" data-step="1" aria-current="step"><span class="muted small">Step 1 of 4</span><span class="step-t">Connect.</span><span class="step-d">One radio, one phone, over Bluetooth.</span></button></li>
 <li><button type="button" class="step" data-step="2"><span class="muted small">Step 2 of 4</span><span class="step-t">Send.</span><span class="step-d">Type a message, then one tap.</span></button></li>
@@ -114,7 +191,7 @@
 </div>
 </div></section>
 
-<section class="relay" id="relay" aria-labelledby="relay-h">
+<section class="relay" id="relay" aria-labelledby="relay-h" tabindex="-1">
 <div class="wrap relay-head">
 <h2 class="giant" id="relay-h">Relay.</h2>
 <div class="relay-cols">
@@ -141,7 +218,6 @@
 </div>
 <div class="wrap map-ctl">
 <button type="button" class="btn-outline" data-relay-send>Send a message</button>
-<p class="muted small">Concept drawing on an invented map, not to scale. Names are examples.</p>
 </div>
 <div class="wrap">
 <h3 class="sr-only">How a message travels</h3>
@@ -164,7 +240,7 @@
 </ol>
 </div></section>
 
-<section class="who" id="who" aria-labelledby="who-h">
+<section class="who" id="who" aria-labelledby="who-h" tabindex="-1">
 <div class="wrap who-head">
 <h2 class="display" id="who-h">Who it is for</h2>
 <div class="tabs" role="tablist" aria-label="Who it is for">
@@ -195,7 +271,7 @@
 <g transform="translate(1090 712) scale(.62)"><use href="#f-pack"/><use href="#f-base"/><use href="#f-helmet"/><use href="#f-radio"/></g>
 <g transform="translate(1290 708) scale(.6)"><use href="#f-pack"/><use href="#f-base"/><use href="#f-helmet"/><use href="#f-down"/></g>
 </svg>
-<div class="aud-copy wrap"><h3 class="aud-h">Teams in the field.</h3><p>Teams that work beyond the network.</p><p class="muted small">Illustration of intended use. Not a real person, agency or deployment.</p></div>
+<div class="aud-copy wrap"><h3 class="aud-h">Teams in the field.</h3><p>Teams that work beyond the network.</p></div>
 </div>
 
 <div class="aud" role="tabpanel" id="p-le" aria-labelledby="t-le">
@@ -211,7 +287,7 @@
 <circle class="s3" cx="1092" cy="792" r="12"/><circle class="s3" cx="1320" cy="792" r="12"/>
 <g transform="translate(920 820) scale(.72)"><use href="#f-base"/><use href="#f-cap"/><use href="#f-radio"/></g>
 </svg>
-<div class="aud-copy wrap"><h3 class="aud-h">Law enforcement.</h3><p>Teams that need to message where the network does not reach.</p><p class="muted small">Illustration of intended use. Not a real person, agency or deployment.</p></div>
+<div class="aud-copy wrap"><h3 class="aud-h">Law enforcement.</h3><p>Teams that need to message where the network does not reach.</p></div>
 </div>
 
 <div class="aud" role="tabpanel" id="p-sar" aria-labelledby="t-sar">
@@ -224,7 +300,7 @@
 <g transform="translate(1080 436) scale(.56)"><use href="#f-pack"/><use href="#f-base"/><use href="#f-helmet"/><use href="#f-point"/></g>
 <g transform="translate(1290 392) scale(-.56 .56)"><use href="#f-pack"/><use href="#f-base"/><use href="#f-helmet"/><use href="#f-radio"/></g>
 </svg>
-<div class="aud-copy wrap"><h3 class="aud-h">Search and rescue.</h3><p>Crews that search where there is no signal.</p><p class="muted small">Illustration of intended use. Not a real person, agency or deployment.</p></div>
+<div class="aud-copy wrap"><h3 class="aud-h">Search and rescue.</h3><p>Crews that search where there is no signal.</p></div>
 </div>
 
 <div class="aud" role="tabpanel" id="p-civ" aria-labelledby="t-civ">
@@ -237,10 +313,55 @@
 <g transform="translate(940 776) scale(.64)"><use href="#f-pack"/><use href="#f-base"/><use href="#f-beanie"/><use href="#f-radio"/></g>
 <g transform="translate(1350 778) scale(-.6 .6)"><use href="#f-pack"/><use href="#f-base"/><use href="#f-down"/></g>
 </svg>
-<div class="aud-copy wrap"><h3 class="aud-h">Civilians in the woods.</h3><p>Hikers, campers and preppers, beyond the last tower.</p><p class="muted small">Illustration of intended use. Not a real person, agency or deployment.</p></div>
+<div class="aud-copy wrap"><h3 class="aud-h">Civilians in the woods.</h3><p>Hikers, campers and preppers, beyond the last tower.</p></div>
 </div>
 <p class="wrap muted small who-note">Use of the radio or app by any agency, unit or customer is not implied. Prototype, not for sale.</p>
 </section>
+
+<section class="specs" id="specs" aria-labelledby="specs-h" tabindex="-1"><div class="wrap specs-in">
+<h2 class="display" id="specs-h">Specs</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-labelledby="specs-h">
+<table class="spec-table">
+<caption class="sr-only">Specs</caption>
+<tbody>
+<tr><th scope="row">Controls</th><td>D-pad: up, down, left, right. Other keys to be decided.</td></tr>
+<tr><th scope="row">Top</th><td>Knob for power and volume. Antenna.</td></tr>
+<tr><th scope="row">Left side</th><td>Kenwood 2-pin audio jack. PTT pad.</td></tr>
+<tr><th scope="row">Right side</th><td>Gated, recessed SOS button.</td></tr>
+<tr><th scope="row">Front</th><td>Display. Microphone at the bottom.</td></tr>
+<tr><th scope="row">Back</th><td>Speaker, so the radio can be worn face-in. Belt clip.</td></tr>
+<tr><th scope="row">Underside</th><td>One USB-C port. Rechargeable.</td></tr>
+<tr><th scope="row">Colors</th><td>OD Green, Coyote Tan, Black.</td></tr>
+<tr><th scope="row">Phone link</th><td>One radio, one phone, over Bluetooth.</td></tr>
+<tr><th scope="row">Network</th><td>No towers, accounts or internet to set up.</td></tr>
+<tr><th scope="row">Weather</th><td>Weatherproof.</td></tr>
+<tr><th scope="row">Status</th><td>Prototype, not for sale.</td></tr>
+</tbody>
+</table>
+</div>
+</div></section>
+
+<section class="faq" id="faq" aria-labelledby="faq-h" tabindex="-1"><div class="wrap faq-in">
+<h2 class="display" id="faq-h">FAQ</h2>
+<div class="faq-list">
+<details><summary>Can I buy it?</summary>
+<div class="faq-a"><p>Prototype, not for sale.</p><p>This device has not been authorized as required by the rules of the Federal Communications Commission. This device is not, and may not be, offered for sale or lease, or sold or leased, until authorization is obtained.</p></div>
+</details>
+<details><summary>Does it need cell service or internet?</summary>
+<div class="faq-a"><p>A wearable data radio for places the phone network doesn&rsquo;t reach. No towers, accounts or internet to set up.</p></div>
+</details>
+<details><summary>How does a message get there?</summary>
+<div class="faq-a"><p>Messages that pass from radio to radio.</p>
+<ol class="faq-steps"><li>Type on the phone. Write a message in the app, then one tap.</li><li>Your radio sends it. The phone hands the message to your radio over Bluetooth.</li><li>Radios pass it along. The radios are designed to relay it from one team member to the next.</li><li>It shows up on their phone. Replies come back the same way.</li></ol></div>
+</details>
+<details><summary>Who is it for?</summary>
+<div class="faq-a"><p>Built for teams that work beyond the network.</p><p>Teams in the field. Law enforcement. Search and rescue. Civilians in the woods.</p><p class="muted small">Use of the radio or app by any agency, unit or customer is not implied. Prototype, not for sale.</p></div>
+</details>
+<details><summary>What is the interest list?</summary>
+<div class="faq-a"><p>We are building a civilian radio for US customers. Tell us you are interested and we will email you when our civilian radio is available.</p><p class="muted">This is not an order. We are not taking money, deposits or payment details, and no radio will be sold or delivered to a customer before FCC authorization.</p></div>
+</details>
+</div>
+</div></section>
 
 <section class="join" aria-labelledby="join-h"><div class="wrap join-in">
 <h2 class="display" id="join-h">Join the interest list</h2>
@@ -259,6 +380,8 @@
 <nav class="foot-nav" aria-label="Footer"><a href="civilian-radio-interest.html">Join the interest list</a><a href="privacy.html">Privacy</a><a href="open-source.html">Open-source notices</a><a href="mailto:info@apddefense.com">info@apddefense.com</a></nav>
 <p class="muted">&copy; 2026 APD Defense, LLC.</p>
 </div></footer>
+<script src="assets/frames-manifest.js"></script>
 <script src="assets/app.js"></script>
+<script src="assets/scrub.js"></script>
 <script src="assets/walkthrough.js"></script>
 </body></html>
