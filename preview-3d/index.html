@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>APD Defense, LLC | A wearable data radio, off the grid</title>
+<meta name="description" content="Team messaging and casualty records, off the grid. A wearable data radio in active development.">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<link rel="preload" href="../assets/fonts/space-grotesk-700.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="../assets/fonts/apd-sans-400.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="site.css">
+<script src="assets/beats.js"></script>
+<script src="assets/boot.js"></script></head><body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="site"><div class="bar">
+<a class="brand" href="index.html">APD Defense, LLC</a>
+<nav class="nav" aria-label="On this page">
+<button class="menu-btn" type="button" popovertarget="site-menu" popovertargetaction="toggle" aria-controls="site-menu"><span>Menu</span></button>
+<ul id="site-menu" class="site-menu" popover="auto">
+<li><a href="#radio">Radio</a></li>
+<li><a href="#try">Try it</a></li>
+<li><a href="#relay">Relay</a></li>
+<li><a href="#who">Who it is for</a></li>
+<li><a href="#specs">Specs</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li class="menu-cta"><a class="btn" href="../civilian-radio-interest.html">Join the interest list</a></li>
+</ul>
+</nav>
+<a class="btn btn-sm" href="../civilian-radio-interest.html">Join the interest list</a>
+</div></header>
+
+<main id="main">
+
+<section class="reel" id="radio" aria-label="The radio" tabindex="-1">
+<div class="track" id="track">
+<div class="reel-pin" id="pin">
+
+<div class="stage" id="stage">
+<div class="stage-view" role="img" aria-label="The APD Defense radio, shown from each side as the page scrolls"><img class="stage-poster" id="stage-poster" src="frames/0001.webp" srcset="frames-640/0001.webp 640w, frames/0001.webp 1280w, frames-2x/0001.webp 2560w" sizes="100vw" width="1280" height="720" alt="" fetchpriority="high"><canvas class="stage-canvas" id="frames-canvas"></canvas></div>
+<div class="load" id="boot-overlay"><progress id="boot-fill" max="100" value="0" aria-label="Loading the pictures of the radio"><span id="boot-pct">0%</span></progress></div>
+</div>
+
+<div class="cards"><div class="cards-in">
+
+<article class="beat-card card-hero is-on" id="card-hero" data-beat="hero">
+<img class="beat-still" src="frames/0001.webp" srcset="frames-640/0001.webp 640w, frames/0001.webp 1280w, frames-2x/0001.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the APD Defense radio in olive green: display, six keys, antenna and knob on top, red SOS button on the right side" fetchpriority="high">
+<div class="card-body">
+<h1 class="hero-h"><span>Team messaging</span> <span>and casualty</span> <span>records,</span> <span>off the grid.</span></h1>
+<p class="lede">A wearable data radio for places the phone network doesn&rsquo;t reach. No towers, accounts or internet to set up.</p>
+<p class="muted small">Prototype, not for sale.</p>
+<div class="actions"><a class="btn" href="../civilian-radio-interest.html">Join the interest list</a><a class="link link-go" href="#parts" data-go="exploded">See the radio</a></div>
+</div>
+</article>
+
+<article class="beat-card" id="card-sos" data-beat="sos" data-anchor="sos">
+<img class="beat-still" loading="lazy" decoding="async" src="frames/0080.webp" srcset="frames-640/0080.webp 640w, frames/0080.webp 1280w, frames-2x/0080.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the right side of the radio with the red SOS button">
+<div class="card-body">
+<span class="card-n" aria-hidden="true">02</span>
+<h2 class="card-h">Guarded SOS</h2>
+<p>Gated, recessed SOS button on the right side.</p>
+</div>
+</article>
+
+<article class="beat-card" id="card-usb" data-beat="usb" data-anchor="usb">
+<img class="beat-still" loading="lazy" decoding="async" src="frames/0124.webp" srcset="frames-640/0124.webp 640w, frames/0124.webp 1280w, frames-2x/0124.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the radio tipped back to show the USB-C port underneath, with a battery symbol on its display">
+<div class="card-body">
+<span class="card-n" aria-hidden="true">03</span>
+<h2 class="card-h">Battery life</h2>
+<p>USB-C rechargeable.</p>
+</div>
+</article>
+
+<article class="beat-card" id="card-exploded" data-beat="exploded">
+<img class="beat-still" loading="lazy" decoding="async" src="frames/0180.webp" srcset="frames-640/0180.webp 640w, frames/0180.webp 1280w, frames-2x/0180.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the radio drawn apart: shell, display, keys, board, battery, antenna and belt clip">
+<div class="card-body">
+<span class="card-n" aria-hidden="true">04</span>
+<div class="subs">
+<div class="sub is-on" id="parts" data-a="139" data-b="171"><h2 class="card-h">Every part, laid out.</h2><p>One radio, drawn apart and put back together.</p></div>
+<div class="sub" data-a="172" data-b="180" data-anchor="pcb"><h3 class="card-h">Encryption</h3><p>Chip supports Arm TrustZone for hardware-isolated key storage, on the roadmap, not yet used.</p></div>
+<div class="sub" data-a="181" data-b="204" data-anchor="antenna"><h3 class="card-h">Frequency hopping</h3><p>The radio hops across channels.</p></div>
+</div>
+</div>
+</article>
+
+<article class="beat-card" id="card-mesh" data-beat="mesh">
+<img class="beat-still" loading="lazy" decoding="async" src="frames/0250.webp" srcset="frames-640/0250.webp 640w, frames/0250.webp 1280w, frames-2x/0250.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of three radios standing in a line">
+<div class="card-body">
+<span class="card-n" aria-hidden="true">05</span>
+<h2 class="card-h">Relay.</h2>
+<p>Messages that pass from radio to radio. It is designed to relay traffic across a team mesh.</p>
+</div>
+</article>
+
+<article class="beat-card" id="card-final" data-beat="final">
+<img class="beat-still" loading="lazy" decoding="async" src="frames/0288.webp" srcset="frames-640/0288.webp 640w, frames/0288.webp 1280w, frames-2x/0288.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of three radios side by side in tan, green and black">
+<div class="card-body">
+<span class="card-n" aria-hidden="true">06</span>
+<h2 class="card-h">3 color options available</h2>
+<p>OD Green &middot; Coyote Tan &middot; Black</p>
+</div>
+</article>
+
+<article class="beat-card" id="card-forest" data-beat="forest">
+<img class="beat-still" loading="lazy" decoding="async" src="frames/0356.webp" srcset="frames-640/0356.webp 640w, frames/0356.webp 1280w, frames-2x/0356.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the radio lying wet against a rock on a forest floor">
+<div class="card-body">
+<span class="card-n" aria-hidden="true">07</span>
+<h2 class="card-h">Weatherproof</h2>
+<p>Left in the rain on the forest floor. Weatherproof: water beads up and runs off.</p>
+<div class="actions"><a class="btn" href="../civilian-radio-interest.html">Join the interest list</a></div>
+</div>
+</article>
+
+</div></div>
+
+<svg class="leader" id="leader" aria-hidden="true" focusable="false"><line id="leader-line" x1="0" y1="0" x2="0" y2="0"/><circle id="leader-ring" cx="0" cy="0" r="0"/></svg>
+<div class="reel-progress" aria-hidden="true"><i></i></div>
+</div>
+<div class="segs" aria-hidden="true"><div class="seg" data-beat="hero"></div><div class="seg" data-beat="sos"></div><div class="seg" data-beat="usb"></div><div class="seg" data-beat="exploded"></div><div class="seg" data-beat="mesh"></div><div class="seg" data-beat="final"></div><div class="seg" data-beat="forest"></div></div>
+</div>
+</section>
+
+<section class="statement" aria-labelledby="statement-h"><div class="wrap">
+<h2 class="statement-h" id="statement-h"><span>Built for teams</span> <span>that work beyond</span> <span>the network.</span></h2>
+</div></section>
+
+<section class="try" id="try" aria-labelledby="try-h" tabindex="-1"><div class="wrap try-in">
+<div class="try-copy">
+<h2 class="display" id="try-h">One app. One radio.</h2>
+<p>Two parts, designed to work as one.</p>
+<p class="muted small">Prototype concept. Simplified drawings, not the finished app. Names and messages are examples.</p>
+<ol class="steps">
+<li><button type="button" class="step" data-step="1" aria-current="step"><span class="muted small">Step 1 of 4</span><span class="step-t">Connect.</span><span class="step-d">One radio, one phone, over Bluetooth.</span></button></li>
+<li><button type="button" class="step" data-step="2"><span class="muted small">Step 2 of 4</span><span class="step-t">Send.</span><span class="step-d">Type a message, then one tap.</span></button></li>
+<li><button type="button" class="step" data-step="3"><span class="muted small">Step 3 of 4</span><span class="step-t">See replies.</span><span class="step-d">They show up on the same screen.</span></button></li>
+<li><button type="button" class="step" data-step="4"><span class="muted small">Step 4 of 4</span><span class="step-t">See who&rsquo;s where.</span><span class="step-d">A heading-up plot of where everyone is.</span></button></li>
+</ol>
+<div class="demo-ctl"><button type="button" class="btn-outline" data-walk>Play walkthrough</button><button type="button" class="link" data-restart>Start over</button></div>
+<p class="sr-only" aria-live="polite" data-demo-live></p>
+</div>
+
+<div class="bay">
+<span class="cursor" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 2 L4 20 L9 15 L12.5 22 L15.5 20.5 L12 13.5 L19 13.5Z"/></svg></span>
+<figure class="dev dev-radio">
+<svg class="radio-draw" viewBox="0 0 200 360" role="img" aria-labelledby="radio-draw-t" focusable="false">
+<title id="radio-draw-t">Drawing of the radio's screen</title>
+<rect class="hw-dark" x="126" y="4" width="12" height="70" rx="6"/>
+<rect class="hw-btn" x="120" y="62" width="24" height="18" rx="3"/>
+<rect class="hw-shell" x="20" y="76" width="160" height="276" rx="28"/>
+<rect class="hw-glass" x="40" y="100" width="120" height="104" rx="8"/>
+<text class="lcd" x="100" y="160" text-anchor="middle" data-lcd>READY</text>
+<rect class="lcd-bar" x="56" y="180" width="88" height="4" rx="2" data-lcd-bar/>
+<circle class="hw-btn" cx="60" cy="300" r="14"/><circle class="hw-btn" cx="100" cy="300" r="14"/><circle class="hw-acc" cx="140" cy="300" r="14"/>
+</svg>
+</figure>
+<figure class="dev phone" aria-label="Drawing of the phone app">
+<div class="ph-top"><span>PulseLink</span><svg class="ph-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="8" y="6" width="8" height="15" rx="2" data-ph-radio/><rect x="13" y="1" width="2" height="6" rx="1" data-ph-radio/></svg></div>
+<div class="ph-body">
+<div class="scr" data-screen="settings">
+<p class="ph-title">Settings</p>
+<div class="ph-card"><p class="ph-h">Device</p><p class="ph-m" data-dev-status>No radio connected</p>
+<button type="button" class="ph-btn" data-act="connect">Connect radio</button></div>
+</div>
+<div class="scr" data-screen="messages" hidden>
+<p class="ph-title">Goose</p>
+<ol class="thread">
+<li class="msg in"><span>Checking in at the ridge.</span><span class="ph-m">3 min ago</span></li>
+<li class="msg out" data-out hidden><span>Copy. Heading to you.</span><span class="ph-m">Sent</span></li>
+<li class="msg in" data-reply hidden><span>See you there.</span><span class="ph-m">now</span></li>
+</ol>
+<div class="composer"><span class="draft" data-draft>Copy. Heading to you.</span><button type="button" class="ph-btn" data-act="send">Send</button></div>
+</div>
+<div class="scr" data-screen="map" hidden>
+<p class="ph-title">Map</p>
+<svg class="plot" viewBox="0 0 240 240" role="img" aria-label="Heading-up plot with you in the center and three teammates around you" focusable="false">
+<circle class="ring" cx="120" cy="120" r="100"/><circle class="ring" cx="120" cy="120" r="56"/>
+<path class="ring" d="M120 12 V228 M12 120 H228"/>
+<path class="me" d="M120 106 L130 132 L120 126 L110 132Z"/>
+<circle class="pin" cx="78" cy="58" r="7"/><circle class="pin" cx="182" cy="96" r="7"/><circle class="pin" cx="150" cy="190" r="7"/>
+</svg>
+<ul class="pins"><li><span>Goose</span><span class="ph-m">1 min ago</span></li><li><span>Iceman</span><span class="ph-m">4 min ago</span></li><li><span>Rooster</span><span class="ph-m">2 min ago</span></li></ul>
+<p class="ph-m">Heading up</p>
+</div>
+</div>
+<div class="tabbar" aria-hidden="true">
+<svg viewBox="0 0 24 24" data-tab="messages"><path d="M4 5h16v11H9l-5 4z"/></svg>
+<svg viewBox="0 0 24 24"><path d="M6 3l4 4-2 3c1 3 3 5 6 6l3-2 4 4-3 3C10 21 3 14 3 6z"/></svg>
+<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>
+<svg viewBox="0 0 24 24" data-tab="map"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/></svg>
+<svg viewBox="0 0 24 24" data-tab="settings"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+</div>
+</figure>
+</div>
+</div></section>
+
+<section class="relay" id="relay" aria-labelledby="relay-h" tabindex="-1">
+<div class="wrap relay-head">
+<h2 class="giant" id="relay-h">Relay.</h2>
+<div class="relay-cols">
+<p class="tagline">Messages that pass from radio to radio.</p>
+<p>It is designed to relay traffic across a team mesh. Pick a radio on the map, then send a message to watch it pass along.</p>
+</div>
+</div>
+<div class="map" data-map>
+<canvas class="dots" aria-hidden="true"></canvas>
+<svg class="hud" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+<line class="cross" data-cx x1="0" y1="0" x2="0" y2="100"/><line class="cross" data-cy x1="0" y1="0" x2="100" y2="0"/>
+<line class="conn" data-conn x1="0" y1="0" x2="0" y2="0"/>
+<polyline class="route" data-route points=""/>
+</svg>
+<div class="nodes" role="group" aria-label="Radios on the map">
+<button type="button" class="node" data-node="0"><i></i><span class="node-n">Maverick</span><span class="node-s" data-state></span></button>
+<button type="button" class="node" data-node="1"><i></i><span class="node-n">Goose</span><span class="node-s" data-state></span></button>
+<button type="button" class="node" data-node="2"><i></i><span class="node-n">Iceman</span><span class="node-s" data-state></span></button>
+<button type="button" class="node" data-node="3"><i></i><span class="node-n">Rooster</span><span class="node-s" data-state></span></button>
+<button type="button" class="node" data-node="4"><i></i><span class="node-n">Phoenix</span><span class="node-s" data-state></span></button>
+</div>
+<span class="pulse" aria-hidden="true"></span>
+<p class="readout" data-readout aria-live="polite">From Maverick</p>
+</div>
+<div class="wrap map-ctl">
+<button type="button" class="btn-outline" data-relay-send>Send a message</button>
+<p class="muted small">Concept drawing on an invented map, not to scale. Names are examples.</p>
+</div>
+<div class="wrap">
+<h3 class="sr-only">How a message travels</h3>
+<ol class="flow">
+<li><span class="flow-n" aria-hidden="true">01</span><p class="flow-t">Type on the phone.</p><p class="muted">Write a message in the app, then one tap.</p></li>
+<li><span class="flow-n" aria-hidden="true">02</span><p class="flow-t">Your radio sends it.</p><p class="muted">The phone hands the message to your radio over Bluetooth.</p></li>
+<li><span class="flow-n" aria-hidden="true">03</span><p class="flow-t">Radios pass it along.</p><p class="muted">The radios are designed to relay it from one team member to the next.</p></li>
+<li><span class="flow-n" aria-hidden="true">04</span><p class="flow-t">It shows up on their phone.</p><p class="muted">Replies come back the same way.</p></li>
+</ol>
+</div>
+</section>
+
+<section class="facts" aria-labelledby="facts-h"><div class="wrap">
+<h2 class="sr-only" id="facts-h">At a glance</h2>
+<ol class="facts-row">
+<li><span class="fact-n" aria-hidden="true">4</span><p>Four-category triage board with a live tally and filters</p></li>
+<li><span class="fact-n" aria-hidden="true">9</span><p>9-line MEDEVAC builder</p></li>
+<li><span class="fact-n" aria-hidden="true">1+1</span><p>One radio, one phone, over Bluetooth.</p></li>
+<li><span class="fact-n" aria-hidden="true">0</span><p>No towers, accounts or internet to set up.</p></li>
+</ol>
+</div></section>
+
+<section class="who" id="who" aria-labelledby="who-h" tabindex="-1">
+<div class="wrap who-head">
+<h2 class="display" id="who-h">Who it is for</h2>
+<div class="tabs" role="tablist" aria-label="Who it is for">
+<button type="button" role="tab" id="t-field" aria-controls="p-field" aria-selected="true">Teams in the field</button>
+<button type="button" role="tab" id="t-le" aria-controls="p-le" aria-selected="false" tabindex="-1">Law enforcement</button>
+<button type="button" role="tab" id="t-sar" aria-controls="p-sar" aria-selected="false" tabindex="-1">Search and rescue</button>
+<button type="button" role="tab" id="t-civ" aria-controls="p-civ" aria-selected="false" tabindex="-1">Civilians in the woods</button>
+</div>
+</div>
+<svg class="defs" aria-hidden="true" focusable="false"><defs>
+<g id="f-base"><path class="limb" d="M-14 -168 L-22 0 M14 -168 L26 0"/><path class="fig" d="M-40 -300 C-46 -230 -40 -190 -30 -160 L30 -160 C40 -190 46 -230 40 -300 C20 -318 -20 -318 -40 -300Z"/><circle class="fig" cx="0" cy="-338" r="27"/><path class="limb arm" d="M-34 -290 L-48 -220 L-44 -172"/></g>
+<g id="f-radio"><path class="limb arm" d="M34 -290 L60 -232 L28 -238"/><rect class="ill-hw" x="10" y="-266" width="24" height="42" rx="5"/><rect class="ill-hw" x="25" y="-292" width="5" height="30" rx="2"/><circle class="ill-acc" cx="22" cy="-236" r="5"/></g>
+<g id="f-down"><path class="limb arm" d="M34 -290 L48 -220 L44 -172"/></g>
+<g id="f-point"><path class="limb arm" d="M34 -290 L116 -318"/></g>
+<g id="f-pack"><rect class="fig" x="-80" y="-312" width="46" height="140" rx="12"/></g>
+<g id="f-helmet"><path class="fig" d="M-32 -336 C-32 -382 32 -382 32 -336 L38 -332 L-38 -332Z"/></g>
+<g id="f-cap"><path class="fig" d="M-28 -346 C-28 -376 28 -376 28 -346 L60 -341 L-28 -339Z"/></g>
+<g id="f-beanie"><path class="fig" d="M-27 -348 C-27 -380 27 -380 27 -348Z"/></g>
+<g id="pine"><path d="M0 -300 L-45 -190 L-25 -190 L-70 -90 L-40 -90 L-92 0 L92 0 L40 -90 L70 -90 L25 -190 L45 -190Z"/><rect x="-8" y="0" width="16" height="30"/></g>
+</defs></svg>
+
+<div class="aud" role="tabpanel" id="p-field" aria-labelledby="t-field">
+<svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Stylized illustration: two figures with packs on a ridge at dusk, one holding a radio" focusable="false">
+<rect class="sky" width="1600" height="900"/>
+<polygon class="s3" points="0,560 200,500 420,540 640,470 900,520 1150,450 1400,500 1600,460 1600,900 0,900"/>
+<polygon class="s2" points="0,700 300,650 600,690 860,640 1100,610 1350,640 1600,620 1600,900 0,900"/>
+<polygon class="s1" points="0,830 400,800 800,770 1000,712 1200,700 1450,726 1600,744 1600,900 0,900"/>
+<g transform="translate(1090 712) scale(.62)"><use href="#f-pack"/><use href="#f-base"/><use href="#f-helmet"/><use href="#f-radio"/></g>
+<g transform="translate(1290 708) scale(.6)"><use href="#f-pack"/><use href="#f-base"/><use href="#f-helmet"/><use href="#f-down"/></g>
+</svg>
+<div class="aud-copy wrap"><h3 class="aud-h">Teams in the field.</h3><p>Teams that work beyond the network.</p><p class="muted small">Illustration of intended use. Not a real person, agency or deployment.</p></div>
+</div>
+
+<div class="aud" role="tabpanel" id="p-le" aria-labelledby="t-le">
+<svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Stylized illustration: a figure in a cap beside a dark, unmarked vehicle at night, holding a radio" focusable="false">
+<rect class="sky" width="1600" height="900"/>
+<path class="s3" d="M0 640 V560 H90 V520 H170 V580 H260 V500 H330 V600 H420 V545 H520 V640Z M1180 640 V590 H1260 V550 H1330 V600 H1430 V530 H1520 V580 H1600 V640Z"/>
+<rect class="s1" y="640" width="1600" height="260"/>
+<polygon class="s2" points="740,640 860,640 1500,900 100,900"/>
+<polygon class="s3" points="796,660 804,660 812,700 798,700"/><polygon class="s3" points="794,730 808,730 820,800 796,800"/>
+<path class="fig" d="M1010 790 V716 H1066 L1116 650 H1306 L1348 712 L1390 722 V790Z"/>
+<path class="s3" d="M1128 660 H1206 V706 H1088Z M1216 660 H1298 L1332 706 H1216Z"/>
+<circle class="fig" cx="1092" cy="792" r="34"/><circle class="fig" cx="1320" cy="792" r="34"/>
+<circle class="s3" cx="1092" cy="792" r="12"/><circle class="s3" cx="1320" cy="792" r="12"/>
+<g transform="translate(920 820) scale(.72)"><use href="#f-base"/><use href="#f-cap"/><use href="#f-radio"/></g>
+</svg>
+<div class="aud-copy wrap"><h3 class="aud-h">Law enforcement.</h3><p>Teams that need to message where the network does not reach.</p><p class="muted small">Illustration of intended use. Not a real person, agency or deployment.</p></div>
+</div>
+
+<div class="aud" role="tabpanel" id="p-sar" aria-labelledby="t-sar">
+<svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Stylized illustration: two figures in helmets on a rocky slope, one holding a radio" focusable="false">
+<rect class="sky" width="1600" height="900"/>
+<polygon class="s3" points="0,540 300,400 520,470 800,320 1100,400 1400,260 1600,340 1600,900 0,900"/>
+<polygon class="s2" points="0,900 0,780 600,620 1000,452 1600,330 1600,900"/>
+<polygon class="s1" points="300,760 380,700 470,712 520,770"/><polygon class="s1" points="760,600 830,548 900,560 930,610"/><polygon class="s1" points="1360,420 1420,380 1500,392 1530,440"/>
+<polygon class="s1" points="0,900 0,860 700,760 1600,660 1600,900"/>
+<g transform="translate(1080 436) scale(.56)"><use href="#f-pack"/><use href="#f-base"/><use href="#f-helmet"/><use href="#f-point"/></g>
+<g transform="translate(1290 392) scale(-.56 .56)"><use href="#f-pack"/><use href="#f-base"/><use href="#f-helmet"/><use href="#f-radio"/></g>
+</svg>
+<div class="aud-copy wrap"><h3 class="aud-h">Search and rescue.</h3><p>Crews that search where there is no signal.</p><p class="muted small">Illustration of intended use. Not a real person, agency or deployment.</p></div>
+</div>
+
+<div class="aud" role="tabpanel" id="p-civ" aria-labelledby="t-civ">
+<svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Stylized illustration: two hikers with packs beside a tent among pine trees, one holding a radio" focusable="false">
+<rect class="sky" width="1600" height="900"/>
+<g class="s3"><use href="#pine" transform="translate(120 700) scale(.9)"/><use href="#pine" transform="translate(300 680) scale(1.1)"/><use href="#pine" transform="translate(560 690) scale(.8)"/><use href="#pine" transform="translate(1480 690) scale(1.2)"/><use href="#pine" transform="translate(760 700) scale(.7)"/></g>
+<g class="s2"><use href="#pine" transform="translate(40 790) scale(1.5)"/><use href="#pine" transform="translate(420 780) scale(1.2)"/><use href="#pine" transform="translate(1560 800) scale(1.7)"/></g>
+<rect class="s1" y="770" width="1600" height="130"/>
+<path class="s3" d="M1060 772 L1150 650 L1254 772Z"/><path class="fig" d="M1150 650 L1136 772 H1168Z"/>
+<g transform="translate(940 776) scale(.64)"><use href="#f-pack"/><use href="#f-base"/><use href="#f-beanie"/><use href="#f-radio"/></g>
+<g transform="translate(1350 778) scale(-.6 .6)"><use href="#f-pack"/><use href="#f-base"/><use href="#f-down"/></g>
+</svg>
+<div class="aud-copy wrap"><h3 class="aud-h">Civilians in the woods.</h3><p>Hikers, campers and preppers, beyond the last tower.</p><p class="muted small">Illustration of intended use. Not a real person, agency or deployment.</p></div>
+</div>
+<p class="wrap muted small who-note">Use of the radio or app by any agency, unit or customer is not implied. Prototype, not for sale.</p>
+</section>
+
+<section class="specs" id="specs" aria-labelledby="specs-h" tabindex="-1"><div class="wrap specs-in">
+<h2 class="display" id="specs-h">Specs</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-labelledby="specs-h">
+<table class="spec-table">
+<caption class="sr-only">Specs</caption>
+<tbody>
+<tr><th scope="row">Controls</th><td>D-pad: up, down, left, right. Other keys to be decided.</td></tr>
+<tr><th scope="row">Top</th><td>Knob for power and volume. Antenna.</td></tr>
+<tr><th scope="row">Left side</th><td>Kenwood 2-pin audio jack. PTT pad.</td></tr>
+<tr><th scope="row">Right side</th><td>Gated, recessed SOS button.</td></tr>
+<tr><th scope="row">Front</th><td>Display. Microphone at the bottom.</td></tr>
+<tr><th scope="row">Back</th><td>Speaker, so the radio can be worn face-in. Belt clip.</td></tr>
+<tr><th scope="row">Underside</th><td>One USB-C port. Rechargeable.</td></tr>
+<tr><th scope="row">Colors</th><td>OD Green, Coyote Tan, Black.</td></tr>
+<tr><th scope="row">Phone link</th><td>One radio, one phone, over Bluetooth.</td></tr>
+<tr><th scope="row">Network</th><td>No towers, accounts or internet to set up.</td></tr>
+<tr><th scope="row">Weather</th><td>Weatherproof.</td></tr>
+<tr><th scope="row">Status</th><td>Prototype, not for sale.</td></tr>
+</tbody>
+</table>
+</div>
+</div></section>
+
+<section class="faq" id="faq" aria-labelledby="faq-h" tabindex="-1"><div class="wrap faq-in">
+<h2 class="display" id="faq-h">FAQ</h2>
+<div class="faq-list">
+<details><summary>Can I buy it?</summary>
+<div class="faq-a"><p>Prototype, not for sale.</p><p>This device has not been authorized as required by the rules of the Federal Communications Commission. This device is not, and may not be, offered for sale or lease, or sold or leased, until authorization is obtained.</p></div>
+</details>
+<details><summary>Does it need cell service or internet?</summary>
+<div class="faq-a"><p>A wearable data radio for places the phone network doesn&rsquo;t reach. No towers, accounts or internet to set up.</p></div>
+</details>
+<details><summary>How does a message get there?</summary>
+<div class="faq-a"><p>Messages that pass from radio to radio.</p>
+<ol class="faq-steps"><li>Type on the phone. Write a message in the app, then one tap.</li><li>Your radio sends it. The phone hands the message to your radio over Bluetooth.</li><li>Radios pass it along. The radios are designed to relay it from one team member to the next.</li><li>It shows up on their phone. Replies come back the same way.</li></ol></div>
+</details>
+<details><summary>Who is it for?</summary>
+<div class="faq-a"><p>Built for teams that work beyond the network.</p><p>Teams in the field. Law enforcement. Search and rescue. Civilians in the woods.</p><p class="muted small">Use of the radio or app by any agency, unit or customer is not implied. Prototype, not for sale.</p></div>
+</details>
+<details><summary>What is the interest list?</summary>
+<div class="faq-a"><p>We are building a civilian radio for US customers. Tell us you are interested and we will email you when our civilian radio is available.</p><p class="muted">This is not an order. We are not taking money, deposits or payment details, and no radio will be sold or delivered to a customer before FCC authorization.</p></div>
+</details>
+</div>
+</div></section>
+
+<section class="join" aria-labelledby="join-h"><div class="wrap join-in">
+<h2 class="display" id="join-h">Join the interest list</h2>
+<div>
+<p>We are building a civilian radio for US customers. Tell us you are interested and we will email you when our civilian radio is available.</p>
+<p class="muted">This is not an order. We are not taking money, deposits or payment details, and no radio will be sold or delivered to a customer before FCC authorization.</p>
+<div class="actions"><a class="btn" href="../civilian-radio-interest.html">Join the interest list</a><a class="btn-outline" href="mailto:info@apddefense.com">Email us</a></div>
+</div>
+</div></section>
+</main>
+
+<footer class="site"><div class="wrap foot-in">
+<p>FCC notice: This device has not been authorized as required by the rules of the Federal Communications Commission. This device is not, and may not be, offered for sale or lease, or sold or leased, until authorization is obtained.</p>
+<p class="muted">PulseLink and the APD Defense radio are in active development; features and specifications may change. No FDA clearance or approval. Not clinically validated. The medic makes every care decision.</p>
+<p class="muted">No endorsement by the U.S. Department of Defense or any government agency is implied. This website has no forms, cookies or analytics.</p>
+<nav class="foot-nav" aria-label="Footer"><a href="../civilian-radio-interest.html">Join the interest list</a><a href="../privacy.html">Privacy</a><a href="../open-source.html">Open-source notices</a><a href="mailto:info@apddefense.com">info@apddefense.com</a></nav>
+<p class="muted">&copy; 2026 APD Defense, LLC.</p>
+</div></footer>
+<script src="assets/frames-manifest.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/scrub.js"></script>
+<script src="assets/walkthrough.js"></script>
+</body></html>
