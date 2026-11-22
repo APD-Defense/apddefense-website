@@ -1,7 +1,8 @@
 /* APD website v10 page behaviour. No network calls, no storage, no tracking.
    Every control gives visible feedback and announces its result. Reduced motion = same results, no movement.
    New in v10: the reel (scroll position -> frame number for assets/scrub.js, beat cards, callout lines, jumps), the header menu
-   and the current-section mark. The tap-through demo, the relay map and the audience tabs are unchanged from v3. */
+   and the current-section mark. The tap-through demo, the relay map and the audience tabs are unchanged from v3.
+   Preview (snap-on, /preview-3d/): the reel moves beat by beat instead of following the scroll; see "beat by beat" below. */
 (function(){
 "use strict";
 var root=document.documentElement;
@@ -27,7 +28,7 @@ var reel=(function(){
  if(!D||!FRM||!track||!pinEl)return none;
  var BEATS=D.beats,NB=BEATS.length,segs=$$(".seg",track),cards=[],subs=[],subOn=[],rate=D.rate||{move:0.025,dwell:0.05};
  if(segs.length!==NB)return none;
- var svg=$("#leader"),line=$("#leader-line"),ring=$("#leader-ring");
+ var svg=$("#leader");
  var byName={},cum=[],segTop=[],segH=[],vh=root.clientHeight||innerHeight,cardBox=[],stageAt={x:0,y:0},wide=false,curBeat=-1,lastOn=-2,measuredOn=false;
  BEATS.forEach(function(b,i){
   byName[b.name]=i;
@@ -55,6 +56,142 @@ var reel=(function(){
   c.style.setProperty("--out0",(posOf(i,w[2])*100).toFixed(2)+"%");c.style.setProperty("--out1",(posOf(i,w[3]+1)*100).toFixed(2)+"%");
  });
 
+ /* ---------- beat by beat (snap-on: the /preview-3d/ page) ----------
+    Nine stops: one per beat, and one per caption inside a beat that has several (the exploded view). Each stop has a place in the
+    pinned track (evenly spaced, worked out from the track itself) and a hold frame (the beat's still; for a caption, a frame of
+    the beat's dwell inside the caption's range, preferring one with a sharper file).
+    A small scroll (more than T px) away from the stop the page rests on starts the glide to the next stop in that direction
+    (scrub.js plays the frames on time) and locks: the rest of that scroll gesture moves nothing more. A move in hand plays out:
+    scrolling further the same way while the picture is still travelling starts nothing (scrolling back turns it round). When the gesture ends the
+    scroll is put back exactly on the stop. The picture is pinned there, so nothing on screen moves. The words of a beat show
+    only while it holds. Never a trap: from the last stop the page scrolls on into the rest of the page, and from the first one
+    up to the top. A jump (a link, Home/End, the scroll bar, a very long fling) lands on the nearest stop instead.
+    Mouse wheel, trackpad, touch and the keyboard all just scroll the page; nothing here blocks or replaces a scroll. */
+ var STOPS=[],SY=[],NS=0,T=24,prog=$(".reel-progress"),hasEnd="onscrollend" in window,
+     SN={c:0,ready:false,lock:false,nav:false,trig:false,y0:0,lastY:scrollY,inG:false,touch:false,settling:false,timer:0,tl:0},MINGAP=450;
+ (function(){
+  var x2=window.APD_FRAMES&&window.APD_FRAMES.x2,sharpHas={},still=D.stills||[];
+  if(x2&&x2.have)x2.have.forEach(function(n){sharpHas[n]=1;});
+  BEATS.forEach(function(b,i){
+   if(subs[i].length>1){
+    subs[i].forEach(function(sb,j){
+     var a=Math.max(+sb.getAttribute("data-a"),b.dwell[0]),z=Math.min(+sb.getAttribute("data-b"),b.dwell[1]),f,best,bd=1e9,mid;
+     if(a>z){a=z=(+sb.getAttribute("data-b")<b.dwell[0])?b.dwell[0]:b.dwell[1];}
+     mid=(a+z)/2;best=Math.round(mid);
+     for(f=a;f<=z;f++)if(sharpHas[f]&&Math.abs(f-mid)<bd){bd=Math.abs(f-mid);best=f;}
+     STOPS.push({b:i,j:j,f:best});
+    });
+   }
+   else STOPS.push({b:i,j:-1,f:still[i]||b.dwell[0]});
+  });
+  NS=STOPS.length;
+ })();
+ function snapOn(){return framesOn()&&root.classList.contains("snap-on")&&NS>1;}
+ function snapMeasure(){
+  var r=track.getBoundingClientRect(),top=r.top+scrollY,span=Math.max(0,track.offsetHeight-pinEl.offsetHeight),k;
+  for(k=0;k<NS;k++)SY[k]=Math.round(top+span*k/(NS-1));
+  T=Math.max(24,Math.min(40,0.03*vh));
+ }
+ function nearest(y){var k,b=0,bd=1e9,d;for(k=0;k<NS;k++){d=Math.abs(y-SY[k]);if(d<bd){bd=d;b=k;}}return b;}
+ function stopShow(k){
+  var st=STOPS[k],i=st.b,n,el;
+  for(n=0;n<NB;n++)if(cards[n])cards[n].classList.toggle("is-on",n===i);
+  lastOn=i;
+  if(subs[i].length){subs[i].forEach(function(sb,j){sb.classList.toggle("is-on",j===st.j);});subOn[i]=st.j;}
+  leaders(i,st.f);
+ }
+ /* leaving for stop k: the words go at once; inside one beat the card stays and only its caption goes */
+ function stopLeave(k){
+  var i=STOPS[k].b,n,keep=cards[i]&&cards[i].classList.contains("is-on")&&subs[i].length>1;
+  for(n=0;n<NB;n++)if(cards[n]&&!(keep&&n===i))cards[n].classList.toggle("is-on",false);
+  if(keep){subs[i].forEach(function(sb){sb.classList.toggle("is-on",false);});subOn[i]=-1;}
+  lastOn=-1;
+  if(svg)svg.classList.toggle("is-on",false);
+ }
+ function goStop(k,how){
+  k=Math.max(0,Math.min(NS-1,k));
+  var st=STOPS[k],same=k===SN.c;
+  SN.c=k;S.beat=st.b;S.b=st.b;S.frame=st.f;
+  if(st.b!==curBeat){curBeat=st.b;pinEl.classList.toggle("is-compact",st.b>0);}   /* after the hero the text area is smaller (narrow screens) */
+  if(prog)prog.style.setProperty("--reel-p",(k/(NS-1)).toFixed(4));
+  if(same&&how!=="jump")return;
+  stopLeave(k);
+  S.target=st.f;
+  if(how==="jump"||!window.APDScrub){if(window.APDScrub)window.APDScrub.jump();stopShow(k);}
+  else window.APDScrub.glide(st.f);
+ }
+ function park(Y,smooth){
+  if(Math.abs(scrollY-Y)<0.5)return;
+  SN.settling=true;SN.lastY=Y;
+  try{scrollTo({top:Y,behavior:smooth?"smooth":"instant"});}catch(e){scrollTo(0,Y);}
+  clearTimeout(SN.timer);SN.timer=setTimeout(gestureEnd,smooth?900:150);   /* in case no scroll or scrollend event follows */
+ }
+ function gestureEnd(){
+  clearTimeout(SN.timer);
+  if(!snapOn()){SN.inG=false;SN.settling=false;return;}
+  if(SN.settling){SN.settling=false;SN.inG=false;return;}
+  if(SN.touch||!SN.inG)return;                                 /* a finger still on the glass: wait for it */
+  SN.inG=false;
+  var y=scrollY,end=SY[NS-1],k;
+  if(y>end+T){                                                 /* past the last stop */
+   if(SN.trig&&SN.c===NS-1&&y-end<vh)park(end,true);          /* this gesture brought the last beat in: it holds first */
+   else if(SN.c!==NS-1)goStop(NS-1,"jump");
+   return;
+  }
+  if(y<SY[0]-1)return;
+  if(SN.nav||Math.abs(y-SN.y0)>2.5*(SY[1]-SY[0])){              /* a jump or a very long fling: the nearest stop */
+   k=nearest(y);
+   if(k!==SN.c)goStop(k,Math.abs(k-SN.c)>2?"jump":"glide");
+  }
+  park(SY[SN.c],y>end);
+ }
+ function snapScroll(){
+  var y=scrollY,dy=y-SN.lastY,end=SY[NS-1],k,Yc,gd;
+  SN.lastY=y;
+  clearTimeout(SN.timer);SN.timer=setTimeout(gestureEnd,hasEnd?600:160);
+  if(SN.settling)return;
+  if(!SN.inG){SN.inG=true;SN.y0=y-dy;SN.trig=false;SN.nav=false;SN.lock=false;}
+  if(Math.abs(dy)>1.5*vh&&!SN.nav){                            /* a jump: a link, Home/End, the scroll bar */
+   SN.nav=true;SN.lock=true;
+   k=y>end+T?NS-1:nearest(y);
+   if(k!==SN.c)goStop(k,"jump");
+   return;
+  }
+  if(SN.lock)return;
+  if(y>end+T){if(SN.c!==NS-1)goStop(NS-1,"jump");return;}      /* the rest of the page scrolls on */
+  if(SN.y0>end+T){SN.lock=true;if(SN.c!==NS-1)goStop(NS-1,"jump");return;}   /* back up into the reel: the last beat holds first */
+  Yc=SY[SN.c];
+  if(Date.now()-SN.tl<MINGAP)return;                           /* a beat just started: a burst of wheel notches stays one move */
+  gd=window.APDScrub&&window.APDScrub.gliding?window.APDScrub.gliding():0;
+  if(y>Yc+T&&SN.c<NS-1){SN.lock=true;if(gd>0)return;SN.trig=true;SN.tl=Date.now();goStop(SN.c+1,"glide");}   /* gd: the move in hand plays out first */
+  else if(y<Yc-T&&SN.c>0){SN.lock=true;if(gd<0)return;SN.trig=true;SN.tl=Date.now();goStop(SN.c-1,"glide");}
+ }
+ /* after a change of size, the page loading or the mode switching on: the stops are measured again and the page rests on one */
+ function snapSync(){
+  snapMeasure();
+  var y=scrollY,end=SY[NS-1],k,g;
+  if(!SN.ready){
+   SN.ready=true;SN.c=-1;SN.lastY=y;
+   k=y>end+T?NS-1:nearest(y);
+   goStop(k,"jump");
+   if(y<=end+T)park(SY[k],false);
+   return;
+  }
+  if(!SN.inG&&y>=SY[0]-1&&y<=end+T)park(SY[SN.c],false);
+  g=window.APDScrub&&window.APDScrub.info&&window.APDScrub.info();
+  if(!(g&&g.gliding))stopShow(SN.c);                          /* the callout line follows the new layout */
+ }
+ if(hasEnd)addEventListener("scrollend",function(){if(snapOn())gestureEnd();});
+ /* a new scroll by hand during a settle is a new gesture */
+ ["wheel","touchstart","keydown","mousedown"].forEach(function(ev){addEventListener(ev,function(){
+  if(SN.settling){SN.settling=false;SN.inG=false;clearTimeout(SN.timer);}
+  if(ev==="touchstart")SN.touch=true;
+ },{passive:true});});
+ ["touchend","touchcancel"].forEach(function(ev){addEventListener(ev,function(){
+  SN.touch=false;
+  if(SN.inG){clearTimeout(SN.timer);SN.timer=setTimeout(gestureEnd,hasEnd?600:160);}
+ },{passive:true});});
+
  function measure(){
   vh=root.clientHeight||innerHeight;                 /* the small viewport height: steady when a phone hides its address bar */
   wide=!!(window.matchMedia&&matchMedia(FRM.WIDE).matches);
@@ -68,6 +205,7 @@ var reel=(function(){
    r=cards[i].getBoundingClientRect();
    cardBox[i]={l:r.left-pr.left,r:r.right-pr.left,t:r.top-pr.top,b:r.bottom-pr.top};
   }
+  if(snapOn())snapMeasure();
  }
  /* A change of size changes the reel's length, so the same scroll position would mean another frame. keep() notes the frame on
     show before anything is measured again; restore() puts the scroll back on it afterwards. It only acts when the reel's own
@@ -81,23 +219,45 @@ var reel=(function(){
   return true;
  }
  function relay(){
+  if(snapOn()){measure();snapSync();return;}
   var k=keep(),moved;
   measure();moved=restore(k);update();
   if(moved&&window.APDScrub)window.APDScrub.jump();
  }
- function leader(name,f,i){
+ /* callout lines (v14): every callout of the card on show gets its own line, from the card's edge level with the callout to its
+    part, ending in a ring. Narrow screens (text under the picture): no lines, a numbered ring on each part that matches the number
+    in the list. Positions come from the measured anchors (beats.js) for the frame on show; nothing is measured while scrolling. */
+ var NS_SVG="http://www.w3.org/2000/svg",drawnFor="";
+ function anchorAt(name,f){
+  var a=D.anchors[name];
+  if(!a||!(f>=a[0][0]&&f<a[a.length-1][0]+1))return null;
+  var k=Math.min(a.length-1,Math.max(0,Math.floor(f-a[0][0]))),p=a[k],q=a[Math.min(a.length-1,k+1)],t=Math.max(0,Math.min(1,f-p[0]));
+  return [p[1]+(q[1]-p[1])*t,p[2]+(q[2]-p[2])*t];
+ }
+ function leaders(i,f){
   if(!svg)return;
-  var a=name&&wide?D.anchors[name]:null,R=a&&window.APDScrub?window.APDScrub.rect(f):null,box=cardBox[i],pt=null;
-  if(a&&R&&box&&f>=a[0][0]&&f<a[a.length-1][0]+1){
-   var k=Math.min(a.length-1,Math.max(0,Math.floor(f-a[0][0]))),p=a[k],q=a[Math.min(a.length-1,k+1)],t=Math.max(0,Math.min(1,f-p[0]));
-   pt=[stageAt.x+R.x+(p[1]+(q[1]-p[1])*t)*R.w,stageAt.y+R.y+(1-(p[2]+(q[2]-p[2])*t))*R.h];
+  var c=i>=0?cards[i]:null,items=c?$$(".co[data-anchor]",c):[],R=items.length&&window.APDScrub?window.APDScrub.rect(f):null,
+      pr=pinEl.getBoundingClientRect(),box=c?c.getBoundingClientRect():null,parts=[],rad=wide?10:12;
+  if(R)items.forEach(function(el,n){
+   var p=anchorAt(el.getAttribute("data-anchor"),f);if(!p)return;
+   var x=stageAt.x+R.x+p[0]*R.w,y=stageAt.y+R.y+(1-p[1])*R.h,e=el.getBoundingClientRect(),g=[];
+   if(wide){
+    var sx=box.right-pr.left,sy=(e.top+e.bottom)/2-pr.top,dx=x-sx,dy=y-sy,len=Math.sqrt(dx*dx+dy*dy)||1;
+    g.push(["line",{x1:sx.toFixed(1),y1:sy.toFixed(1),x2:(x-dx/len*rad).toFixed(1),y2:(y-dy/len*rad).toFixed(1)}]);
+   }
+   g.push(["circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:rad}]);
+   if(!wide)g.push(["text",{x:x.toFixed(1),y:y.toFixed(1),"text-anchor":"middle","dominant-baseline":"central"},String(n+1)]);
+   parts.push(g);
+  });
+  var key=JSON.stringify(parts);
+  if(key!==drawnFor){
+   drawnFor=key;
+   svg.replaceChildren();
+   parts.forEach(function(g){g.forEach(function(d){
+    var e=document.createElementNS(NS_SVG,d[0]),k;for(k in d[1])e.setAttribute(k,d[1][k]);if(d[2])e.textContent=d[2];svg.appendChild(e);
+   });});
   }
-  if(!pt){svg.classList.remove("is-on");return;}
-  var rad=10,sx=box.r,sy=(box.t+box.b)/2,dx=pt[0]-sx,dy=pt[1]-sy,len=Math.sqrt(dx*dx+dy*dy)||1;
-  line.setAttribute("x1",sx.toFixed(1));line.setAttribute("y1",sy.toFixed(1));
-  line.setAttribute("x2",(pt[0]-dx/len*rad).toFixed(1));line.setAttribute("y2",(pt[1]-dy/len*rad).toFixed(1));
-  ring.setAttribute("cx",pt[0].toFixed(1));ring.setAttribute("cy",pt[1].toFixed(1));ring.setAttribute("r",rad);
-  svg.classList.add("is-on");
+  svg.classList.toggle("is-on",parts.length>0);
  }
  function show(i,f){
   var w=BEATS[i].card,onNow=(f>=w[0]&&f<w[3]+1)?i:-1,k,s=-1,el;
@@ -107,11 +267,11 @@ var reel=(function(){
    subs[i].forEach(function(sb,j){if(f>=+sb.getAttribute("data-a")&&f<+sb.getAttribute("data-b")+1)s=j;});
    if(s!==subOn[i]){subs[i].forEach(function(sb,j){sb.classList.toggle("is-on",j===s);});subOn[i]=s;}
   }
-  el=s>=0?subs[i][s]:cards[i];
-  leader(onNow>=0&&el?el.getAttribute("data-anchor"):null,f,i);
+  leaders(onNow,f);
  }
  function update(){
-  if(!framesOn()){S.target=1;S.frame=1;S.beat=0;S.b=0;return;}
+  if(!framesOn()){S.target=1;S.frame=1;S.beat=0;S.b=0;SN.ready=false;return;}
+  if(snapOn()){if(SN.ready)snapScroll();return;}
   var p=scrollY+vh,i,t,f;
   for(i=NB-1;i>0;i--)if(p>=segTop[i])break;
   t=segH[i]?(p-segTop[i])/segH[i]:0;
@@ -123,6 +283,13 @@ var reel=(function(){
  function goTo(i,f){
   if(!framesOn())return false;
   measure();
+  if(snapOn()){
+   var k;for(k=0;k<NS;k++)if(STOPS[k].b===i)break;
+   if(k>=NS)return false;
+   if(!SN.ready)snapSync();
+   park(SY[k],false);goStop(k,"jump");
+   return true;
+  }
   scrollTo(0,Math.max(0,Math.round(segTop[i]+posOf(i,f)*segH[i]-vh+1)));
   update();
   if(window.APDScrub)window.APDScrub.jump();
@@ -159,6 +326,8 @@ var reel=(function(){
   if(framesOn()&&window.APDScrub)window.APDScrub.mode();
   if(!fits())root.classList.remove("frames-on");
   if(!framesOn()){pinEl.classList.remove("is-compact");cards.forEach(function(c,j){if(c)c.classList.toggle("is-on",j===0);});lastOn=-2;curBeat=-1;}
+  if(snapOn()){measure();snapSync();return;}
+  SN.ready=false;
   measure();moved=restore(k);update();
   if(moved&&window.APDScrub)window.APDScrub.jump();
  }
@@ -183,9 +352,12 @@ var reel=(function(){
  addEventListener("hashchange",fromHash);
  wide=!!(window.matchMedia&&matchMedia(FRM.WIDE).matches);
  if(!fits())root.classList.remove("frames-on");
- measure();update();
+ measure();
+ if(snapOn())snapSync();else update();
  window.APDReel={sync:sync,measure:relay,frameOf:frameOf,posOf:posOf,
-  end:function(){return framesOn()&&segTop.length?segTop[NB-1]+segH[NB-1]-vh:0;},
+  arrive:function(f){if(snapOn()&&STOPS[SN.c]&&Math.abs(f-STOPS[SN.c].f)<0.01)stopShow(SN.c);},
+  stops:function(){return {c:SN.c,y:SY.slice(),stops:STOPS.slice(),T:T,lock:SN.lock,inG:SN.inG,settling:SN.settling};},
+  end:function(){if(snapOn()&&SY.length)return SY[NS-1];return framesOn()&&segTop.length?segTop[NB-1]+segH[NB-1]-vh:0;},
   top:function(i,f){return segTop[i]+posOf(i,f)*segH[i]-vh;}};
  return window.APDReel;
 })();
