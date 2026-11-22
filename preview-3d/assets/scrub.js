@@ -12,7 +12,9 @@
    - A canvas that changes size is wiped by the browser. resize() therefore draws the picture again at once, before the next paint,
      so the picture area is never shown empty (on narrow screens it changes size, over a few frames, when the hero text leaves).
    Reduced motion or no canvas: this file does nothing and the page shows stills. No network APIs, no storage.
-   Public: window.APDScrub = {kick(), jump(), mode(), rect(frame), info()}. */
+   Beat by beat (snap-on, the /preview-3d/ page): the frame number no longer follows the scroll; app.js names the next beat's
+   hold frame and glide() plays the frames to it on time (see below).
+   Public: window.APDScrub = {kick(), jump(), glide(frame), mode(), rect(frame), info()}. */
 (function(){
 "use strict";
 var root=document.documentElement,S=window.APDScroll,D=window.APD_BEATS,FR=window.APDFrame,F=window.APD_FRAMES;
@@ -41,7 +43,7 @@ var ctx=null;
 if(F&&S&&D&&FR&&pin&&stage&&view&&canvas&&F.have&&F.have.length){try{ctx=canvas.getContext("2d");}catch(e){ctx=null;}}
 if(!ctx){
  if(on())off();
- window.APDScrub={kick:function(){},jump:function(){},mode:function(){},rect:function(){return null;},info:function(){return null;}};
+ window.APDScrub={kick:function(){},jump:function(){},glide:function(){},mode:function(){},rect:function(){return null;},info:function(){return null;}};
  return;
 }
 
@@ -233,12 +235,46 @@ function rest(){
  restTimer=setTimeout(function(){if(!running&&cur!==null&&on())sharp(Math.round(cur));},180);
 }
 
+/* ---------- beat-by-beat mode (snap-on): the picture glides from where it is to the next beat's hold frame ----------
+   The glide runs on time, not on the scroll: about 0.35 s for a caption change inside a beat, about 0.8 to 1.5 s from one beat
+   to the next, eased in and out (cubic Hermite). A new target mid-glide starts a new glide from the frame on screen; going the
+   same way it keeps its speed, turning back it starts from rest. On arrival app.js is told, and shows the beat's words. */
+var G=null;
+function snapping(){return root.classList.contains("snap-on");}
+function glideDur(d){return 1000*Math.max(0.35,Math.min(1.5,0.25+0.0145*Math.abs(d)));}   /* ms */
+function glideAt(g,now){
+ var s=Math.max(0,Math.min(1,(now-g.t0)/g.dur)),s2=s*s,s3=s2*s,D=g.to-g.from;
+ return {s:s,p:g.from+(3*s2-2*s3)*D+(s3-2*s2+s)*g.m0,v:((6*s-6*s2)*D+(3*s2-4*s+1)*g.m0)/g.dur};
+}
+function glide(to){
+ to=Math.max(1,Math.min(D.frames,to));
+ var now=window.performance&&performance.now?performance.now():Date.now(),from=cur===null?to:cur,v=0,dur,m0=0,d=to-from;
+ if(G){var a=glideAt(G,now);from=a.p;v=a.v;d=to-from;}
+ if(Math.abs(d)<0.01&&!G){cur=to;S.target=to;dirty=true;kick();arrive(to);return;}
+ dur=glideDur(d);
+ if(v*d>0)m0=Math.min(Math.abs(v*dur),2*Math.abs(d))*(d>0?1:-1);   /* same way: keep the speed, never overshoot */
+ G={from:from,to:to,t0:now,dur:dur,m0:m0};
+ cur=from;S.target=to;kick();
+}
+function arrive(f){if(window.APDReel&&window.APDReel.arrive)window.APDReel.arrive(f);}
+
 /* ---------- damped scrub loop ---------- */
 function tick(t){
- if(!on()){running=false;last=0;return;}
- var target=S.target||1,dt=last?Math.min(0.1,(t-last)/1000):1/60,prev,idle;
+ if(!on()){running=false;last=0;G=null;return;}
+ var target=S.target||1,dt=last?Math.min(0.1,(t-last)/1000):1/60,prev,idle,g;
  last=t;
  if(cur===null)cur=target;
+ if(snapping()){
+  prev=cur;
+  if(G){g=glideAt(G,window.performance&&performance.now?performance.now():Date.now());cur=g.s>=1?G.to:g.p;if(g.s>=1){target=G.to;G=null;arrive(target);}}
+  else cur=target;
+  if(cur!==prev)way=cur>prev?1:-1;
+  if(dirty||drawn===null||Math.abs(cur-drawn)>0.002){if(draw(cur)){drawn=cur;dirty=false;}}
+  if(have.length)warm();
+  if(G||(dirty&&(have.length||hiOrder.length))){requestAnimationFrame(tick);}
+  else{running=false;last=0;rest();}
+  return;
+ }
  idle=t-moved>REST;
  if(idle)target=restOn(target);                                         /* at rest: one whole frame, no blend */
  prev=cur;
@@ -254,7 +290,7 @@ function kick(moving){
  if(moving)moved=window.performance&&performance.now?performance.now():0;
  if(!running&&on()){running=true;last=0;requestAnimationFrame(tick);}
 }
-function jump(){cur=S.target||1;dirty=true;kick(true);}
+function jump(){G=null;cur=S.target||1;dirty=true;kick(true);}
 
 function mode(){
  if(!on())return;
@@ -280,9 +316,9 @@ else addEventListener("load",function(){whenIdle(start);});
 resize(null);
 
 window.APDScrub={
- kick:kick,jump:jump,mode:mode,rect:rect,
+ kick:kick,jump:jump,glide:glide,mode:mode,rect:rect,
  info:function(){return {tier:dir,sharp:hiDir,sharpNow:cur!==null&&!!hi[hiKey(Math.round(cur))],small:small,total:total,loaded:loaded,failed:failed,have:have.length,started:started,done:done,live:live,booted:live,complete:!!F.complete,
   cur:cur===null?null:+cur.toFixed(3),target:+(S.target||1).toFixed(3),drawn:drawn===null?null:+drawn.toFixed(3),
-  canvas:[canvas.width,canvas.height],stage:L?[L.sw,L.sh]:null,wide:L?L.wide:null,rect:cur===null?null:rect(cur)};}
+  canvas:[canvas.width,canvas.height],stage:L?[L.sw,L.sh]:null,gliding:!!G,wide:L?L.wide:null,rect:cur===null?null:rect(cur)};}
 };
 })();
