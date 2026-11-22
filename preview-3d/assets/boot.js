@@ -43,11 +43,11 @@ function layout(compact,sw,sh){
  var big=mm(BIG),wide=mm(WIDE);
  if(sw>0)W=sw;else sw=W;                        /* the stage spans the page: its measured width is the page width */
  var gut=(big?2:1)*r,hdr=(big?4:3.5)*r,left=Math.max(0,(W-80*r)/2)+gut,gap=2*r;
- var tiny=mm("(max-width:22.49em)"),area=wide?0:(compact?(tiny?15:13.5):(big?27.5:(tiny?26.5:22.5)))*r;
+ var tiny=mm("(max-width:22.49em)"),area=wide?0:(compact?(tiny?30:27):(big?27.5:(tiny?30:27)))*r;      /* v14: the callout cards need more room */
  if(!(sh>0))sh=H-hdr-area;
  var cc=wide?Math.max(0.34*W,left+20*r+gap):0;
  /* the headline's size by the same rule as --text-hero in site.css, and the width its longest line needs (8.3 em) */
- var font=Math.max(0,Math.min(Math.max(2.5*r,r+0.065*W),6.875*r,(H-hdr-15.6*r)/3.68)),want=wide?left+8.3*font+gap:0;
+ var font=Math.max(0,Math.min(Math.max(2.5*r,r+0.065*W),6.875*r,(H-hdr-15.6*r)/4.6)),want=wide?left+8.3*font+gap:0;
  var L={wide:wide,rem:r,W:W,H:H,hdr:hdr,left:left,gap:gap,sw:sw,sh:sh,c:cc,rects:[],clear:[],heroW:0,copyW:0,
         ok:sw>=17.5*r&&sh>=(wide?24:11)*r};
  if(!D)return L;
