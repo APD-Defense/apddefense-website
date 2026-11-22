@@ -61,7 +61,8 @@ var reel=(function(){
     pinned track (evenly spaced, worked out from the track itself) and a hold frame (the beat's still; for a caption, a frame of
     the beat's dwell inside the caption's range, preferring one with a sharper file).
     A small scroll (more than T px) away from the stop the page rests on starts the glide to the next stop in that direction
-    (scrub.js plays the frames on time) and locks: the rest of that scroll gesture moves nothing more. When the gesture ends the
+    (scrub.js plays the frames on time) and locks: the rest of that scroll gesture moves nothing more. A move in hand plays out:
+    scrolling further the same way while the picture is still travelling starts nothing (scrolling back turns it round). When the gesture ends the
     scroll is put back exactly on the stop. The picture is pinned there, so nothing on screen moves. The words of a beat show
     only while it holds. Never a trap: from the last stop the page scrolls on into the rest of the page, and from the first one
     up to the top. A jump (a link, Home/End, the scroll bar, a very long fling) lands on the nearest stop instead.
@@ -145,7 +146,7 @@ var reel=(function(){
   park(SY[SN.c],y>end);
  }
  function snapScroll(){
-  var y=scrollY,dy=y-SN.lastY,end=SY[NS-1],k,Yc;
+  var y=scrollY,dy=y-SN.lastY,end=SY[NS-1],k,Yc,gd;
   SN.lastY=y;
   clearTimeout(SN.timer);SN.timer=setTimeout(gestureEnd,hasEnd?600:160);
   if(SN.settling)return;
@@ -161,8 +162,9 @@ var reel=(function(){
   if(SN.y0>end+T){SN.lock=true;if(SN.c!==NS-1)goStop(NS-1,"jump");return;}   /* back up into the reel: the last beat holds first */
   Yc=SY[SN.c];
   if(Date.now()-SN.tl<MINGAP)return;                           /* a beat just started: a burst of wheel notches stays one move */
-  if(y>Yc+T&&SN.c<NS-1){SN.trig=true;SN.lock=true;SN.tl=Date.now();goStop(SN.c+1,"glide");}
-  else if(y<Yc-T&&SN.c>0){SN.trig=true;SN.lock=true;SN.tl=Date.now();goStop(SN.c-1,"glide");}
+  gd=window.APDScrub&&window.APDScrub.gliding?window.APDScrub.gliding():0;
+  if(y>Yc+T&&SN.c<NS-1){SN.lock=true;if(gd>0)return;SN.trig=true;SN.tl=Date.now();goStop(SN.c+1,"glide");}   /* gd: the move in hand plays out first */
+  else if(y<Yc-T&&SN.c>0){SN.lock=true;if(gd<0)return;SN.trig=true;SN.tl=Date.now();goStop(SN.c-1,"glide");}
  }
  /* after a change of size, the page loading or the mode switching on: the stops are measured again and the page rests on one */
  function snapSync(){
