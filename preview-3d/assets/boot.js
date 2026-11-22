@@ -71,7 +71,7 @@ function vars(L,el,R){
 var units=!!(window.CSS&&CSS.supports&&CSS.supports("height","100svh"));      /* the pinned layout is written in small-viewport units */
 function mode(){
  var L=layout(false),on=c2d&&units&&!mq.matches&&!!D&&L.ok;
- root.classList.toggle("frames-on",on);root.classList.toggle("reduced",!!mq.matches);
+ root.classList.toggle("frames-on",on);root.classList.toggle("snap-on",on);root.classList.toggle("reduced",!!mq.matches);
  if(on)vars(L,root);
  return on;
 }
