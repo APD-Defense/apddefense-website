@@ -46,28 +46,30 @@
 <article class="beat-card card-hero is-on" id="card-hero" data-beat="hero">
 <img class="beat-still" src="frames/0001.webp" srcset="frames-640/0001.webp 640w, frames/0001.webp 1280w, frames-2x/0001.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the APD Defense radio in olive green: display, six keys, antenna and knob on top, red SOS button on the right side" fetchpriority="high">
 <div class="card-body">
-<h1 class="hero-h"><span>Team messaging</span> <span>and casualty</span> <span>records,</span> <span>off the grid.</span></h1>
+<h1 class="hero-h"><span>Frequency</span> <span>hopping mesh</span> <span>comms for</span> <span>real world</span> <span>conditions.</span></h1>
 <p class="lede">A wearable data radio for places the phone network doesn&rsquo;t reach. No towers, accounts or internet to set up.</p>
 <p class="muted small">Prototype, not for sale.</p>
 <div class="actions"><a class="btn" href="../civilian-radio-interest.html">Join the interest list</a><a class="link link-go" href="#parts" data-go="exploded">See the radio</a></div>
 </div>
 </article>
 
-<article class="beat-card" id="card-sos" data-beat="sos" data-anchor="sos">
+<article class="beat-card" id="card-sos" data-beat="sos">
 <img class="beat-still" loading="lazy" decoding="async" src="frames/0080.webp" srcset="frames-640/0080.webp 640w, frames/0080.webp 1280w, frames-2x/0080.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the right side of the radio with the red SOS button">
 <div class="card-body">
 <span class="card-n" aria-hidden="true">02</span>
-<h2 class="card-h">Guarded SOS</h2>
-<p>Gated, recessed SOS button on the right side.</p>
+<ol class="cos">
+<li class="co" data-anchor="sos"><span class="co-n" aria-hidden="true">1</span><h2 class="co-h">DEDICATED SOS BEACON</h2><p>One-press distress alert with live team GPS.</p></li>
+</ol>
 </div>
 </article>
 
-<article class="beat-card" id="card-usb" data-beat="usb" data-anchor="usb">
+<article class="beat-card" id="card-usb" data-beat="usb">
 <img class="beat-still" loading="lazy" decoding="async" src="frames/0124.webp" srcset="frames-640/0124.webp 640w, frames/0124.webp 1280w, frames-2x/0124.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the radio tipped back to show the USB-C port underneath, with a battery symbol on its display">
 <div class="card-body">
 <span class="card-n" aria-hidden="true">03</span>
-<h2 class="card-h">Battery life</h2>
-<p>USB-C rechargeable.</p>
+<ol class="cos">
+<li class="co" data-anchor="rear"><span class="co-n" aria-hidden="true">1</span><h2 class="co-h">72HR ENDURANCE</h2><p>Multi-day field runtime.</p></li>
+</ol>
 </div>
 </article>
 
@@ -75,11 +77,13 @@
 <img class="beat-still" loading="lazy" decoding="async" src="frames/0180.webp" srcset="frames-640/0180.webp 640w, frames/0180.webp 1280w, frames-2x/0180.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the radio drawn apart: shell, display, keys, board, battery, antenna and belt clip">
 <div class="card-body">
 <span class="card-n" aria-hidden="true">04</span>
-<div class="subs">
-<div class="sub is-on" id="parts" data-a="139" data-b="171"><h2 class="card-h">Every part, laid out.</h2><p>One radio, drawn apart and put back together.</p></div>
-<div class="sub" data-a="172" data-b="180" data-anchor="pcb"><h3 class="card-h">Encryption</h3><p>Chip supports Arm TrustZone for hardware-isolated key storage, on the roadmap, not yet used.</p></div>
-<div class="sub" data-a="181" data-b="204" data-anchor="antenna"><h3 class="card-h">Frequency hopping</h3><p>The radio hops across channels.</p></div>
-</div>
+<div class="card-top" id="parts"><h2 class="card-h">Every part, laid out.</h2><p>One radio, drawn apart and put back together.</p></div>
+<ol class="cos">
+<li class="co" data-anchor="antenna"><span class="co-n" aria-hidden="true">1</span><h3 class="co-h">FREQ HOPPING</h3><p>Rapid channel agility against jamming &amp; detection.</p></li>
+<li class="co" data-anchor="rf_feed"><span class="co-n" aria-hidden="true">2</span><h3 class="co-h">CRYPTO HOP SEQUENCES</h3><p>Key-driven schedules with no predictable pattern.</p></li>
+<li class="co" data-anchor="crypto"><span class="co-n" aria-hidden="true">3</span><h3 class="co-h">DEDICATED CRYPTO DRIVERS</h3><p>Hardware-isolated key &amp; link protection.</p></li>
+<li class="co" data-anchor="xcvr"><span class="co-n" aria-hidden="true">4</span><h3 class="co-h">PACKET DATA LINK</h3><p>Telemetry, position updates &amp; payload transfer.</p></li>
+</ol>
 </div>
 </article>
 
@@ -87,8 +91,11 @@
 <img class="beat-still" loading="lazy" decoding="async" src="frames/0250.webp" srcset="frames-640/0250.webp 640w, frames/0250.webp 1280w, frames-2x/0250.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of three radios standing in a line">
 <div class="card-body">
 <span class="card-n" aria-hidden="true">05</span>
-<h2 class="card-h">Relay.</h2>
-<p>Messages that pass from radio to radio. It is designed to relay traffic across a team mesh.</p>
+<ol class="cos">
+<li class="co" data-anchor="mesh_arc"><span class="co-n" aria-hidden="true">1</span><h2 class="co-h">SELF-HEALING MESH</h2><p>Dynamic multi-hop routing across terrain.</p></li>
+<li class="co" data-anchor="b_knob"><span class="co-n" aria-hidden="true">2</span><h2 class="co-h">HOPPING RELAY VOICE</h2><p>Channel-hopping voice routed across nodes as repeaters.</p></li>
+<li class="co" data-anchor="b_display"><span class="co-n" aria-hidden="true">3</span><h2 class="co-h">LIVE TEAM TRACKING</h2><p>Real-time squad positions on a shared map.</p></li>
+</ol>
 </div>
 </article>
 
@@ -96,8 +103,13 @@
 <img class="beat-still" loading="lazy" decoding="async" src="frames/0288.webp" srcset="frames-640/0288.webp 640w, frames/0288.webp 1280w, frames-2x/0288.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of three radios side by side in tan, green and black">
 <div class="card-body">
 <span class="card-n" aria-hidden="true">06</span>
-<h2 class="card-h">3 color options available</h2>
-<p>OD Green &middot; Coyote Tan &middot; Black</p>
+<div class="card-top"><h2 class="card-h">3 color options available</h2>
+<p>OD Green &middot; Coyote Tan &middot; Black</p></div>
+<ol class="cos">
+<li class="co" data-anchor="b_knob"><span class="co-n" aria-hidden="true">1</span><h3 class="co-h">EMCON MODES</h3><p>Progressive emission tightening to stay low-profile.</p></li>
+<li class="co" data-anchor="b_display"><span class="co-n" aria-hidden="true">2</span><h3 class="co-h">ATAK COMPATIBLE</h3><p>Direct team situational awareness integration.</p></li>
+<li class="co" data-anchor="b_keypad"><span class="co-n" aria-hidden="true">3</span><h3 class="co-h">TACTICAL MESSAGING</h3><p>Low-overhead text dispatch.</p></li>
+</ol>
 </div>
 </article>
 
@@ -105,8 +117,9 @@
 <img class="beat-still" loading="lazy" decoding="async" src="frames/0356.webp" srcset="frames-640/0356.webp 640w, frames/0356.webp 1280w, frames-2x/0356.webp 2560w" sizes="(min-width:56.25em) 50vw, 100vw" width="1280" height="720" alt="Render of the radio lying wet against a rock on a forest floor">
 <div class="card-body">
 <span class="card-n" aria-hidden="true">07</span>
-<h2 class="card-h">Weatherproof</h2>
-<p>Left in the rain on the forest floor. Weatherproof: water beads up and runs off.</p>
+<ol class="cos">
+<li class="co" data-anchor="seam"><span class="co-n" aria-hidden="true">1</span><h2 class="co-h">WATERPROOF SEALED</h2><p>Gasketed against wet terrain, mud &amp; immersion.</p></li>
+</ol>
 <div class="actions"><a class="btn" href="../civilian-radio-interest.html">Join the interest list</a></div>
 </div>
 </article>
@@ -280,7 +293,7 @@
 <table class="spec-table">
 <caption class="sr-only">Specs</caption>
 <tbody>
-<tr><th scope="row">Controls</th><td>D-pad: up, down, left, right. Other keys to be decided.</td></tr>
+<tr><th scope="row">Controls</th><td>6-key pad.</td></tr>
 <tr><th scope="row">Top</th><td>Knob for power and volume. Antenna.</td></tr>
 <tr><th scope="row">Left side</th><td>Kenwood 2-pin audio jack. PTT pad.</td></tr>
 <tr><th scope="row">Right side</th><td>Gated, recessed SOS button.</td></tr>
@@ -290,7 +303,7 @@
 <tr><th scope="row">Colors</th><td>OD Green, Coyote Tan, Black.</td></tr>
 <tr><th scope="row">Phone link</th><td>One radio, one phone, over Bluetooth.</td></tr>
 <tr><th scope="row">Network</th><td>No towers, accounts or internet to set up.</td></tr>
-<tr><th scope="row">Weather</th><td>Weatherproof.</td></tr>
+<tr><th scope="row">Weather</th><td>Waterproof.</td></tr>
 <tr><th scope="row">Status</th><td>Prototype, not for sale.</td></tr>
 </tbody>
 </table>

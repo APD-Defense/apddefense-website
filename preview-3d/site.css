@@ -477,3 +477,36 @@ footer.site{border-top:var(--hairline) solid var(--color-line);padding:var(--spa
  .frames-on.snap-on .beat-card.is-on .sub.is-on{transition:opacity var(--dur-fade) var(--ease-out),visibility 0s}
  .frames-on.snap-on .reel-progress i{transition:transform var(--dur-move) var(--ease-out)}
 }
+
+/* ---------- v14 (preview): Joshua's callouts, several per card, each with its own line to its part ---------- */
+.hero-h span{display:block}
+.frames-on .hero-h{font-size:min(var(--text-hero),12.1cqi,calc((var(--card-area) - 13.2rem) / 4.6))}
+.card-top{display:grid;gap:var(--space-3)}
+.cos{display:grid;gap:var(--space-4)}
+.co{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:0;row-gap:var(--space-1);align-items:baseline}
+.co-n{display:none}
+.co-h,.co p{grid-column:2}
+.co-h{font-family:var(--font-display);font-size-adjust:from-font;font-weight:700;font-size:var(--text-md);line-height:1.25;letter-spacing:.06em}
+.co p{color:var(--color-text-muted);max-inline-size:44ch;text-wrap:pretty}
+.leader text{fill:var(--color-text);font-family:var(--font-display);font-weight:700;font-size:12px}
+/* narrow screens, frames on: numbered rings on the picture match the numbers in the list; no lines */
+.frames-on .co-n{display:inline-grid;place-items:center;grid-row:1 / span 2;inline-size:1.5rem;block-size:1.5rem;border:1.5px solid var(--color-accent);border-radius:50%;font-family:var(--font-display);font-weight:700;font-size:.75rem;line-height:1}
+.frames-on .cos{gap:var(--space-3)}
+.frames-on .co{align-items:start;column-gap:var(--space-3)}
+.frames-on .co p{font-size:var(--text-sm)}
+.frames-on .leader{display:block;position:absolute;inset:0;inline-size:100%;block-size:100%;max-width:none;z-index:var(--z-labels);pointer-events:none;opacity:0}
+.frames-on .leader.is-on{opacity:1}
+.frames-on .leader circle{fill:rgba(11,17,25,.72)}
+@media (min-width:56.25em) and (min-aspect-ratio:5/4){
+ .frames-on .hero-h{font-size:min(var(--text-hero),12.1cqi,calc((100svh - var(--hdr) - 15.6rem) / 4.6))}
+ .frames-on .co-n{display:none}
+ .frames-on .co{column-gap:0}
+ .frames-on .cos{gap:var(--space-4)}
+ .frames-on .co p{font-size:var(--text-md)}
+ .frames-on .card-top{margin-block-end:var(--space-2)}
+ .frames-on .leader circle{fill:none}
+}
+/* v14: the callout cards need more room under the picture on narrow screens (boot.js mirrors these numbers) */
+:root{--card-area:27rem;--card-area-compact:27rem}
+@media (min-width:48em){:root{--card-area:27.5rem;--card-area-compact:27rem}}
+@media (max-width:22.49em){:root{--card-area:30rem;--card-area-compact:30rem}}

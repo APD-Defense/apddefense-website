@@ -28,7 +28,7 @@ var reel=(function(){
  if(!D||!FRM||!track||!pinEl)return none;
  var BEATS=D.beats,NB=BEATS.length,segs=$$(".seg",track),cards=[],subs=[],subOn=[],rate=D.rate||{move:0.025,dwell:0.05};
  if(segs.length!==NB)return none;
- var svg=$("#leader"),line=$("#leader-line"),ring=$("#leader-ring");
+ var svg=$("#leader");
  var byName={},cum=[],segTop=[],segH=[],vh=root.clientHeight||innerHeight,cardBox=[],stageAt={x:0,y:0},wide=false,curBeat=-1,lastOn=-2,measuredOn=false;
  BEATS.forEach(function(b,i){
   byName[b.name]=i;
@@ -97,8 +97,7 @@ var reel=(function(){
   for(n=0;n<NB;n++)if(cards[n])cards[n].classList.toggle("is-on",n===i);
   lastOn=i;
   if(subs[i].length){subs[i].forEach(function(sb,j){sb.classList.toggle("is-on",j===st.j);});subOn[i]=st.j;}
-  el=st.j>=0?subs[i][st.j]:cards[i];
-  leader(el?el.getAttribute("data-anchor"):null,st.f,i);
+  leaders(i,st.f);
  }
  /* leaving for stop k: the words go at once; inside one beat the card stays and only its caption goes */
  function stopLeave(k){
@@ -223,19 +222,40 @@ var reel=(function(){
   measure();moved=restore(k);update();
   if(moved&&window.APDScrub)window.APDScrub.jump();
  }
- function leader(name,f,i){
+ /* callout lines (v14): every callout of the card on show gets its own line, from the card's edge level with the callout to its
+    part, ending in a ring. Narrow screens (text under the picture): no lines, a numbered ring on each part that matches the number
+    in the list. Positions come from the measured anchors (beats.js) for the frame on show; nothing is measured while scrolling. */
+ var NS_SVG="http://www.w3.org/2000/svg",drawnFor="";
+ function anchorAt(name,f){
+  var a=D.anchors[name];
+  if(!a||!(f>=a[0][0]&&f<a[a.length-1][0]+1))return null;
+  var k=Math.min(a.length-1,Math.max(0,Math.floor(f-a[0][0]))),p=a[k],q=a[Math.min(a.length-1,k+1)],t=Math.max(0,Math.min(1,f-p[0]));
+  return [p[1]+(q[1]-p[1])*t,p[2]+(q[2]-p[2])*t];
+ }
+ function leaders(i,f){
   if(!svg)return;
-  var a=name&&wide?D.anchors[name]:null,R=a&&window.APDScrub?window.APDScrub.rect(f):null,box=cardBox[i],pt=null;
-  if(a&&R&&box&&f>=a[0][0]&&f<a[a.length-1][0]+1){
-   var k=Math.min(a.length-1,Math.max(0,Math.floor(f-a[0][0]))),p=a[k],q=a[Math.min(a.length-1,k+1)],t=Math.max(0,Math.min(1,f-p[0]));
-   pt=[stageAt.x+R.x+(p[1]+(q[1]-p[1])*t)*R.w,stageAt.y+R.y+(1-(p[2]+(q[2]-p[2])*t))*R.h];
+  var c=i>=0?cards[i]:null,items=c?$$(".co[data-anchor]",c):[],R=items.length&&window.APDScrub?window.APDScrub.rect(f):null,
+      pr=pinEl.getBoundingClientRect(),box=c?c.getBoundingClientRect():null,parts=[],rad=wide?10:12;
+  if(R)items.forEach(function(el,n){
+   var p=anchorAt(el.getAttribute("data-anchor"),f);if(!p)return;
+   var x=stageAt.x+R.x+p[0]*R.w,y=stageAt.y+R.y+(1-p[1])*R.h,e=el.getBoundingClientRect(),g=[];
+   if(wide){
+    var sx=box.right-pr.left,sy=(e.top+e.bottom)/2-pr.top,dx=x-sx,dy=y-sy,len=Math.sqrt(dx*dx+dy*dy)||1;
+    g.push(["line",{x1:sx.toFixed(1),y1:sy.toFixed(1),x2:(x-dx/len*rad).toFixed(1),y2:(y-dy/len*rad).toFixed(1)}]);
+   }
+   g.push(["circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:rad}]);
+   if(!wide)g.push(["text",{x:x.toFixed(1),y:y.toFixed(1),"text-anchor":"middle","dominant-baseline":"central"},String(n+1)]);
+   parts.push(g);
+  });
+  var key=JSON.stringify(parts);
+  if(key!==drawnFor){
+   drawnFor=key;
+   svg.replaceChildren();
+   parts.forEach(function(g){g.forEach(function(d){
+    var e=document.createElementNS(NS_SVG,d[0]),k;for(k in d[1])e.setAttribute(k,d[1][k]);if(d[2])e.textContent=d[2];svg.appendChild(e);
+   });});
   }
-  if(!pt){svg.classList.remove("is-on");return;}
-  var rad=10,sx=box.r,sy=(box.t+box.b)/2,dx=pt[0]-sx,dy=pt[1]-sy,len=Math.sqrt(dx*dx+dy*dy)||1;
-  line.setAttribute("x1",sx.toFixed(1));line.setAttribute("y1",sy.toFixed(1));
-  line.setAttribute("x2",(pt[0]-dx/len*rad).toFixed(1));line.setAttribute("y2",(pt[1]-dy/len*rad).toFixed(1));
-  ring.setAttribute("cx",pt[0].toFixed(1));ring.setAttribute("cy",pt[1].toFixed(1));ring.setAttribute("r",rad);
-  svg.classList.add("is-on");
+  svg.classList.toggle("is-on",parts.length>0);
  }
  function show(i,f){
   var w=BEATS[i].card,onNow=(f>=w[0]&&f<w[3]+1)?i:-1,k,s=-1,el;
@@ -245,8 +265,7 @@ var reel=(function(){
    subs[i].forEach(function(sb,j){if(f>=+sb.getAttribute("data-a")&&f<+sb.getAttribute("data-b")+1)s=j;});
    if(s!==subOn[i]){subs[i].forEach(function(sb,j){sb.classList.toggle("is-on",j===s);});subOn[i]=s;}
   }
-  el=s>=0?subs[i][s]:cards[i];
-  leader(onNow>=0&&el?el.getAttribute("data-anchor"):null,f,i);
+  leaders(onNow,f);
  }
  function update(){
   if(!framesOn()){S.target=1;S.frame=1;S.beat=0;S.b=0;SN.ready=false;return;}
